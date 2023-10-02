@@ -464,7 +464,7 @@ function useSearchProps() {
 }
 
 export function Search() {
-  let [modifierKey, setModifierKey] = useState()
+ {/* let [modifierKey, setModifierKey] = useState()
   let { buttonProps, dialogProps } = useSearchProps()
 
   useEffect(() => {
@@ -489,7 +489,7 @@ export function Search() {
       </button>
       <SearchDialog className="hidden lg:block" {...dialogProps} />
     </div>
-  )
+  )*/}
 }
 
 export function MobileSearch() {
