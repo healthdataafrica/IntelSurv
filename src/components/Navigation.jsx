@@ -1,4 +1,4 @@
-import { useRef,useState,useEffect } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import clsx from 'clsx'
@@ -7,16 +7,13 @@ import { Button } from '@/components/Button'
 import { useIsInsideMobileNavigation } from '@/components/MobileNavigation'
 import { Tag } from '@/components/Tag'
 import { remToPx } from '@/lib/remToPx'
-import store from "../components/store";
-import {fetchFormElements} from "../helpers/fetchFormElements";
-
-
+import store from "../stores/store";
+import { fetchFormElements } from "../helpers/fetchFormElements";
 
 function useInitialValue(value, condition = true) {
   let initialValue = useRef(value).current
   return condition ? initialValue : value
 }
-
 
 function SearchIcon(props) {
   return (
@@ -29,7 +26,6 @@ function SearchIcon(props) {
     </svg>
   )
 }
-
 
 function SearchInput({ original, onDataFilter }) {
   const [search, setSearch] = useState('');
@@ -49,14 +45,14 @@ function SearchInput({ original, onDataFilter }) {
           links: filteredLinks
         };
       })
-      .filter(entry => entry.links.length > 0);
+        .filter(entry => entry.links.length > 0);
 
       onDataFilter(result);
     }
   }, [search]);
 
   return (
-    <div className="group relative flex h-10" style={{ marginBottom: '20px', marginTop:'40px', width:'250px' }}>
+    <div className="group relative flex h-10" style={{ marginBottom: '20px', marginTop: '40px', width: '250px' }}>
       <SearchIcon className="pointer-events-none absolute left-3 top-0 h-full w-5 stroke-zinc-500" />
       <input
         className='flex-auto appearance-none bg-transparent pl-10 text-zinc-900 outline-none placeholder:text-zinc-500 dark:text-white sm:text-sm border border-zinc-100'
@@ -82,7 +78,7 @@ function TopLevelNavItem({ href, children }) {
   )
 }
 
-function NavLink({ href, tag, isAnchorLink = false, setActiveLink, children,setSelectedFormField,link }) {
+function NavLink({ href, tag, isAnchorLink = false, setActiveLink, children, setSelectedFormField, link }) {
   const handleClick = (e) => {
     e.preventDefault();
     setActiveLink(href);
@@ -146,14 +142,14 @@ function ActivePageMarker({ group, pathname }) {
   )
 }
 
-function NavigationGroup({ group, className, setActiveLink, activeLink,setSelectedFormField }) {
+function NavigationGroup({ group, className, setActiveLink, activeLink, setSelectedFormField }) {
   // If this is the mobile navigation then we always render the initial
   // state, so that the state does not change during the close animation.
   // The state will still update when we re-open (re-render) the navigation.
   let isInsideMobileNavigation = useIsInsideMobileNavigation()
- 
 
-   let isActiveGroup = group.links.findIndex((link) => link.href === activeLink) !== -1;
+
+  let isActiveGroup = group.links.findIndex((link) => link.href === activeLink) !== -1;
 
   return (
     <li className={clsx('relative mt-6', className)}>
@@ -161,7 +157,7 @@ function NavigationGroup({ group, className, setActiveLink, activeLink,setSelect
         layout="position"
         className="text-xs font-semibold text-zinc-900 dark:text-white"
       >
-     {group.title}
+        {group.title}
       </motion.h2>
       <div className="relative mt-3 pl-2">
         <AnimatePresence initial={!isInsideMobileNavigation}>
@@ -179,20 +175,20 @@ function NavigationGroup({ group, className, setActiveLink, activeLink,setSelect
           )}
         </AnimatePresence>
         <ul role="list" className="border-l border-transparent">
-        {group.links.map((link) => (
-          <motion.li key={link.href} layout="position" className="relative">
-            <NavLink
-              href={link.href}
-              setActiveLink={setActiveLink}
-              setSelectedFormField={setSelectedFormField}
-              link={link}
-             
-            >
-             {link.href} - {link.title}
-            </NavLink>
-          </motion.li>
-        ))}
-      </ul>
+          {group.links.map((link) => (
+            <motion.li key={link.href} layout="position" className="relative">
+              <NavLink
+                href={link.href}
+                setActiveLink={setActiveLink}
+                setSelectedFormField={setSelectedFormField}
+                link={link}
+
+              >
+                {link.href} - {link.title}
+              </NavLink>
+            </motion.li>
+          ))}
+        </ul>
       </div>
     </li>
   )
@@ -200,25 +196,26 @@ function NavigationGroup({ group, className, setActiveLink, activeLink,setSelect
 
 function transformData(data) {
   const transformedLinks = data.map(item => ({
-      title: item.elemName,
-      href: item.elemID.toString(),
-      elemDescr: item.elemDescr,
-      elemOrder: item.elemOrder,
-      idsrQPID: item.idsrQPID,
-      idsrQListing: item.idsrQListing
+    title: item.elemName,
+    href: item.elemID.toString(),
+    elemDescr: item.elemDescr,
+    elemOrder: item.elemOrder,
+    idsrQPID: item.idsrQPID,
+    idsrQListing: item.idsrQListing,
+    qOptions: item.qOptions
   }));
 
   return [
     {
-        title: 'Form Fields',
-        links: transformedLinks
+      title: 'Form Fields',
+      links: transformedLinks
     }]
 }
 
 
 export function Navigation(props) {
   const { mainStore } = store;
-  const { currentActiveField, setCurrentActiveField, questionnaireElements, setQuestionnaireElements,setSelectedFormField,selectedFormField } = mainStore();
+  const { currentActiveField, setCurrentActiveField, questionnaireElements, setQuestionnaireElements, setSelectedFormField, selectedFormField } = mainStore();
   const [filteredData, setFilteredData] = useState([]);
   const [originalData, setOriginalData] = useState([]);
 
@@ -226,77 +223,68 @@ export function Navigation(props) {
 
   const Loader = () => {
     const containerStyle = {
-      height:'10px',
-      width:'80px',
+      height: '10px',
+      width: '80px',
       margin: 'auto'
-         };
+    };
 
     return (
       <div style={containerStyle}>
-       <img src="/loader.gif" height="5px" alt="Loading" />
-       <p>Loading...</p>
-
-       
+        <img src="/loader.gif" height="5px" alt="Loading" />
+        <p>Loading...</p>
       </div>
     );
   };
 
-  
+
   useEffect(() => {
     const fetchData = async () => {
 
-      if(questionnaireElements == null){
-      try {
-        // ... Your async operations, like fetching data, etc.
-        let response = await fetchFormElements(1,5);
-        let data = await response;
-        const transformedData = transformData(data);
-        setOriginalData(transformedData);
-        setFilteredData(transformedData);        
-        console.log('transformed data',transformedData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
+      if (questionnaireElements == null) {
+        try {
+          // ... Your async operations, like fetching data, etc.
+          let response = await fetchFormElements(1, 5);
+          let data = await response;
+          const transformedData = transformData(data);
+          setOriginalData(transformedData);
+          setFilteredData(transformedData);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
       }
-    }
     };
 
     fetchData();
   }, []);
 
   useEffect(() => {
-    console.log('Current activeLink state:', currentActiveField);
+    // console.log('Current activeLink state:', currentActiveField);
   }, [currentActiveField]);
 
   useEffect(() => {
-    console.log('selected Form Field:', selectedFormField);
+    // console.log('selected Form Field:', selectedFormField); 
   }, [selectedFormField]);
-
- 
 
   return (
     <>
-   
-   <nav {...props}>
-   <SearchInput original={originalData} data={filteredData} onDataFilter={setFilteredData}/>
-      <ul role="list">
-      
-     { originalData.length!=0 ? filteredData.map((group, groupIndex) => (
-        <NavigationGroup setActiveLink={setCurrentActiveField} activeLink={currentActiveField}
-        setSelectedFormField={setSelectedFormField}
-          key={group.title}
-          group={group}
-         
-          className={groupIndex === 0 && 'md:mt-0'}
-        />
-      )): <Loader/>}
-        <li className="sticky bottom-0 z-10 mt-6 min-[416px]:hidden">
-          <Button href="#" variant="filled" className="w-full">
-            Sign in
-          </Button>
-        </li>
-      </ul>
-    </nav>
-   
+      <nav {...props}>
+        <SearchInput original={originalData} data={filteredData} onDataFilter={setFilteredData} />
+        <ul role="list">
+          {originalData.length != 0 ? filteredData.map((group, groupIndex) => (
+            <NavigationGroup setActiveLink={setCurrentActiveField} activeLink={currentActiveField}
+              setSelectedFormField={setSelectedFormField}
+              key={group.title}
+              group={group}
+              className={groupIndex === 0 && 'md:mt-0'}
+            />
+          )) : <Loader />}
+          <li className="sticky bottom-0 z-10 mt-6 min-[416px]:hidden">
+            <Button href="#" variant="filled" className="w-full">
+              Sign in
+            </Button>
+          </li>
+        </ul>
+      </nav>
     </>
   )
 }
