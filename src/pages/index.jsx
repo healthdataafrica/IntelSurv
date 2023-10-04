@@ -1,4 +1,4 @@
-import {React} from 'react';
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { Guides } from '@/components/Guides';
 import { Resources } from '@/components/Resources';
 import { HeroPattern } from '@/components/HeroPattern';
@@ -6,84 +6,27 @@ import { Button } from '@/components/Button';
 import { Heading } from '@/components/Heading'
 import store from "../components/store";
 import { ChatBubbleIcon } from '@/components/icons/ChatBubbleIcon'
+import { getChatCompletions } from "@/helpers/getChatCompletions";
+import { ChatWindow } from "@/components/chatWindow";
 
 
 const index = () => {
     const { mainStore } = store;
     const { setSelectedFormField, selectedFormField } = mainStore();
+    const [chatMessages, setChatMessages] = useState([ { type: 'bot', text: 'Hello! How can I assist you today?' }]);
 
+
+
+
+
+    const handleInputChange = useCallback((event) => {
+      setInputValue(event.target.value);
+      console.log('here is the textbox input', event.target.value);
+    }, []);
 
 
     
-    const styles = {
-        chatWindow: {
-          
-          height: '400px',
-          border: '1px solid #ccc',
-          display: 'flex',
-          flexDirection: 'column',
-        },
-        chatMessages: {
-          flex: 1,
-          overflowY: 'auto',
-          padding: '10px',
-        },
-        chatInput: {
-          display: 'flex',
-          padding: '10px',
-          borderTop: '1px solid #ccc',
-        },
-        inputField: {
-          flex: 1,
-          padding: '5px 10px',
-          marginRight: '10px',
-        },
-        sendButton: {
-            padding: '5px 15px',
-            backgroundColor: '#50C878',
-            borderRadius: '5px', // or '50%' for a fully rounded button
-            color: 'white', // assuming you want the text color to be white
-            border: 'none', // to remove any default borders
-            cursor: 'pointer', // to indicate it's clickable
-          },
-        chatMessage: {
-          marginBottom: '10px',
-          padding: '8px',
-          borderRadius: '5px',
-        },
-        userMessage: {
-          alignSelf: 'flex-end',
-          backgroundColor: '#DAF4E3',
-          
-        },
-        botMessage: {
-          alignSelf: 'flex-start',
-          backgroundColor: '#fcfcfc',
-        },
-      };
-      
-      const ChatWindow = ({ messages = [ { type: 'bot', text: 'Hello! How can I assist you today?' },
-     ] }) => (
-        <div style={styles.chatWindow} className=' w-full sm:w-[600px] lg:w-[600px] xl:w-[800px] '>
-          <div style={styles.chatMessages}>
-            {messages.map((message, index) => (
-              <div
-                key={index}
-                style={{
-                  ...styles.chatMessage,
-                  ...(message.type === 'user' ? styles.userMessage : styles.botMessage),
-                }}
-              >
-                {message.text}
-              </div>
-            ))}
-          </div>
-          <div style={styles.chatInput}>
-            <input type="text" placeholder="Type your message..." style={styles.inputField} />
-            <button style={styles.sendButton}>Send</button>
-          </div>
-        </div>
-      );
+
 
 
     function Icon({ icon: Icon }) {
@@ -95,37 +38,7 @@ const index = () => {
       }
 
 
-    function Search() {
 
-        function SearchIcon(props) {
-            return (
-              <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" {...props}>
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12.01 12a4.25 4.25 0 1 0-6.02-6 4.25 4.25 0 0 0 6.02 6Zm0 0 3.24 3.25"
-                />
-              </svg>
-            )
-          }
-      
-     
-        return (
-         
-<form class="flex items-center">   
-    <label for="simple-search" class="sr-only">Search</label>
-    <div class="relative w-full sm:w-[600px] lg:w-[600px] xl:w-[800px]" >
-      
-        <input type="text" id="simple-search" class=" w-full sm:w-[600px] lg:w-[600px] xl:w-[800px] bg-gray-50 border-gray-300 text-gray-900 focus:border-none text-sm rounded-lg block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Enter your question..." required/>
-    </div>
-    <button type="submit" class="p-2.5 ml-2 text-sm font-medium text-white bg-emerald-400 rounded-lg   hover:bg-emerald-600 dark:bg-emerald-400 dark:hover:bg-emerald-600 ">
-       SEND
-       
-    </button>
-</form>
-
-        )
-      }
 
 
      function userChat() {
@@ -139,13 +52,7 @@ const index = () => {
             <div>
             <div className="not-prose mt-4 grid grid-cols-1 gap-8 border-t border-zinc-900/5 pt-10 dark:border-white/5 sm:grid-cols-2 xl:grid-cols-3">  </div>
 
-           <div className='mb-10' style={{fontSize:'18px'}}> Welcome to the <a href="#">IntelSurv</a> assistant, ask and recieve answers </div>
-
-                  
-
-
-
-           <ChatWindow/>
+           <div className='mb-10' style={{fontSize:'18px'}}> Welcome to the <a href="#">IntelSurv</a> assistant, ask and recieve answers </div>          
             </div>
 
             
@@ -222,9 +129,10 @@ const index = () => {
 
             {selectedFormField !=null? <Resources />:<></>}
 
-            {selectedFormField != null ? userChat() : <></>}
+            {selectedFormField != null ? userChat(chatMessages) : <></>}
 
             
+            {selectedFormField != null ? <ChatWindow messages={chatMessages} />: <></>}
 
 
 
