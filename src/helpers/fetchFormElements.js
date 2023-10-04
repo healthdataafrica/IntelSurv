@@ -1,16 +1,16 @@
 import axios from 'axios';
 
-async function fetchFormElements(id,maxRetries) {
+async function fetchFormElements(id, maxRetries) {
   // Define the API endpoint and request data
   const apiUrl = `https://us-central1-questmap-mubas.cloudfunctions.net/getIdsrElements?id=${id}`;
 
 
   // Retry function
- async function retryRequest(retriesLeft) {
+  async function retryRequest(retriesLeft) {
     return axios.get(apiUrl)
       .then((response) => {
         // Return the API response data
-        console.log(response.data);
+        // console.log(response.data);
         return response.data;
 
       })
@@ -34,6 +34,6 @@ async function fetchFormElements(id,maxRetries) {
   return retryRequest(maxRetries);
 }
 
-export {fetchFormElements};
+export { fetchFormElements };
 
 
