@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { getChatCompletions } from "@/helpers/getChatCompletions";
+import { animateScroll } from "react-scroll";
+
 
 const styles = {
   chatWindow: {
@@ -10,6 +12,7 @@ const styles = {
     flexDirection: "column",
   },
   chatMessages: {
+    scrollBehavior: 'smooth',
     flex: 1,
     overflowY: "auto",
     padding: "10px",
@@ -80,17 +83,32 @@ const Loader = () => {
   );
 };
 
+  
+
 export const ChatWindow = ({}) => {
   const [chatLoading, setChatLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState([{ type: 'bot', text: 'Hello! How can I assist you today?' }]);
   const messagesEndRef = useRef(null);
 
-  useEffect(() => {
+  
+  const scrollToBottom = () => {
     if (messagesEndRef.current) {
-      // 2. Scroll the last message into view
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        const chatMessagesContainer = messagesEndRef.current.parentElement;
+        const scrollHeight = chatMessagesContainer.scrollHeight;
+
+        animateScroll.scrollToBottom({
+            containerId: "chatMessagesContainerId",  // You need to set this id to your chat messages div
+            duration: 500  // Scroll duration in milliseconds
+        });
     }
+};
+
+
+
+  useEffect(() => {
+ 
+    scrollToBottom();
   }, [messages]);
 
 
@@ -157,7 +175,7 @@ export const ChatWindow = ({}) => {
           )}
         </div>
       </div>
-      <div style={styles.chatMessages}>
+      <div style={styles.chatMessages} id="chatMessagesContainerId">
       
       {messages.map((message, index) => (
     <div key={index} style={{ display: 'flex', justifyContent: message.type === "user" ? 'flex-end' : 'flex-start' }}>

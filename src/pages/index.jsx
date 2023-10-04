@@ -6,6 +6,7 @@ import { Heading } from "@/components/Heading";
 import { HeroPattern } from "@/components/HeroPattern";
 import { Resources } from "@/components/Resources";
 import store from "../stores/store";
+import { ChatWindow } from "@/components/chatWindow";
 
 const IndexPage = () => {
   const { mainStore } = store;
@@ -58,28 +59,6 @@ const IndexPage = () => {
       backgroundColor: '#fcfcfc',
     },
   };
-
-  const ChatWindow = ({ messages = [{ type: 'bot', text: 'Hello! How can I assist you today?' }] }) => (
-    <div style={styles.chatWindow} className='w-full sm:w-[600px] lg:w-[600px] xl:w-[800px]'>
-      <div style={styles.chatMessages}>
-        {messages.map((message, index) => (
-          <div
-            key={index}
-            style={{
-              ...styles.chatMessage,
-              ...(message.type === 'user' ? styles.userMessage : styles.botMessage),
-            }}
-          >
-            {message.text}
-          </div>
-        ))}
-      </div>
-      <div style={styles.chatInput}>
-        <input type="text" placeholder="Type your message..." style={styles.inputField} />
-        <button style={styles.sendButton}>Send</button>
-      </div>
-    </div>
-  );
 
   const userChat = () => (
     <div className="my-16 xl:max-w-none">
@@ -156,6 +135,7 @@ const IndexPage = () => {
       )}
       {selectedFormField !== null && <Resources />}
       {selectedFormField !== null && userChat()}
+      {selectedFormField !== null && <chatWindow/>}
     </div>
   );
 };
