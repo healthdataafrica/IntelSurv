@@ -10,214 +10,231 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
 model ElemType {
-  eTypeID      Int           @id @default(autoincrement())
-  Type         String
-  stagings     Staging[]
-  idsrElements IdsrElement[]
+  eTypeID           Int    @id @default(autoincrement())
+  Type              String
+  stagings          Staging[]
+  idsrElements       IdsrElement[]
 }
 
 model QuestionnaireType {
-  qTypeID     String     @id
+  qTypeID     String    @id
   type        String
   description String
-  sTypeMaps   STypeMap[]
+  sTypeMaps   STypeMap[] 
   qTypeMaps   QTypeMap[]
 }
 
 model QListing {
-  qID          Int        @id @unique @default(autoincrement())
-  qName        String
-  qDescription String?    @db.VarChar(400)
-  dateIssue    String?
-  author       String
-  country      String
-  institution  String?
-  qNoVar       Int?
-  stagings     Staging[]
-  sTypeMaps    STypeMap[]
-  qCodebook    QCodebook?
+  qID                Int             @id @default(autoincrement()) @unique
+  qName              String
+  qDescription       String?    @db.VarChar(400)
+  dateIssue          String?  
+  author             String
+  country            String
+  institution        String?
+  qNoVar             Int?
+  stagings           Staging[]
+  sTypeMaps          STypeMap[]
+  qCodebook         QCodebook?
 }
 
 model Staging {
-  elemID             Int              @id @unique @default(autoincrement())
-  elementName        String
-  elementDescription String?          @db.VarChar(400)
-  elementOrder       Int
-  sampleValues       String?
-  eTypeID            Int
-  qID                Int
-  stagingOptions     StagingOptions[]
-  qField             QField?
-  elemType           ElemType         @relation(fields: [eTypeID], references: [eTypeID])
-  qListing           QListing         @relation(fields: [qID], references: [qID])
+  elemID            Int    @id @default(autoincrement()) @unique
+  elementName       String
+  elementDescription String?    @db.VarChar(400)
+  elementOrder      Int
+  sampleValues      String?
+  eTypeID           Int
+  qID               Int
+  stagingOptions    StagingOptions[]
+  qField           QField?
+  elemType          ElemType @relation(fields: [eTypeID], references: [eTypeID])
+  qListing          QListing @relation(fields: [qID], references: [qID])
 }
 
 model StagingOptions {
-  oID     Int     @id @default(autoincrement())
-  oText   String
-  elemID  Int
-  order   Int?
+  oID      Int    @id @default(autoincrement())
+  oText    String
+  elemID   Int
+  order    Int?
   type    String
-  staging Staging @relation(fields: [elemID], references: [elemID])
+  staging  Staging @relation(fields: [elemID], references: [elemID])
 }
 
 model IdsrQListing {
-  idsrQPID     Int           @id @default(autoincrement())
-  title        String
-  dateIssue    String?
-  version      String?
-  country      String?
-  creator      String?
-  institution  String?
-  description  String?       @db.VarChar(400)
-  linkToForm   String?
-  idsrElements IdsrElement[]
-  qTypeMaps    QTypeMap[]
+  idsrQPID        Int     @id @default(autoincrement())
+  title           String
+  dateIssue       String? 
+  version         String?
+  country         String?
+  creator         String?
+  institution     String?
+  description     String?    @db.VarChar(400)
+  linkToForm      String?
+  idsrElements   IdsrElement[]
+  qTypeMaps      QTypeMap[]
 }
 
 model IdsrElement {
-  elemID       Int          @id @unique @default(autoincrement())
-  elemName     String       @db.VarChar(400)
-  elemDescr    String?      @db.VarChar(400)
-  elemOrder    Int
-  idsrQPID     Int
-  eTypeID      Int
+  elemID        Int      @id @default(autoincrement()) @unique
+  elemName      String    @db.VarChar(400)
+  elemDescr     String?    @db.VarChar(400)
+  elemOrder     Int
+  idsrQPID      Int
+  eTypeID       Int
   idsrField    IdsrField?
-  qOptions     QOption[]
-  elemType     ElemType     @relation(fields: [eTypeID], references: [eTypeID])
-  idsrQListing IdsrQListing @relation(fields: [idsrQPID], references: [idsrQPID])
+  elemQuestion ElemQuestion[]
+  qOptions      QOption[]
+  elemType      ElemType  @relation(fields: [eTypeID], references: [eTypeID])
+  idsrQListing  IdsrQListing @relation(fields: [idsrQPID], references: [idsrQPID])
 }
+
 
 model QOption {
-  oID         Int         @id @default(autoincrement())
-  OText       String
-  codeID      Int?
-  order       Int
-  elemID      Int
-  type        String
+  oID     Int      @id @default(autoincrement())
+  OText   String
+  codeID  Int?
+  order   Int
+  elemID  Int
+  type    String
   idsrElement IdsrElement @relation(fields: [elemID], references: [elemID])
-}
+ }
 
 model Tags {
-  tagID                Int                   @id @default(autoincrement())
-  tagText              String
-  idsrFieldCollections IdsrFieldCollection[]
+  tagID         Int     @id @default(autoincrement())
+  tagText       String
+  idsrFieldCollections     IdsrFieldCollection[]
 }
 
 model IdsrFieldCollection {
-  idsrFieldID    String          @id @unique
-  fieldName      String
-  sampleVal      String?
-  fieldType      String?
-  coded          String?
-  fieldDescr     String?         @db.VarChar(400)
-  tagID          Int
-  conceptMapping ConceptMapping?
-  idsrFields     IdsrField[]
-  qFields        QField[]
-  tag            Tags            @relation(fields: [tagID], references: [tagID])
+  idsrFieldID  String     @id  @unique
+  fieldName    String
+  sampleVal    String?
+  fieldType    String?
+  coded        String?
+  fieldDescr   String?    @db.VarChar(400)
+  tagID        Int
+  conceptMapping  ConceptMapping?
+  idsrFields   IdsrField[]
+  qFields      QField[]
+  tag          Tags    @relation(fields: [tagID], references: [tagID])
 }
 
 model IdsrField {
-  autoID              Int                 @id @default(autoincrement())
-  idsrFieldID         String
-  elemID              Int                 @unique
-  descrMapping        String?             @db.VarChar(400)
+  autoID         Int    @id @default(autoincrement())
+  idsrFieldID    String
+  elemID         Int @unique
+  descrMapping   String?    @db.VarChar(400)
   idsrFieldCollection IdsrFieldCollection @relation(fields: [idsrFieldID], references: [idsrFieldID])
-  idsrElement         IdsrElement         @relation(fields: [elemID], references: [elemID])
+  idsrElement    IdsrElement   @relation(fields: [elemID], references: [elemID])
 }
 
 model QCodebook {
-  qCodebookID        Int      @id @default(autoincrement())
+  qCodebookID        Int     @id @default(autoincrement())
   title              String
   creator            String
   copyright          String?
   institution        String
-  releaseDate        String?
-  datasetDescription String   @db.VarChar(400)
+  releaseDate        String?  
+  datasetDescription String    @db.VarChar(400)
   variableCount      Int
-  qID                Int      @unique
-  qListing           QListing @relation(fields: [qID], references: [qID])
+  qID                Int @unique
+  qListing          QListing @relation(fields: [qID], references: [qID])
 }
 
 model Category {
-  categoryID   Int       @id @default(autoincrement())
-  categoryName String
-  concepts     Concept[]
+  categoryID    Int    @id @default(autoincrement())
+  categoryName  String
+  concepts      Concept[]
 }
 
 model Domain {
-  domainID        String    @id
-  domainName      String    @db.VarChar(400)
-  domainConceptID String?   @db.VarChar(400)
-  concepts        Concept[]
+  domainID         String     @id 
+  domainName       String    @db.VarChar(400)
+  domainConceptID  String?    @db.VarChar(400)
+  concepts         Concept[]
 }
 
 model ConceptClass {
-  conceptClassID        String    @id
-  conceptClassName      String    @db.VarChar(400)
-  conceptClassConceptID String?   @db.VarChar(400)
-  concepts              Concept[]
+  conceptClassID          String     @id 
+  conceptClassName        String    @db.VarChar(400)
+  conceptClassConceptID   String?    @db.VarChar(400)
+  concepts         Concept[]
 }
 
 model Concept {
-  conceptID       Int             @id @unique @default(autoincrement())
-  conceptName     String          @db.VarChar(400)
-  domainID        String
-  vocabID         String
-  conceptClassID  String
-  standardConcept String?
-  conceptCode     String
-  validStart      String?
-  validEnd        String?
-  conceptLink     String?
-  categoryID      Int
-  conceptMapping  ConceptMapping?
-  vocabularies    Vocabulary      @relation(fields: [vocabID], references: [vocabID])
-  domain          Domain          @relation(fields: [domainID], references: [domainID])
-  conceptClass    ConceptClass    @relation(fields: [conceptClassID], references: [conceptClassID])
-  category        Category        @relation(fields: [categoryID], references: [categoryID])
+  conceptID        Int        @id @default(autoincrement()) @unique
+  conceptName       String    @db.VarChar(400)
+  domainID         String
+  vocabID          String
+  conceptClassID   String
+  standardConcept  String?
+  conceptCode      String
+  validStart       String? 
+  validEnd         String? 
+  conceptLink      String?
+  categoryID       Int
+  conceptMapping   ConceptMapping?
+  vocabularies     Vocabulary @relation(fields: [vocabID], references: [vocabID])
+  domain           Domain      @relation(fields: [domainID], references: [domainID])
+  conceptClass     ConceptClass @relation(fields: [conceptClassID], references: [conceptClassID])
+  category         Category     @relation(fields: [categoryID], references: [categoryID])
 }
 
 model ConceptMapping {
-  conceptMappingId    Int                 @id @default(autoincrement())
-  conceptID           Int                 @unique
-  idsrFieldID         String              @unique
-  idsrFieldCollection IdsrFieldCollection @relation(fields: [idsrFieldID], references: [idsrFieldID])
-  concept             Concept             @relation(fields: [conceptID], references: [conceptID])
+  conceptMappingId  Int     @id @default(autoincrement())
+  conceptID         Int @unique
+  idsrFieldID       String @unique
+  idsrFieldCollection   IdsrFieldCollection @relation(fields: [idsrFieldID], references: [idsrFieldID])
+  concept                Concept @relation(fields: [conceptID], references: [conceptID])
 }
 
 model QField {
-  autoID              Int                 @id @default(autoincrement())
-  idsrFieldID         String
-  elemID              Int                 @unique
-  predField           Int?
-  staging             Staging             @relation(fields: [elemID], references: [elemID])
+  autoID          Int    @id @default(autoincrement())
+  idsrFieldID     String
+  elemID          Int    @unique
+  predField       Int?
+  staging         Staging @relation(fields: [elemID], references: [elemID])
   idsrFieldCollection IdsrFieldCollection @relation(fields: [idsrFieldID], references: [idsrFieldID])
 }
 
 model Vocabulary {
-  vocabID        String    @id
-  vocabName      String    @db.VarChar(400)
-  vocabReference String?   @db.VarChar(400)
-  vocabVersion   String?   @db.VarChar(400)
-  vocabConceptID String?   @db.VarChar(400)
-  concepts       Concept[]
+  vocabID          String        @id 
+  vocabName        String    @db.VarChar(400)
+  vocabReference   String?    @db.VarChar(400)
+  vocabVersion     String?    @db.VarChar(400)
+  vocabConceptID   String?    @db.VarChar(400)
+  concepts         Concept[] 
 }
 
 model QTypeMap {
-  qTypeMapID        Int               @id @default(autoincrement())
+  qTypeMapID        Int     @id @default(autoincrement())
   idsrQPID          Int
-  qTypeID           String
+  qTypeID           String  
   questionnaireType QuestionnaireType @relation(fields: [qTypeID], references: [qTypeID])
-  idsrQListing      IdsrQListing      @relation(fields: [idsrQPID], references: [idsrQPID])
+  idsrQListing      IdsrQListing @relation(fields: [idsrQPID], references: [idsrQPID])
 }
 
 model STypeMap {
-  sTypeMapID        Int               @id @default(autoincrement())
+  sTypeMapID        Int     @id @default(autoincrement())
   qID               Int
-  qTypeID           String
+  qTypeID           String  
   questionnaireType QuestionnaireType @relation(fields: [qTypeID], references: [qTypeID])
-  qListing          QListing          @relation(fields: [qID], references: [qID])
+  qListing          QListing @relation(fields: [qID], references: [qID])
+
 }
+
+model ElemQuestion {
+  autoID              Int         @id @default(autoincrement())
+  elemID              Int         
+  oID                 String?      @db.VarChar(50)
+  elemName            String      @db.VarChar(400)
+  paragraphIssues     String?      @db.VarChar(500)
+  derivedQuestion     String?      @db.VarChar(500)
+  extraContentAnswer  String ?     @db.VarChar(500)  
+  idsrElement         IdsrElement @relation(fields: [elemID], references: [elemID])
+
+}
+

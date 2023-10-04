@@ -6,7 +6,7 @@ import { animateScroll } from "react-scroll";
 const styles = {
   chatWindow: {
     
-    height: "400px",
+    height: "500px",
     border: "1px solid #ccc",
     display: "flex",
     flexDirection: "column",
@@ -20,7 +20,7 @@ const styles = {
   chatInput: {
     display: "flex",
     padding: "10px",
-    borderBottom: "1px solid #ccc",
+    borderTop: "1px solid #ccc",
     height: "60px",
   },
   inputField: {
@@ -83,13 +83,16 @@ const Loader = () => {
   );
 };
 
-  
 
-export const ChatWindow = ({}) => {
+
+
+export const ChatWindow = ({chatQuestion}) => {
   const [chatLoading, setChatLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState([{ type: 'bot', text: 'Hello! How can I assist you today?' }]);
+
   const messagesEndRef = useRef(null);
+  const messagesEndRef2 = useRef(null);
 
   
   const scrollToBottom = () => {
@@ -110,6 +113,21 @@ export const ChatWindow = ({}) => {
  
     scrollToBottom();
   }, [messages]);
+
+
+  useEffect(() => {
+
+    if(chatQuestion !=''){
+    if (messagesEndRef2.current) {
+        messagesEndRef2.current.scrollIntoView({ behavior: "smooth" });
+    }
+}
+
+
+    setInputValue(chatQuestion);
+    
+  }, [chatQuestion]);
+
 
 
   async function sendMessage() {
@@ -145,10 +163,32 @@ export const ChatWindow = ({}) => {
 
 
   return (
-    <div
+    <>
+     <div ref={messagesEndRef2}></div>
+
+    <div id="chat"
       style={styles.chatWindow}
       className=" w-full sm:w-[600px] lg:w-[600px] xl:w-[800px] "
     >
+               
+
+   
+      <div style={styles.chatMessages} id="chatMessagesContainerId">
+      
+      {messages.map((message, index) => (
+    <div key={index} style={{ display: 'flex', justifyContent: message.type === "user" ? 'flex-end' : 'flex-start' }}>
+        <div style={{
+            ...styles.chatMessage,
+            ...(message.type === "user" ? styles.userMessage : styles.botMessage),
+        }}>
+            {message.text}
+        </div>
+    </div>
+))}
+        <div ref={messagesEndRef}></div>
+
+
+      </div>
       <div style={styles.chatInput}>
         <input
           value={inputValue}
@@ -175,22 +215,7 @@ export const ChatWindow = ({}) => {
           )}
         </div>
       </div>
-      <div style={styles.chatMessages} id="chatMessagesContainerId">
-      
-      {messages.map((message, index) => (
-    <div key={index} style={{ display: 'flex', justifyContent: message.type === "user" ? 'flex-end' : 'flex-start' }}>
-        <div style={{
-            ...styles.chatMessage,
-            ...(message.type === "user" ? styles.userMessage : styles.botMessage),
-        }}>
-            {message.text}
-        </div>
     </div>
-))}
-        <div ref={messagesEndRef}></div>
-
-
-      </div>
-    </div>
+    </>
   );
 };

@@ -113,7 +113,7 @@ function truncateDescription(description, maxLength = 200) {
 }
 
 
-function Resource({ resource }) {
+function Resource({ resource,index,chatQuestion,setChatQuestion}) {
   let mouseX = useMotionValue(0)
   let mouseY = useMotionValue(0)
 
@@ -127,42 +127,79 @@ function Resource({ resource }) {
     <div
       key={resource.href}
       onMouseMove={onMouseMove}
-      className="group relative flex rounded-2xl bg-zinc-50 transition-shadow hover:shadow-md hover:shadow-zinc-900/5 dark:bg-white/2.5 dark:hover:shadow-black/5"
+      className="group h-[250px] relative flex rounded-2xl bg-zinc-50 transition-shadow hover:shadow-md hover:shadow-zinc-900/5 dark:bg-white/2.5 dark:hover:shadow-black/5"
     >
       <ResourcePattern {...resource.pattern} mouseX={mouseX} mouseY={mouseY} />
       <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-zinc-900/7.5 group-hover:ring-zinc-900/10 dark:ring-white/10 dark:group-hover:ring-white/20" />
       <div className="relative rounded-2xl px-4 pt-16 pb-4">
         <ResourceIcon icon={resource.icon} />
         <h3 className="mt-4 text-sm font-semibold leading-7 text-zinc-900 dark:text-white">
-          <Link href={'#'}>
+          <button 
+            className="focus:outline-none" 
+            onClick={() => {
+              
+              setChatQuestion(resource.description);
+            }}
+          >
             <span className="absolute inset-0 rounded-2xl" />
-            {resource.name}
-          </Link>
+            Question {resource.index}
+          </button>
         </h3>
         <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-        {truncateDescription(resource.description)}        </p>
+          {truncateDescription(resource.description)}
+        </p>
       </div>
     </div>
-  )
+);
+
 }
 
 
-export function Resources() {
+function handleNext(questionsIndex,setQuestionsIndex) {
+   const nextValue = questionsIndex +  1; 
+  setQuestionsIndex(nextValue);
+}
+function handlePrevious(questionsIndex,setQuestionsIndex) {
+  const nextValue = questionsIndex -  1; 
+ setQuestionsIndex(nextValue);
+}
+
+export function Resources({questions,chatQuestion,setChatQuestion}) {
   const [selectedId, setSelectedId] = useState(null)
+  const [questionsIndex, setQuestionsIndex] = useState(0)
 
 
 
   return (
     <div className="my-16 xl:max-w-none">
-      <Heading level={2} id="resources">
-        Frequently Asked Questions
-      </Heading>
-      <div className="not-prose mt-4 grid grid-cols-3 gap-8 border-t border-zinc-900/5 pt-10 dark:border-white/5 sm:grid-cols-2 xl:grid-cols-3">
-        {resources.map((resource) => (
-          <Resource key={resource.href} resource={resource} />
-        ))}
-      </div>
+        <Heading level={2} id="resources">
+            Frequently Asked Questions
+        </Heading>
+        <div className="not-prose mt-4  gap-8 border-t border-zinc-900/5 pt-10 dark:border-white/5 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
+            {questions[questionsIndex].map((resource, index) => (
+                <Resource key={resource.href} resource={resource} index={index} chatQuestion={chatQuestion} setChatQuestion={setChatQuestion} />
+            ))}
+      
+
+        </div>
+        <div style={{marginTop:'40px' }}> 
+        {questions[questionsIndex - 1] !=null && <button style={{marginRight:'10px'}}
+    className="bg-white border border-gray-400 px-4 py-1 " 
+    onClick={() => handlePrevious(questionsIndex, setQuestionsIndex)}
+>
+    PREVIOUS
+</button>}
+       {questions[questionsIndex + 1] !=null && <button 
+    className="bg-white border border-gray-400 px-4 py-1 " 
+    onClick={() => handleNext(questionsIndex, setQuestionsIndex)}
+>
+    NEXT
+</button>}
+</div>
+     
     </div>
-  )
+    
+);
+
   
 }

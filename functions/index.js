@@ -16,16 +16,18 @@ exports.chatCompletion = functions.https.onRequest(
 
     await pinecone.init({
       environment: "us-west4-gcp-free",
-      apiKey: "00c0cf81-1e26-4ee0-85cc-9e1aaf36b7f5",
+      apiKey: "616b417c-33fc-439f-8780-b52b80cbc3be",
     });
 
     const configuration = new Configuration({
-      apiKey: "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",
+      apiKey: "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",
     });
     const openai = new OpenAIApi(configuration);
 
     const { message } = request.body;
     const { knowledgeBase } = request.body;
+
+    console.log('here is user message', message);
 
     
       async function extractMetadataValues(data) {
@@ -72,7 +74,7 @@ exports.chatCompletion = functions.https.onRequest(
         }
       }
 
-      async function startCompletion(message) {
+      async function startCompletion(message,pinecone) {
         let assistantMessage;
         //const message = 'what is the difference between a confirmed and suspected case of covid 19?';
         const vectorIndexNameSpace = "intelsurv-case-definitions";
@@ -113,7 +115,7 @@ exports.chatCompletion = functions.https.onRequest(
         return assistantMessage;
       }
 
-      const finalResponse = await startCompletion(message);
+      const finalResponse = await startCompletion(message,pinecone);
 
       response.status(200).json(finalResponse);
    

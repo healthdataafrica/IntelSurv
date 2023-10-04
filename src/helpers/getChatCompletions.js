@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 async function getChatCompletions(message, knowledgeBase, maxRetries=5) {
+    console.log('here is message', message);
   // Define the API endpoint and request data
   const apiUrl = `https://us-central1-intelsurv-25.cloudfunctions.net/chatCompletion`;
 

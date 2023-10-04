@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useRef,useState,useEffect } from 'react'
 import { Button } from "@/components/Button";
 import { ChatBubbleIcon } from "@/components/icons/ChatBubbleIcon";
 import QuestionnaireOptions from "@/components/QuestionnaireOptions";
@@ -11,6 +11,8 @@ import { ChatWindow } from "@/components/chatWindow";
 const IndexPage = () => {
   const { mainStore } = store;
   const { setSelectedFormField, selectedFormField } = mainStore();
+  const [chatQuestion, setChatQuestion] = useState('')
+
 
   const idsrQListing = { selectedFormField };
 
@@ -60,7 +62,23 @@ const IndexPage = () => {
     },
   };
 
-  const userChat = () => (
+  function chunkArrayInThrees(array) {
+    // Add an index property to each object
+    const indexedArray = array.map((item, index) => ({
+        ...item,
+        index: index + 1
+    }));
+
+    let chunks = [];
+    for (let i = 0; i < indexedArray.length; i += 3) {
+        chunks.push(indexedArray.slice(i, i + 3));
+    }
+
+    return chunks;
+}
+
+
+  const userChat = (chatQuestion) => (
     <div className="my-16 xl:max-w-none">
       <div style={{ display: 'inline-flex', alignItems: 'center' }}>
         <Heading level={2} id="resources">Ask your Own Question</Heading>
@@ -73,34 +91,32 @@ const IndexPage = () => {
           Welcome to the <a href="#">IntelSurv</a> assistant, ask and receive answers
         </div>
 
-        <ChatWindow />
+        <ChatWindow chatQuestion={chatQuestion} />
       </div>
     </div>
   );
 
-  return (
-    <div>
-      <HeroPattern />
-      {selectedFormField === null ? (
-        <div>
-          <h1>Getting Started</h1>
-          <span style={{ fontSize: '20px', lineHeight: '30px' }}>
-            Welcome to <a href="#">IntelSurv</a>. To get started, select a form field from the list to your left.
-            To filter and search for your preferred field, simply input your search query in the panel above.
-            The fields are numbered in the order they appear on the form.
-          </span>
-        </div>
-      ) : (
-        <div style={{ fontSize: '18px', lineHeight: '35px' }}>
-          {selectedFormField.href && selectedFormField.title && (
-            <h1>{selectedFormField.href}. {selectedFormField.title}</h1>
-          )}
-
-          {selectedFormField.elemDescr && (
-            <><strong>Description:</strong> {selectedFormField.elemDescr}<br /></>
-          )}
-
-          {selectedFormField.idsrQListing && selectedFormField.idsrQListing.title && (
+  function CollapsibleDiv({selectedFormField}) {
+    const [showInstructions, setShowInstructions] = useState(false);
+  
+    const toggleInstructions = () => {
+      setShowInstructions(prevState => !prevState);
+    };
+  
+    return (
+      <div>
+        <button
+          type="button"
+          style={{ backgroundColor: "transparent",   marginTop:'10px' , marginRight: '10px', paddingLeft: '8px',paddingRight:'8px', border: '1px solid #efefef', fontSize:'15px'}}
+          onClick={toggleInstructions}
+        >
+          More info
+        </button>
+  
+        {showInstructions && (
+          <div>
+            <p style={{ fontSize: "14px" }}>
+            {selectedFormField.idsrQListing && selectedFormField.idsrQListing.title && (
             <><strong>Form:</strong> {selectedFormField.idsrQListing.title}<br /></>
           )}
 
@@ -123,19 +139,51 @@ const IndexPage = () => {
           {selectedFormField.idsrQListing && selectedFormField.idsrQListing.version && (
             <><strong>Version:</strong> {selectedFormField.idsrQListing.version}<br /></>
           )}
+              
+              </p>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <HeroPattern />
+      {selectedFormField === null ? (
+        <div>
+          <h1>Getting Started</h1>
+          <span style={{ fontSize: '20px', lineHeight: '30px' }}>
+            Welcome to <a href="#">IntelSurv</a>. To get started, select a form field from the list to your left.
+            To filter and search for your preferred field, simply input your search query in the panel above.
+            The fields are numbered in the order they appear on the form.
+          </span>
+        </div>
+      ) : (
+        <>
+
+        <div style={{ fontSize: '18px', lineHeight: '35px' }}>
+          {selectedFormField.href && selectedFormField.title && (
+            <h1>{selectedFormField.href}. {selectedFormField.title}</h1>
+          )}
+
+          {selectedFormField.elemDescr && (
+            <><strong>Description:</strong> {selectedFormField.elemDescr}<br /></>
+          )}
 
           {selectedFormField.idsrQListing && selectedFormField.idsrQListing.linkToForm && (
             <a target="_blank" rel="noopener noreferrer" href={selectedFormField.idsrQListing.linkToForm}>
               <strong>Link to Form</strong>
             </a>
           )}
+          {selectedFormField.title && <CollapsibleDiv selectedFormField={selectedFormField} />}
+
 
           {selectedFormField.idsrQListing && <QuestionnaireOptions idsrQListing={idsrQListing} />}
-        </div>
+        </div></>
       )}
-      {selectedFormField !== null && <Resources />}
-      {selectedFormField !== null && userChat()}
-      {selectedFormField !== null && <chatWindow/>}
+{selectedFormField !== null && selectedFormField.elemQuestion.length !=0 && <Resources questions={ chunkArrayInThrees(selectedFormField.elemQuestion)} chatQuestion={chatQuestion} setChatQuestion={setChatQuestion}/>}
+      {selectedFormField !== null && userChat(chatQuestion)}
     </div>
   );
 };

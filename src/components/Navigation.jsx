@@ -9,6 +9,8 @@ import { Tag } from '@/components/Tag'
 import { remToPx } from '@/lib/remToPx'
 import store from "../stores/store";
 import { fetchFormElements } from "../helpers/fetchFormElements";
+import { ChatBubbleIcon} from './icons/ChatBubbleIcon'
+
 
 function useInitialValue(value, condition = true) {
   let initialValue = useRef(value).current
@@ -78,11 +80,12 @@ function TopLevelNavItem({ href, children }) {
   )
 }
 
-function NavLink({ href, tag, isAnchorLink = false, setActiveLink, children, setSelectedFormField, link }) {
+function NavLink({ href, tag, isAnchorLink = false, setActiveLink, children, setSelectedFormField, link, }) {
   const handleClick = (e) => {
     e.preventDefault();
     setActiveLink(href);
     setSelectedFormField(link);
+    console.log('Selected Form', link);
   };
 
   return (
@@ -194,7 +197,27 @@ function NavigationGroup({ group, className, setActiveLink, activeLink, setSelec
   )
 }
 
+
+
+
 function transformData(data) {
+
+  function convertQuestions(inputs) {
+    return inputs.map(input => ({
+        href: '#',
+        name: 'Derived Question',
+        description: input.derivedQuestion,
+        icon: ChatBubbleIcon,  // Assuming ChatBubbleIcon is already defined elsewhere in your code
+        pattern: {
+            y: -6,
+            squares: [
+                [-1, 2],
+                [1, 3],
+            ],
+        },
+    }));
+}
+
   const transformedLinks = data.map(item => ({
     title: item.elemName,
     href: item.elemID.toString(),
@@ -202,7 +225,8 @@ function transformData(data) {
     elemOrder: item.elemOrder,
     idsrQPID: item.idsrQPID,
     idsrQListing: item.idsrQListing,
-    qOptions: item.qOptions
+    qOptions: item.qOptions,
+    elemQuestion: item.elemQuestion.length !=0? convertQuestions(item.elemQuestion):[]
   }));
 
   return [
@@ -211,6 +235,7 @@ function transformData(data) {
       links: transformedLinks
     }]
 }
+
 
 
 export function Navigation(props) {
@@ -245,7 +270,9 @@ export function Navigation(props) {
           // ... Your async operations, like fetching data, etc.
           let response = await fetchFormElements(1, 5);
           let data = await response;
+          console.log('data', data);
           const transformedData = transformData(data);
+          console.log('transformed', transformedData);
           setOriginalData(transformedData);
           setFilteredData(transformedData);
         } catch (error) {
