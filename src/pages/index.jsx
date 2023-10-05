@@ -14,8 +14,7 @@ const IndexPage = () => {
   const [chatQuestion, setChatQuestion] = useState('')
 
 
-  const idsrQListing = { selectedFormField };
-
+ 
   const styles = {
     // Styles for the chat window
     chatWindow: {
@@ -75,6 +74,15 @@ const IndexPage = () => {
     }
 
     return chunks;
+}
+
+function chunkArrayInSix(array) {
+    let chunks = [];
+  for (let i = 0; i < array.length; i += 6) {
+      chunks.push(array.slice(i, i + 6));
+  }
+
+  return chunks;
 }
 
 
@@ -179,10 +187,11 @@ const IndexPage = () => {
           {selectedFormField.title && <CollapsibleDiv selectedFormField={selectedFormField} />}
 
 
-          {selectedFormField.idsrQListing && <QuestionnaireOptions idsrQListing={idsrQListing} />}
+     <div >
+          {selectedFormField.qOptions.length!=0 && <QuestionnaireOptions qOptions={chunkArrayInSix(selectedFormField.qOptions)} total={selectedFormField.qOptions.length} />} </div>
         </div></>
       )}
-{selectedFormField !== null && selectedFormField.elemQuestion.length !=0 && <Resources questions={ chunkArrayInThrees(selectedFormField.elemQuestion)} chatQuestion={chatQuestion} setChatQuestion={setChatQuestion}/>}
+{selectedFormField !== null && selectedFormField.elemQuestion.length !=0 && <Resources total={selectedFormField.elemQuestion.length}   questions={ chunkArrayInThrees(selectedFormField.elemQuestion)} chatQuestion={chatQuestion} setChatQuestion={setChatQuestion}/>}
       {selectedFormField !== null && userChat(chatQuestion)}
     </div>
   );

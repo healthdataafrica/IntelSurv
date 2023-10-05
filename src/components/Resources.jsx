@@ -164,7 +164,7 @@ function handlePrevious(questionsIndex,setQuestionsIndex) {
  setQuestionsIndex(nextValue);
 }
 
-export function Resources({questions,chatQuestion,setChatQuestion}) {
+export function Resources({questions,chatQuestion,setChatQuestion,total}) {
   const [selectedId, setSelectedId] = useState(null)
   const [questionsIndex, setQuestionsIndex] = useState(0)
 
@@ -173,7 +173,7 @@ export function Resources({questions,chatQuestion,setChatQuestion}) {
   return (
     <div className="my-16 xl:max-w-none">
         <Heading level={2} id="resources">
-            Frequently Asked Questions
+           {total} Frequently Asked Questions
         </Heading>
         <div className="not-prose mt-4  gap-8 border-t border-zinc-900/5 pt-10 dark:border-white/5 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
             {questions[questionsIndex].map((resource, index) => (

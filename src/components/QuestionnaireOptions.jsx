@@ -20,19 +20,35 @@
 // export default QuestionnaireOptions;
 
 
-import React from "react";
+import { useRef,useState,useEffect } from 'react'
 import { Button } from "./Button";
 
-function QuestionnaireOptions({ idsrQListing }) {
-    const qOptions = idsrQListing?.selectedFormField?.qOptions || [];
+function handleNext(optionsIndex,setOptionsIndex) {
+    const nextValue = optionsIndex +  1; 
+   setOptionsIndex(nextValue);
+ }
+ function handlePrevious(optionsIndex,setOptionsIndex) {
+   const nextValue = optionsIndex -  1; 
+  setOptionsIndex(nextValue);
+ }
+
+
+function QuestionnaireOptions({ qOptions,total }) {
+    const [optionsIndex, setOptionsIndex] = useState(0);
+
+   
+
+
 
     return (
+        <>
         <div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-3">
-                {qOptions.map((option) => (
+            <h2>{total} Options:</h2>
+            <div style={{marginTop:'15px'}} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-3">
+                {qOptions[optionsIndex].map((option) => (
                     <Button
                         key={option.oID}
-                        href="/sdks"
+                      
                         variant="outline"
                         className="p-4 text-center text-xs"
                     >
@@ -41,6 +57,22 @@ function QuestionnaireOptions({ idsrQListing }) {
                 ))}
             </div>
         </div>
+
+        <div style={{marginTop:'40px' ,fontSize:'13px'}}> 
+        {qOptions[optionsIndex - 1] !=null && <button style={{marginRight:'10px'}}
+    className="bg-white border border-gray-400 px-3 py-1 " 
+    onClick={() => handlePrevious(optionsIndex, setOptionsIndex)}
+>
+    PREVIOUS
+</button>}
+       {qOptions[optionsIndex + 1]  !=null && <button 
+    className="bg-white border border-gray-400 px-3 py-1 " 
+    onClick={() => handleNext(optionsIndex, setOptionsIndex)}
+>
+    NEXT
+</button>}
+</div>
+        </>
     );
 }
 

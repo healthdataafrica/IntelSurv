@@ -1,6 +1,8 @@
 const functions = require("firebase-functions");
 const { PineconeClient } = require("@pinecone-database/pinecone");
 const { Configuration, OpenAIApi } = require("openai");
+require('dotenv').config();
+
 
 exports.chatCompletion = functions.https.onRequest(
   async (request, response) => {
@@ -16,11 +18,11 @@ exports.chatCompletion = functions.https.onRequest(
 
     await pinecone.init({
       environment: "us-west4-gcp-free",
-      apiKey: "616b417c-33fc-439f-8780-b52b80cbc3be",
+      apiKey:  process.env.PINECONE_API_KEY
     });
 
     const configuration = new Configuration({
-      apiKey: "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",
+      apiKey: process.env.OPENAI_API_KEY,
     });
     const openai = new OpenAIApi(configuration);
 
