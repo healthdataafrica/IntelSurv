@@ -60,13 +60,13 @@ function QuestionnaireOptions({ qOptions,total }) {
 
         <div style={{marginTop:'40px' ,fontSize:'13px'}}> 
         {qOptions[optionsIndex - 1] !=null && <button style={{marginRight:'10px'}}
-    className="bg-white border border-gray-400 px-3 py-0 " 
+    className="bg-white border border-gray-200 px-3 py-0 " 
     onClick={() => handlePrevious(optionsIndex, setOptionsIndex)}
 >
     PREVIOUS
 </button>}
        {qOptions[optionsIndex + 1]  !=null && <button 
-    className="bg-white border border-gray-400 px-3 py-0 " 
+    className="bg-white border border-gray-200 px-3 py-0 " 
     onClick={() => handleNext(optionsIndex, setOptionsIndex)}
 >
     NEXT

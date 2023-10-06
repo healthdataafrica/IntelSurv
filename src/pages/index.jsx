@@ -99,7 +99,8 @@ function chunkArrayInSix(array) {
         <div className="not-prose mt-4 grid grid-cols-1 gap-8 border-t border-zinc-900/5 pt-10 dark:border-white/5 sm:grid-cols-2 xl:grid-cols-3"></div>
 
         <div className='mb-10' style={{ fontSize: '18px' }}>
-          Welcome to the <a href="#">IntelSurv</a> assistant, ask and receive answers
+
+          Welcome to the <a href="#">IntelSurv</a> assistant! Ask and receive answers, select your desired Knowledge base below to enhance the accuray of your responses.
         </div>
 
         <ChatWindow chatQuestion={chatQuestion} currentKnowledgeBase={currentKnowledgeBase} />

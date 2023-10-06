@@ -184,13 +184,13 @@ export function Resources({questions,chatQuestion,setChatQuestion,total}) {
         </div>
         <div style={{marginTop:'40px' }}> 
         {questions[questionsIndex - 1] !=null && <button style={{marginRight:'10px'}}
-    className="bg-white border border-gray-400 px-4 py-1 " 
+    className="bg-white border border-gray-200 px-4 py-1 " 
     onClick={() => handlePrevious(questionsIndex, setQuestionsIndex)}
 >
     PREVIOUS
 </button>}
        {questions[questionsIndex + 1] !=null && <button 
-    className="bg-white border border-gray-400 px-4 py-1 " 
+    className="bg-white border border-gray-200 px-4 py-1 " 
     onClick={() => handleNext(questionsIndex, setQuestionsIndex)}
 >
     NEXT
