@@ -86,7 +86,7 @@ const Loader = () => {
 
 
 
-export const ChatWindow = ({chatQuestion}) => {
+export const ChatWindow = ({chatQuestion,currentKnowledgeBase}) => {
   const [chatLoading, setChatLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState([{ type: 'bot', text: 'Hello! How can I assist you today?' }]);
@@ -143,7 +143,7 @@ export const ChatWindow = ({chatQuestion}) => {
     
     const response = await getChatCompletions(
       userInput,
-      "intelsurv-case-definitions"
+      currentKnowledgeBase
     );
 
     console.log(response);

@@ -7,11 +7,14 @@ import { HeroPattern } from "@/components/HeroPattern";
 import { Resources } from "@/components/Resources";
 import store from "../stores/store";
 import { ChatWindow } from "@/components/chatWindow";
+import { ChooseKnowledgeBase } from '@/components/chooseKnowledgeBase';
 
 const IndexPage = () => {
   const { mainStore } = store;
   const { setSelectedFormField, selectedFormField } = mainStore();
   const [chatQuestion, setChatQuestion] = useState('')
+  const [currentKnowledgeBase, setCurrentKnowledgeBase] = useState('CASE')
+
 
 
  
@@ -86,7 +89,7 @@ function chunkArrayInSix(array) {
 }
 
 
-  const userChat = (chatQuestion) => (
+  const userChat = (chatQuestion,currentKnowledgeBase) => (
     <div className="my-16 xl:max-w-none">
       <div style={{ display: 'inline-flex', alignItems: 'center' }}>
         <Heading level={2} id="resources">Ask your Own Question</Heading>
@@ -99,7 +102,7 @@ function chunkArrayInSix(array) {
           Welcome to the <a href="#">IntelSurv</a> assistant, ask and receive answers
         </div>
 
-        <ChatWindow chatQuestion={chatQuestion} />
+        <ChatWindow chatQuestion={chatQuestion} currentKnowledgeBase={currentKnowledgeBase} />
       </div>
     </div>
   );
@@ -192,7 +195,10 @@ function chunkArrayInSix(array) {
         </div></>
       )}
 {selectedFormField !== null && selectedFormField.elemQuestion.length !=0 && <Resources total={selectedFormField.elemQuestion.length}   questions={ chunkArrayInThrees(selectedFormField.elemQuestion)} chatQuestion={chatQuestion} setChatQuestion={setChatQuestion}/>}
-      {selectedFormField !== null && userChat(chatQuestion)}
+      {selectedFormField !== null && userChat(chatQuestion,currentKnowledgeBase)}
+
+      {selectedFormField !== null && <ChooseKnowledgeBase currentKnowledgeBase={currentKnowledgeBase} setCurrentKnowledgeBase={setCurrentKnowledgeBase}  />}
+
     </div>
   );
 };
