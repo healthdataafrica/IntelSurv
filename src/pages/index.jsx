@@ -98,9 +98,9 @@ function chunkArrayInSix(array) {
       <div>
         <div className="not-prose mt-4 grid grid-cols-1 gap-8 border-t border-zinc-900/5 pt-10 dark:border-white/5 sm:grid-cols-2 xl:grid-cols-3"></div>
 
-        <div className='mb-10' style={{ fontSize: '18px' }}>
+        <div className='mb-10 text-gray-500' style={{ fontSize: '16px' }}>
 
-          Welcome to the <a href="#">IntelSurv</a> assistant! Ask and receive answers, select your desired Knowledge base below to enhance the accuray of your responses.
+        Hello. I am <a href="#">IntelSurv</a>, your AI assistant, How can I assist you today? We are accessing our knowledge base to answer your questions. It also leverages LLMs to complement this knowledge. We currently have two contexts in which IntelSurv functions. A "General" context which you can use to ask any question, a "Case Definition" context to ask questions about case definitions for disease as defined by WHO/Countries. To select a context click on the one you would like to use.
         </div>
 
         <ChatWindow chatQuestion={chatQuestion} currentKnowledgeBase={currentKnowledgeBase} />
@@ -122,15 +122,13 @@ function chunkArrayInSix(array) {
           style={{ backgroundColor: "transparent",   marginTop:'10px' , marginRight: '10px', paddingLeft: '8px',paddingRight:'8px', border: '1px solid #efefef', fontSize:'15px'}}
           onClick={toggleInstructions}
         >
-          More info
+          {showInstructions? "Hide Questionnaire Info" : "More Questionnaire Info"}
         </button>
   
         {showInstructions && (
           <div>
             <p style={{ fontSize: "14px" }}>
-            {selectedFormField.idsrQListing && selectedFormField.idsrQListing.title && (
-            <><strong>Form:</strong> {selectedFormField.idsrQListing.title}<br /></>
-          )}
+         
 
           {selectedFormField.idsrQListing && selectedFormField.idsrQListing.country && (
             <><strong>Country:</strong> {selectedFormField.idsrQListing.country}<br /></>
@@ -165,11 +163,11 @@ function chunkArrayInSix(array) {
       {selectedFormField === null ? (
         <div>
           <h1>Getting Started</h1>
-          <span style={{ fontSize: '20px', lineHeight: '30px' }}>
-            Welcome to <a href="#">IntelSurv</a>. To get started, select a form field from the list to your left.
-            To filter and search for your preferred field, simply input your search query in the panel above.
-            The fields are numbered in the order they appear on the form.
-          </span>
+          <p style={{ fontSize: '20px', lineHeight: '30px' ,color:'#3C3B40'}}>
+          Hello, I am <a href="#">IntelSurv</a>, your AI assistant for disease surveillance data collection. I'm currently trained for the Malawi Integrated Disease Surveillance system, but I'm continuously learning to support data collection in other countries as well. 
+
+<br/><br/>To get started, select a form field from the list to your left. To filter and search for your preferred field, simply input your search query. The fields are numbered in the order they appear on the form.
+          </p>
         </div>
       ) : (
         <>
@@ -178,6 +176,11 @@ function chunkArrayInSix(array) {
           {selectedFormField.href && selectedFormField.title && (
             <h1>{selectedFormField.href}. {selectedFormField.title}</h1>
           )}
+          {selectedFormField.idsrQListing.title && (
+            <><strong>Form: </strong>{selectedFormField.idsrQListing.title}<br /></>
+          )}
+
+
 
           {selectedFormField.elemDescr && (
             <><strong>Description:</strong> {selectedFormField.elemDescr}<br /></>
@@ -196,11 +199,16 @@ function chunkArrayInSix(array) {
         </div></>
       )}
 {selectedFormField !== null && selectedFormField.elemQuestion.length !=0 && <Resources total={selectedFormField.elemQuestion.length}   questions={ chunkArrayInThrees(selectedFormField.elemQuestion)} chatQuestion={chatQuestion} setChatQuestion={setChatQuestion}/>}
+{selectedFormField !== null && selectedFormField.elemQuestion.length == 0 &&<div>
+<Heading level={2} id="resources" className="mt-20">Frequently Asked Questions</Heading>
+<div className="my-16 xl:max-w-none border-t border-zinc-900/5  mt-5" font-family='Inter' >
+ <p style={{fontSize:'16px'}} className='text-gray-500'>There are currently no questions about this field in our database. This could be because this field is straightforward  to fill in.</p></div></div>}
       {selectedFormField !== null && userChat(chatQuestion,currentKnowledgeBase)}
 
       {selectedFormField !== null && <ChooseKnowledgeBase currentKnowledgeBase={currentKnowledgeBase} setCurrentKnowledgeBase={setCurrentKnowledgeBase}  />}
 
     </div>
+  
   );
 };
 

@@ -42,9 +42,10 @@ function QuestionnaireOptions({ qOptions,total }) {
 
     return (
         <>
-        <div>
-            <h2>{total} Options:</h2>
-            <div style={{marginTop:'15px'}} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-3">
+        <div style={{marginTop:'50px'}} className='' >
+        <p style={{fontSize:'16px'}} className='text-gray-500'>This field appears in the form with <strong>{total} options</strong> that the health professional needs to choose from. These are listed below. You can ask questions about their meaning or use to our Intelligent Assistant below. Navigate using the Next/ Prev buttons to see all these options.</p>
+
+            <div style={{marginTop:'15px',color:'#5283A3'}} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-3">
                 {qOptions[optionsIndex].map((option) => (
                     <Button
                         key={option.oID}
@@ -52,7 +53,7 @@ function QuestionnaireOptions({ qOptions,total }) {
                         variant="outline"
                         className="p-4 text-center text-xs"
                     >
-                        {option.OText}
+                       <span style={{color:'#0F41A6'}}> {option.OText}</span>
                     </Button>
                 ))}
             </div>
@@ -63,13 +64,13 @@ function QuestionnaireOptions({ qOptions,total }) {
     className="bg-white border border-gray-200 px-3 py-0 " 
     onClick={() => handlePrevious(optionsIndex, setOptionsIndex)}
 >
-    PREVIOUS
+    PREVIOUS OPTIONS
 </button>}
        {qOptions[optionsIndex + 1]  !=null && <button 
     className="bg-white border border-gray-200 px-3 py-0 " 
     onClick={() => handleNext(optionsIndex, setOptionsIndex)}
 >
-    NEXT
+    NEXT OPTIONS
 </button>}
 </div>
         </>

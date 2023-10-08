@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { getChatCompletions } from "@/helpers/getChatCompletions";
 import { animateScroll } from "react-scroll";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const styles = {
@@ -32,7 +34,7 @@ const styles = {
     height: "40px",
     width: "60px",
     padding: "5px 15px",
-    backgroundColor: "#50C878",
+    backgroundColor: "#0F41A6",
     borderRadius: "5px", // or '50%' for a fully rounded button
     color: "white", // assuming you want the text color to be white
     border: "none", // to remove any default borders
@@ -46,19 +48,20 @@ const styles = {
   userMessage: {
     display: 'inline-block',   // Add this
     alignSelf: "flex-end",
-    backgroundColor: "#fcfcfc",
+    backgroundColor:  "rgba(237, 236, 245, 0.4)",
     padding: '15px',
     maxWidth: '80%',    // Adjust this value if needed
 },
 
 botMessage: {
-    display: 'inline-block',   // Add this
-    alignSelf: "flex-start",
-    backgroundColor: "#DAF4E3",
-    padding: '15px',
-    textAlign: 'left',
-    maxWidth: '80%',    // Adjust this value if needed
-},
+  display: 'inline-block',
+  alignSelf: "flex-start",
+  backgroundColor: "rgba(82, 131, 163,0.1)", // 0.7 means 70% opacity
+  padding: '15px',
+  textAlign: 'left',
+  maxWidth: '80%',
+}
+
   
   
 };
@@ -108,11 +111,19 @@ export const ChatWindow = ({chatQuestion,currentKnowledgeBase}) => {
 };
 
 
-
   useEffect(() => {
  
     scrollToBottom();
   }, [messages]);
+
+  useEffect(() => {
+
+    if(messages.length > 1){
+
+    setMessages([{ type: 'bot', text: 'Hello! How can I assist you today?' }]);
+    }
+
+  }, [currentKnowledgeBase]);
 
 
   useEffect(() => {
@@ -156,10 +167,37 @@ export const ChatWindow = ({chatQuestion,currentKnowledgeBase}) => {
     
   }
 
+  function extractChatHistory(messages) {
+    return messages.map(message => {
+      const prefix = message.type === 'bot' ? 'Bot: ' : 'User: ';
+      return `${prefix}${message.text}`;
+    }).join('\n');
+  }
+
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
     console.log(inputValue);
   };
+
+  async function  handleCopyToClipboard(){
+
+    try {
+
+      const chatHistory =  extractChatHistory(messages);
+      await navigator.clipboard.writeText(chatHistory);
+      toast.success("Chat successfully copied!", {
+        position: toast.POSITION.TOP_CENTER
+      });
+      console.log('Text copied to clipboard');
+  } catch (err) {
+      console.error('Failed to copy text: ', err);
+  }
+  
+
+
+   
+  };
+
 
 
   return (
@@ -197,6 +235,22 @@ export const ChatWindow = ({chatQuestion,currentKnowledgeBase}) => {
           style={styles.inputField}
           onChange={handleInputChange}
         />
+         <div
+          style={{
+            width: "60px",
+            height: "40px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <a style={{cursor:'pointer'}} onClick={handleCopyToClipboard} > <img
+        src="/copy.png"
+        alt=""
+        style={{ width:"25px" , height: "25px" }}
+      /></a>
+        
+        </div>
         <div
           style={{
             width: "60px",

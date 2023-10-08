@@ -12,6 +12,8 @@ import {
 import { useMobileNavigationStore } from '@/components/MobileNavigation'
 import { ModeToggle } from '@/components/ModeToggle'
 import { MobileSearch, Search } from '@/components/Search'
+import store from "../stores/store";
+
 
 function TopLevelNavItem({ href, children }) {
   return (
@@ -29,10 +31,19 @@ function TopLevelNavItem({ href, children }) {
 export const Header = forwardRef(function Header({ className }, ref) {
   let { isOpen: mobileNavIsOpen } = useMobileNavigationStore()
   let isInsideMobileNavigation = useIsInsideMobileNavigation()
+  const { mainStore } = store;
+  const {setSelectedFormField, selectedFormField } = mainStore();
 
   let { scrollY } = useScroll()
   let bgOpacityLight = useTransform(scrollY, [0, 72], [0.5, 0.9])
   let bgOpacityDark = useTransform(scrollY, [0, 72], [0.2, 0.8])
+
+  const handleLogoClick = () => {
+    console.log("Logo clicked!");
+
+  
+
+  };
 
   return (
     <motion.div
@@ -61,8 +72,8 @@ export const Header = forwardRef(function Header({ className }, ref) {
       <Search />
       <div className="flex items-center gap-5 lg:hidden">
         <MobileNavigation />
-        <Link href="/" aria-label="Home">
-          <Logo className="h-6" />
+        <Link href="/mobb" aria-label="Home">
+          <Logo className="h-6" onClick={handleLogoClick}  />
         </Link>
       </div>
       <div className="flex items-center gap-5">

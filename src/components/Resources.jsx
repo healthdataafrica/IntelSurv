@@ -85,8 +85,8 @@ function ResourcePattern({ mouseX, mouseY, ...gridProps }) {
         />
       </div>
       <motion.div
-        className="absolute inset-0 rounded-2xl bg-gradient-to-r from-[#D7EDEA] to-[#F4FBDF] opacity-0 transition duration-300 group-hover:opacity-100 dark:from-[#202D2E] dark:to-[#303428]"
-        style={style}
+className="absolute inset-0 rounded-2xl bg-gradient-to-r from-[rgba(82,131,163,0.2)] to-[#ffffff] opacity-0 transition duration-300 group-hover:opacity-100 dark:from-[#202D2E] dark:to-[#303428]"
+style={style}
       />
       <motion.div
         className="absolute inset-0 rounded-2xl opacity-0 mix-blend-overlay transition duration-300 group-hover:opacity-100"
@@ -127,7 +127,7 @@ function Resource({ resource,index,chatQuestion,setChatQuestion}) {
     <div
       key={resource.href}
       onMouseMove={onMouseMove}
-      className="group h-[250px] relative flex rounded-2xl bg-zinc-50 transition-shadow hover:shadow-md hover:shadow-zinc-900/5 dark:bg-white/2.5 dark:hover:shadow-black/5"
+      className="group h-auto relative flex rounded-2xl bg-zinc-50 transition-shadow hover:shadow-md hover:shadow-zinc-900/5 dark:bg-white/2.5 dark:hover:shadow-black/5"
     >
       <ResourcePattern {...resource.pattern} mouseX={mouseX} mouseY={mouseY} />
       <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-zinc-900/7.5 group-hover:ring-zinc-900/10 dark:ring-white/10 dark:group-hover:ring-white/20" />
@@ -145,7 +145,7 @@ function Resource({ resource,index,chatQuestion,setChatQuestion}) {
             Question {resource.index}
           </button>
         </h3>
-        <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+        <p  className="mt-1 text-base font-normal leading-normal text-zinc-500 leading-tight dark:text-zinc-400" font-family='Inter'>
           {truncateDescription(resource.description)}
         </p>
       </div>
@@ -171,11 +171,12 @@ export function Resources({questions,chatQuestion,setChatQuestion,total}) {
 
 
   return (
-    <div className="my-16 xl:max-w-none">
-        <Heading level={2} id="resources">
-           {total} Frequently Asked Questions
-        </Heading>
-        <div className="not-prose mt-4  gap-8 border-t border-zinc-900/5 pt-10 dark:border-white/5 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
+    <>
+        <Heading level={2} id="resources" className='mt-20'> Frequently Asked Questions</Heading>
+    <div className="my-16 xl:max-w-none border-t border-zinc-900/5  mt-5" font-family='Inter' >
+          <p style={{fontSize:'16px'}} className='text-gray-500' >There are <strong>{total} Frequently Asked Questions </strong> in our database. These questions come from our in-depth discussions with health professionals involved in data collection. You can use any of these by clicking them to see how IntelSurv answers them.</p>
+
+        <div className="not-prose mt-4  gap-8  pt-10 dark:border-white/5 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
             {questions[questionsIndex].map((resource, index) => (
                 <Resource key={resource.href} resource={resource} index={index} chatQuestion={chatQuestion} setChatQuestion={setChatQuestion} />
             ))}
@@ -187,17 +188,18 @@ export function Resources({questions,chatQuestion,setChatQuestion,total}) {
     className="bg-white border border-gray-200 px-4 py-1 " 
     onClick={() => handlePrevious(questionsIndex, setQuestionsIndex)}
 >
-    PREVIOUS
+    PREVIOUS QUESTIONS
 </button>}
        {questions[questionsIndex + 1] !=null && <button 
     className="bg-white border border-gray-200 px-4 py-1 " 
     onClick={() => handleNext(questionsIndex, setQuestionsIndex)}
 >
-    NEXT
+   MORE QUESTIONS
 </button>}
 </div>
      
     </div>
+    </>
     
 );
 

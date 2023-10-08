@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  mode: 'jit',
   content: ['./{src,mdx}/**/*.{js,mjs,jsx,mdx}'],
   darkMode: 'class',
   theme: {
@@ -23,6 +24,8 @@ module.exports = {
     extend: {
       boxShadow: {
         glow: '0 0 4px rgb(0 0 0 / 0.1)',
+      },borderColor: {
+        'customBlue': 'rgba(82,131,163,0.7)',
       },
       maxWidth: {
         lg: '33rem',

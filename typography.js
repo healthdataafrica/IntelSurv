@@ -179,14 +179,14 @@ module.exports = ({ theme }) => ({
 
       // Headings
       h1: {
-        color: 'var(--tw-prose-headings)',
+        color: '#3C3B40',
         fontWeight: '700',
         fontSize: theme('fontSize.2xl')[0],
         ...theme('fontSize.2xl')[1],
         marginBottom: theme('spacing.2'),
       },
       h2: {
-        color: 'var(--tw-prose-headings)',
+        color: '#3C3B40',
         fontWeight: '600',
         fontSize: theme('fontSize.lg')[0],
         ...theme('fontSize.lg')[1],
@@ -194,7 +194,7 @@ module.exports = ({ theme }) => ({
         marginBottom: theme('spacing.2'),
       },
       h3: {
-        color: 'var(--tw-prose-headings)',
+        color: '#3C3B40',
         fontSize: theme('fontSize.base')[0],
         ...theme('fontSize.base')[1],
         fontWeight: '600',
@@ -277,14 +277,14 @@ module.exports = ({ theme }) => ({
 
       // Inline elements
       a: {
-        color: 'var(--tw-prose-links)',
+        color: '#5283A3',
         textDecoration: 'underline transparent',
         fontWeight: '500',
         transitionProperty: 'color, text-decoration-color',
         transitionDuration: theme('transitionDuration.DEFAULT'),
         transitionTimingFunction: theme('transitionTimingFunction.DEFAULT'),
         '&:hover': {
-          color: 'var(--tw-prose-links-hover)',
+          color: '#0F41A6',
           textDecorationColor: 'var(--tw-prose-links-underline)',
         },
       },
