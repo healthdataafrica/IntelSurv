@@ -100,7 +100,7 @@ function chunkArrayInSix(array) {
 
         <div className='mb-10 text-gray-500' style={{ fontSize: '16px' }}>
 
-        Hello. I am <a href="#">IntelSurv</a>, your AI assistant, How can I assist you today? We are accessing our knowledge base to answer your questions. It also leverages LLMs to complement this knowledge. We currently have two contexts in which IntelSurv functions. A "General" context which you can use to ask any question, a "Case Definition" context to ask questions about case definitions for disease as defined by WHO/Countries. To select a context click on the one you would like to use.
+        Hello. I am <a href="#">IntelSurv</a>, your AI assistant, How can I assist you today? We are accessing our knowledge base to answer your questions. It also leverages LLMs to complement this knowledge. We currently have two contexts in which IntelSurv functions. A &ldquo;General&rdquo; context which you can use to ask any question, a &ldquo;Case Definition&rdquo; context to ask questions about case definitions for disease as defined by WHO/Countries. To select a context click on the one you would like to use.
         </div>
 
         <ChatWindow chatQuestion={chatQuestion} currentKnowledgeBase={currentKnowledgeBase} />
@@ -161,15 +161,16 @@ function chunkArrayInSix(array) {
     <div>
       <HeroPattern />
       {selectedFormField === null ? (
-        <div>
-          <h1>Getting Started</h1>
-          <p style={{ fontSize: '20px', lineHeight: '30px' ,color:'#3C3B40'}}>
-          Hello, I am <a href="#">IntelSurv</a>, your AI assistant for disease surveillance data collection. I'm currently trained for the Malawi Integrated Disease Surveillance system, but I'm continuously learning to support data collection in other countries as well. 
+  <div>
+    <h1>Getting Started</h1>
+    <p style={{ fontSize: '20px', lineHeight: '30px', color: '#3C3B40' }}>
+      Hello, I am <a href="#">IntelSurv</a>, your AI assistant for disease surveillance data collection. I&rsquo;m currently trained for the Malawi Integrated Disease Surveillance system, but I&rsquo;m continuously learning to support data collection in other countries as well.
 
-<br/><br/>To get started, select a form field from the list to your left. To filter and search for your preferred field, simply input your search query. The fields are numbered in the order they appear on the form.
-          </p>
-        </div>
-      ) : (
+      <br /><br />To get started, select a form field from the list to your left. To filter and search for your preferred field, simply input your search query. The fields are numbered in the order they appear on the form.
+    </p>
+  </div>
+)
+ : (
         <>
 
         <div style={{ fontSize: '18px', lineHeight: '35px' }}>

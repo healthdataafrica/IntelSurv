@@ -3,6 +3,8 @@ import { getChatCompletions } from "@/helpers/getChatCompletions";
 import { animateScroll } from "react-scroll";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Image from 'next/image';
+
 
 
 const styles = {
@@ -77,7 +79,7 @@ const Loader = () => {
 
   return (
     <div style={containerStyle}>
-      <img
+      <Image
         src="/chat-loader.gif"
         alt="Loading"
         style={{ maxWidth: "100%", maxHeight: "100%" }}
@@ -244,7 +246,7 @@ export const ChatWindow = ({chatQuestion,currentKnowledgeBase}) => {
             alignItems: "center",
           }}
         >
-          <a style={{cursor:'pointer'}} onClick={handleCopyToClipboard} > <img
+          <a style={{cursor:'pointer'}} onClick={handleCopyToClipboard} > <Image
         src="/copy.png"
         alt=""
         style={{ width:"25px" , height: "25px" }}

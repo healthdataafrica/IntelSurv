@@ -5,21 +5,19 @@ const mainStore = create((set) => ({
   questionnaireElements: null,
   selectedFormField: null,
 
-
-
   setCurrentActiveField: (value) => set((state) => ({
     currentActiveField: value
   })),
   setSelectedFormField: (value) => set((state) => ({
     selectedFormField: value
   })),
-
   setQuestionnaireElements: (value) => set((state) => ({
     questionnaireElements: value
   })),
-
 }));
 
-export default {
+const stores = {
   mainStore
 };
+
+export default stores;
