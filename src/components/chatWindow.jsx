@@ -4,6 +4,7 @@ import { animateScroll } from "react-scroll";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Image from 'next/image';
+import Cursor from '../components/icons/cursor.jsx'
 
 
 
@@ -62,9 +63,7 @@ botMessage: {
   padding: '15px',
   textAlign: 'left',
   maxWidth: '80%',
-}
-
-  
+} 
   
 };
 
@@ -79,7 +78,7 @@ const Loader = () => {
 
   return (
     <div style={containerStyle}>
-      <Image
+      <img
         src="/chat-loader.gif"
         alt="Loading"
         style={{ maxWidth: "100%", maxHeight: "100%" }}
@@ -95,10 +94,15 @@ export const ChatWindow = ({chatQuestion,currentKnowledgeBase}) => {
   const [chatLoading, setChatLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState([{ type: 'bot', text: 'Hello! How can I assist you today?' }]);
+  const [displayResponse, setDisplayResponse] = useState("");
+  const [completedTyping, setCompletedTyping] = useState(false);
+
 
   const messagesEndRef = useRef(null);
   const messagesEndRef2 = useRef(null);
 
+ 
+ 
   
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
@@ -107,16 +111,43 @@ export const ChatWindow = ({chatQuestion,currentKnowledgeBase}) => {
 
         animateScroll.scrollToBottom({
             containerId: "chatMessagesContainerId",  // You need to set this id to your chat messages div
-            duration: 500  // Scroll duration in milliseconds
+            duration: 0 // Scroll duration in milliseconds
         });
     }
 };
 
 
+
+
+useEffect(() => {
+  if (!messages?.length) {
+    return;
+  }
+
+  setCompletedTyping(false);
+
+  let i = 0;
+  const stringResponse = messages[messages.length - 1].text;
+
+  const intervalId = setInterval(() => {
+    setDisplayResponse(stringResponse.slice(0, i));
+    scrollToBottom(); // Scroll down as the message is being typed
+    i++;
+    
+    if (i > stringResponse.length) {
+      clearInterval(intervalId);
+      setCompletedTyping(true);
+    }
+  }, 20);
+
+  return () => clearInterval(intervalId);
+}, [messages]); 
+
   useEffect(() => {
  
     scrollToBottom();
   }, [messages]);
+
 
   useEffect(() => {
 
@@ -171,7 +202,7 @@ export const ChatWindow = ({chatQuestion,currentKnowledgeBase}) => {
 
   function extractChatHistory(messages) {
     return messages.map(message => {
-      const prefix = message.type === 'bot' ? 'Bot: ' : 'User: ';
+      const prefix = message.type === 'bot' ? 'IntelSurv: ' : 'User: ';
       return `${prefix}${message.text}`;
     }).join('\n');
   }
@@ -214,14 +245,27 @@ export const ChatWindow = ({chatQuestion,currentKnowledgeBase}) => {
 
    
       <div style={styles.chatMessages} id="chatMessagesContainerId">
+         
       
       {messages.map((message, index) => (
+
+        
+        
+
+
     <div key={index} style={{ display: 'flex', justifyContent: message.type === "user" ? 'flex-end' : 'flex-start' }}>
         <div style={{
             ...styles.chatMessage,
             ...(message.type === "user" ? styles.userMessage : styles.botMessage),
         }}>
-            {message.text}
+
+{message?.type === "user" && message.text}
+{index === messages.length - 1 &&  message?.type === "bot" && displayResponse}
+{index === messages.length - 1 &&  message?.type === "bot" && !completedTyping && <Cursor/>}
+{index !== messages.length - 1 &&  message?.type === "bot" && message.text}
+
+
+
         </div>
     </div>
 ))}
@@ -246,7 +290,7 @@ export const ChatWindow = ({chatQuestion,currentKnowledgeBase}) => {
             alignItems: "center",
           }}
         >
-          <a style={{cursor:'pointer'}} onClick={handleCopyToClipboard} > <Image
+          <a style={{cursor:'pointer'}} onClick={handleCopyToClipboard} > <img
         src="/copy.png"
         alt=""
         style={{ width:"25px" , height: "25px" }}

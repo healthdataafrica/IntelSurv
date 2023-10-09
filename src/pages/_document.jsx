@@ -1,5 +1,6 @@
 import { Head, Html, Main, NextScript } from 'next/document'
 
+
 const modeScript = `
   let darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
 
@@ -43,6 +44,8 @@ export default function Document() {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Suez+One&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Suez+One&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="" />
+
         <script dangerouslySetInnerHTML={{ __html: modeScript }} />
       </Head>
       <body className="bg-white antialiased dark:bg-zinc-900">

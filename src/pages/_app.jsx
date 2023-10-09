@@ -11,6 +11,8 @@ import 'focus-visible'
 import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
+import styles from '../styles/style.css';
+
 
 function onRouteChange() {
   useMobileNavigationStore.getState().close()

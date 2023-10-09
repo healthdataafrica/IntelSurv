@@ -27,7 +27,7 @@ module.exports = {
       },borderColor: {
         'customBlue': 'rgba(82,131,163,0.7)',
       },
-      maxWidth: {
+           maxWidth: {
         lg: '33rem',
         '2xl': '40rem',
         '3xl': '50rem',
