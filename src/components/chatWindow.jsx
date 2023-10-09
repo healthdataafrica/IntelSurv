@@ -10,6 +10,7 @@ import Cursor from '../components/icons/cursor.jsx'
 
 const styles = {
   chatWindow: {
+    marginTop:'100px',
     
     height: "500px",
     border: "1px solid #ccc",
@@ -47,6 +48,7 @@ const styles = {
     marginBottom: "15px",
     padding: "10px",
     borderRadius: "5px",
+    fontFamily: "Inter"
   },
   userMessage: {
     display: 'inline-block',   // Add this
@@ -127,13 +129,20 @@ useEffect(() => {
   setCompletedTyping(false);
 
   let i = 0;
+  let t =0
   const stringResponse = messages[messages.length - 1].text;
 
   const intervalId = setInterval(() => {
     setDisplayResponse(stringResponse.slice(0, i));
-    scrollToBottom(); // Scroll down as the message is being typed
+     // Scroll down as the message is being typed
     i++;
-    
+    t++;
+   
+    if(t > 40 || t==0){
+      scrollToBottom();
+      t = 0;     
+    }
+
     if (i > stringResponse.length) {
       clearInterval(intervalId);
       setCompletedTyping(true);
@@ -151,10 +160,10 @@ useEffect(() => {
 
   useEffect(() => {
 
-    if(messages.length > 1){
+
 
     setMessages([{ type: 'bot', text: 'Hello! How can I assist you today?' }]);
-    }
+    
 
   }, [currentKnowledgeBase]);
 

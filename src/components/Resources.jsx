@@ -113,7 +113,7 @@ function truncateDescription(description, maxLength = 200) {
 }
 
 
-function Resource({ resource,index,chatQuestion,setChatQuestion}) {
+function Resource({ resource,index,chatQuestion,setChatQuestion ,setCurrentKnowledgeBase}) {
   let mouseX = useMotionValue(0)
   let mouseY = useMotionValue(0)
 
@@ -137,7 +137,9 @@ function Resource({ resource,index,chatQuestion,setChatQuestion}) {
           <button 
             className="focus:outline-none" 
             onClick={() => {
-              
+
+
+               setCurrentKnowledgeBase('GENERAL');
               setChatQuestion(resource.description);
             }}
           >
@@ -164,7 +166,7 @@ function handlePrevious(questionsIndex,setQuestionsIndex) {
  setQuestionsIndex(nextValue);
 }
 
-export function Resources({questions,chatQuestion,setChatQuestion,total}) {
+export function Resources({questions,chatQuestion,setChatQuestion,total,setCurrentKnowledgeBase}) {
   const [selectedId, setSelectedId] = useState(null)
   const [questionsIndex, setQuestionsIndex] = useState(0)
 
@@ -178,7 +180,7 @@ export function Resources({questions,chatQuestion,setChatQuestion,total}) {
 
         <div className="not-prose mt-4  gap-8  pt-10 dark:border-white/5 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
             {questions[questionsIndex].map((resource, index) => (
-                <Resource key={resource.href} resource={resource} index={index} chatQuestion={chatQuestion} setChatQuestion={setChatQuestion} />
+                <Resource key={resource.href} resource={resource} index={index} chatQuestion={chatQuestion}  setCurrentKnowledgeBase={setCurrentKnowledgeBase} setChatQuestion={setChatQuestion} />
             ))}
       
 

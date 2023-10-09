@@ -8,6 +8,7 @@ import { Resources } from "@/components/Resources";
 import store from "../stores/store";
 import { ChatWindow } from "@/components/chatWindow";
 import { ChooseKnowledgeBase } from '@/components/chooseKnowledgeBase';
+import { Logo2 } from '@/components/logo2';
 
 const IndexPage = () => {
   const { mainStore } = store;
@@ -162,6 +163,8 @@ function chunkArrayInSix(array) {
       <HeroPattern />
       {selectedFormField === null ? (
   <div>
+    <Logo2/>
+
     <h1>Getting Started</h1>
     <p style={{ fontSize: '20px', lineHeight: '30px', color: '#3C3B40' }}>
       Hello, I am <a href="#">IntelSurv</a>, your AI assistant for disease surveillance data collection. I&rsquo;m currently trained for the Malawi Integrated Disease Surveillance system, but I&rsquo;m continuously learning to support data collection in other countries as well.
@@ -199,7 +202,7 @@ function chunkArrayInSix(array) {
           {selectedFormField.qOptions.length!=0 && <QuestionnaireOptions qOptions={chunkArrayInSix(selectedFormField.qOptions)} total={selectedFormField.qOptions.length} />} </div>
         </div></>
       )}
-{selectedFormField !== null && selectedFormField.elemQuestion.length !=0 && <Resources total={selectedFormField.elemQuestion.length}   questions={ chunkArrayInThrees(selectedFormField.elemQuestion)} chatQuestion={chatQuestion} setChatQuestion={setChatQuestion}/>}
+{selectedFormField !== null && selectedFormField.elemQuestion.length !=0 && <Resources total={selectedFormField.elemQuestion.length}   questions={ chunkArrayInThrees(selectedFormField.elemQuestion)} chatQuestion={chatQuestion} setChatQuestion={setChatQuestion} setCurrentKnowledgeBase={setCurrentKnowledgeBase}/>}
 {selectedFormField !== null && selectedFormField.elemQuestion.length == 0 &&<div>
 <Heading level={2} id="resources" className="mt-20">Frequently Asked Questions</Heading>
 <div className="my-16 xl:max-w-none border-t border-zinc-900/5  mt-5" font-family='Inter' >
