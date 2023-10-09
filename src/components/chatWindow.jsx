@@ -138,7 +138,7 @@ useEffect(() => {
     i++;
     t++;
    
-    if(t > 40 || t==0){
+    if(t > 40 || t==0  || i == stringResponse.length){
       scrollToBottom();
       t = 0;     
     }
