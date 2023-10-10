@@ -23,7 +23,7 @@ export function Logo2(props) {
         <text className="dark:fill-white" x="25" y="20" font-family='Suez One' font-size="25" fill="#3C3B40">IntelSurv</text>
       </svg>
       <svg width="200" height="28" xmlns="http://www.w3.org/2000/svg" >
-        <text className="dark:fill-white" x="25" y="26" font-family='Inter' font-size="5" fill="#3C3B40">Intelligent Disease Surveillance Data Feedback System</text>
+        <text className="dark:fill-white" x="25" y="26" font-family='Inter' font-size="5" fill="#9D9CA6">Intelligent Disease Surveillance Data Feedback System</text>
       </svg>
 
 
