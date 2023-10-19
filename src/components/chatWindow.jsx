@@ -269,9 +269,19 @@ useEffect(() => {
         }}>
 
 {message?.type === "user" && message.text}
-{index === messages.length - 1 &&  message?.type === "bot" && displayResponse}
-{index === messages.length - 1 &&  message?.type === "bot" && !completedTyping && <Cursor/>}
-{index !== messages.length - 1 &&  message?.type === "bot" && message.text}
+{index === messages.length - 1 && message?.type === "bot" && 
+    <>
+        <span dangerouslySetInnerHTML={{ __html: displayResponse }}></span>
+        {/*!completedTyping && <Cursor />*/}
+    </>
+}
+
+{index !== messages.length - 1 && message?.type === "bot" && 
+    <>
+        <span dangerouslySetInnerHTML={{ __html: message.text }}></span>
+        {/*!completedTyping && <Cursor />*/}
+    </>
+}
 
 
 
