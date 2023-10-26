@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-async function getChatCompletions(message, knowledgeBase, maxRetries=5) {
+async function getChatCompletions(message, knowledgeBase,  semContext, synContext,  maxRetries=5) {
     console.log('here is message', message);
   // Define the API endpoint and request data
   const apiUrl = `https://us-central1-questmap-mubas.cloudfunctions.net/chatCompletion`;
@@ -8,7 +8,9 @@ async function getChatCompletions(message, knowledgeBase, maxRetries=5) {
   // The data to send with the POST request
   const postData = {
     message: message,
-    knowledgeBase: knowledgeBase
+    knowledgeBase: knowledgeBase,
+    semContext: semContext,
+    synContext: synContext
   };
 
   // Retry function

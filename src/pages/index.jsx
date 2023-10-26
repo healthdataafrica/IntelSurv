@@ -13,8 +13,12 @@ import { Logo2 } from '@/components/logo2';
 const IndexPage = () => {
   const { mainStore } = store;
   const { setSelectedFormField, selectedFormField } = mainStore();
-  const [chatQuestion, setChatQuestion] = useState('')
-  const [currentKnowledgeBase, setCurrentKnowledgeBase] = useState('CASE')
+  const [chatQuestion, setChatQuestion] = useState('');
+  const [currentKnowledgeBase, setCurrentKnowledgeBase] = useState('CASE');
+  const [semContext, setSemContext] = useState('');
+  const [synContext, setSynContext] = useState('');
+
+
 
 
 
@@ -104,7 +108,7 @@ function chunkArrayInSix(array) {
         Hello. I am <a href="#">IntelSurv</a>, your AI assistant, How can I assist you today? We are accessing our knowledge base to answer your questions. It also leverages LLMs to complement this knowledge. We currently have two contexts in which IntelSurv functions. A &ldquo;General&rdquo; context which you can use to ask any question, a &ldquo;Case Definition&rdquo; context to ask questions about case definitions for disease as defined by WHO/Countries. To select a context click on the one you would like to use.
         </div>
 
-        <ChatWindow chatQuestion={chatQuestion} currentKnowledgeBase={currentKnowledgeBase} />
+        <ChatWindow chatQuestion={chatQuestion} currentKnowledgeBase={currentKnowledgeBase}  synContext={synContext} semContext={semContext}     />
       </div>
     </div>
   );
@@ -202,7 +206,7 @@ function chunkArrayInSix(array) {
           {selectedFormField.qOptions.length!=0 && <QuestionnaireOptions qOptions={chunkArrayInSix(selectedFormField.qOptions)} total={selectedFormField.qOptions.length} />} </div>
         </div></>
       )}
-{selectedFormField !== null && selectedFormField.elemQuestion.length !=0 && <Resources total={selectedFormField.elemQuestion.length}   questions={ chunkArrayInThrees(selectedFormField.elemQuestion)} chatQuestion={chatQuestion} setChatQuestion={setChatQuestion} setCurrentKnowledgeBase={setCurrentKnowledgeBase}/>}
+{selectedFormField !== null && selectedFormField.elemQuestion.length !=0 && <Resources total={selectedFormField.elemQuestion.length} setSynContext={setSynContext} setSemContext={setSemContext}  questions={ chunkArrayInThrees(selectedFormField.elemQuestion)} chatQuestion={chatQuestion} setChatQuestion={setChatQuestion} setCurrentKnowledgeBase={setCurrentKnowledgeBase}/>}
 {selectedFormField !== null && selectedFormField.elemQuestion.length == 0 &&<div>
 <Heading level={2} id="resources" className="mt-20">Frequently Asked Questions</Heading>
 <div className="my-16 xl:max-w-none border-t border-zinc-900/5  mt-5" font-family='Inter' >

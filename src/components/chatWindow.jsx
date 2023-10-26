@@ -44,6 +44,17 @@ const styles = {
     border: "none", // to remove any default borders
     cursor: "pointer", // to indicate it's clickable
   },
+
+  sendButtonDisabled: {
+    height: "40px",
+    width: "60px",
+    padding: "5px 15px",
+    backgroundColor: "#cfcfcf",
+    borderRadius: "5px", // or '50%' for a fully rounded button
+    color: "white", // assuming you want the text color to be white
+    border: "none", // to remove any default borders
+    cursor: "pointer", // to indicate it's clickable
+  },
   chatMessage: {
     marginBottom: "15px",
     padding: "10px",
@@ -92,7 +103,7 @@ const Loader = () => {
 
 
 
-export const ChatWindow = ({chatQuestion,currentKnowledgeBase}) => {
+export const ChatWindow = ({chatQuestion,currentKnowledgeBase,synContext,semContext}) => {
   const [chatLoading, setChatLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState([{ type: 'bot', text: 'Hello! How can I assist you today?' }]);
@@ -191,13 +202,17 @@ useEffect(() => {
     const userMessage = { type: "user", text: userInput };
 
     setMessages((prevMessages) => [...prevMessages, userMessage]);
-
-
+   
+    console.log('Here are prompt details');
+   console.log('User input', userInput);
+   console.log('currentKnowledgeBase:',currentKnowledgeBase);
+    console.log('semContext:',  semContext);
+    console.log('synContext', synContext);
     
     const response = await getChatCompletions(
       userInput,
-      currentKnowledgeBase
-    );
+      currentKnowledgeBase, semContext, synContext
+          );
 
     console.log(response);
     
@@ -272,7 +287,7 @@ useEffect(() => {
 {index === messages.length - 1 && message?.type === "bot" && 
     <>
         <span dangerouslySetInnerHTML={{ __html: displayResponse }}></span>
-        {/*!completedTyping && <Cursor />*/}
+        {!completedTyping && <Cursor />}
     </>
 }
 
@@ -328,7 +343,7 @@ useEffect(() => {
           {chatLoading ? (
             <Loader />
           ) : (
-            <button onClick={sendMessage} style={styles.sendButton}>
+            <button onClick={sendMessage} style={inputValue == ''? styles.sendButtonDisabled:styles.sendButton }  disabled={inputValue == '' }>
               Send
             </button>
           )}

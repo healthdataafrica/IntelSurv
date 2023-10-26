@@ -215,6 +215,10 @@ function transformData(data) {
                 [1, 3],
             ],
         },
+        semContext: input.semContext,
+        synContext: input.synContext,
+        category: input.category,
+        extraContentAnswer: input.extraContentAnswer
     }));
 }
 
@@ -226,7 +230,9 @@ function transformData(data) {
     idsrQPID: item.idsrQPID,
     idsrQListing: item.idsrQListing,
     qOptions: item.qOptions,
-    elemQuestion: item.elemQuestion.length !=0? convertQuestions(item.elemQuestion):[]
+    elemQuestion: item.elemQuestion.length !=0? convertQuestions(item.elemQuestion):[],
+   
+
   }));
 
   return [

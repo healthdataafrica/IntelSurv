@@ -113,7 +113,7 @@ function truncateDescription(description, maxLength = 200) {
 }
 
 
-function Resource({ resource,index,chatQuestion,setChatQuestion ,setCurrentKnowledgeBase}) {
+function Resource({ resource,index,chatQuestion,setChatQuestion ,setCurrentKnowledgeBase,setSynContext, setSemContext}) {
   let mouseX = useMotionValue(0)
   let mouseY = useMotionValue(0)
 
@@ -141,6 +141,8 @@ function Resource({ resource,index,chatQuestion,setChatQuestion ,setCurrentKnowl
 
                setCurrentKnowledgeBase('GENERAL');
               setChatQuestion(resource.description);
+              resource.semContext ? setSemContext(resource.semContext): null;
+              resource.synContext ? setSynContext(resource.synContext): null;
             }}
           >
             <span className="absolute inset-0 rounded-2xl" />
@@ -166,7 +168,7 @@ function handlePrevious(questionsIndex,setQuestionsIndex) {
  setQuestionsIndex(nextValue);
 }
 
-export function Resources({questions,chatQuestion,setChatQuestion,total,setCurrentKnowledgeBase}) {
+export function Resources({questions,chatQuestion,setChatQuestion,total,setCurrentKnowledgeBase,setSynContext, setSemContext }) {
   const [selectedId, setSelectedId] = useState(null)
   const [questionsIndex, setQuestionsIndex] = useState(0)
 
@@ -180,7 +182,7 @@ export function Resources({questions,chatQuestion,setChatQuestion,total,setCurre
 
         <div className="not-prose mt-4  gap-8  pt-10 dark:border-white/5 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
             {questions[questionsIndex].map((resource, index) => (
-                <Resource key={resource.href} resource={resource} index={index} chatQuestion={chatQuestion}  setCurrentKnowledgeBase={setCurrentKnowledgeBase} setChatQuestion={setChatQuestion} />
+                <Resource key={resource.href} resource={resource} index={index} chatQuestion={chatQuestion}  setCurrentKnowledgeBase={setCurrentKnowledgeBase} setChatQuestion={setChatQuestion}  setSynContext={setSynContext} setSemContext={setSemContext} />
             ))}
       
 
