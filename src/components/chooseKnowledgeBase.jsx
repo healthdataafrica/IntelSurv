@@ -3,7 +3,7 @@ import { getChatCompletions } from "@/helpers/getChatCompletions";
 import { animateScroll } from "react-scroll";
 
 
-export const ChooseKnowledgeBase = ({currentKnowledgeBase, setCurrentKnowledgeBase}) => {
+export const ChooseKnowledgeBase = ({currentKnowledgeBase, setCurrentKnowledgeBase, setSemContext, setSynContext}) => {
 
     console.log(currentKnowledgeBase);
 
@@ -12,6 +12,8 @@ export const ChooseKnowledgeBase = ({currentKnowledgeBase, setCurrentKnowledgeBa
     function setKnowledgeBase(base) {
 
         setCurrentKnowledgeBase(base);     
+        setSemContext('');
+        setSynContext('');
     }
 
     const getClassNamesForItem = (base) => {

@@ -213,7 +213,7 @@ function chunkArrayInSix(array) {
  <p style={{fontSize:'16px'}} className='text-gray-500'>There are currently no questions about this field in our database. This could be because this field is straightforward  to fill in.</p></div></div>}
       {selectedFormField !== null && userChat(chatQuestion,currentKnowledgeBase)}
 
-      {selectedFormField !== null && <ChooseKnowledgeBase currentKnowledgeBase={currentKnowledgeBase} setCurrentKnowledgeBase={setCurrentKnowledgeBase}  />}
+      {selectedFormField !== null && <ChooseKnowledgeBase currentKnowledgeBase={currentKnowledgeBase} setCurrentKnowledgeBase={setCurrentKnowledgeBase} setSynContext={setSynContext} setSemContext={setSemContext} />}
 
     </div>
   
