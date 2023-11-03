@@ -103,7 +103,7 @@ const Loader = () => {
 
 
 
-export const ChatWindow = ({chatQuestion,currentKnowledgeBase,synContext,semContext}) => {
+export const ChatWindow = ({chatQuestion,currentKnowledgeBase,synContext,semContext, askYourOwnQuestion}) => {
   const [chatLoading, setChatLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState([{ type: 'bot', text: 'Hello! How can I assist you today?' }]);
@@ -191,6 +191,13 @@ useEffect(() => {
     setInputValue(chatQuestion);
     
   }, [chatQuestion]);
+
+  useEffect(() => {
+
+    if(askYourOwnQuestion!=0){  
+        messagesEndRef2.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [askYourOwnQuestion]);
 
 
 

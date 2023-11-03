@@ -43,7 +43,7 @@ function QuestionnaireOptions({ qOptions,total }) {
     return (
         <>
         <div style={{marginTop:'50px'}} className='' >
-        <p style={{fontSize:'16px'}} className='text-gray-500'>This field appears in the form with <strong>{total} options</strong> that the health professional needs to choose from. These are listed below. You can ask questions about their meaning or use to our Intelligent Assistant below. Navigate using the Next/ Prev buttons to see all these options.</p>
+        <p style={{fontSize:'16px'}} className='text-gray-500'>There are <strong>{total} options</strong>. You can ask questions about their meaning or use.</p>
 
             <div style={{marginTop:'15px',color:'#5283A3'}} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-3">
                 {qOptions[optionsIndex].map((option) => (

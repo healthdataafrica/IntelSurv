@@ -10,6 +10,8 @@ import { remToPx } from '@/lib/remToPx'
 import store from "../stores/store";
 import { fetchFormElements } from "../helpers/fetchFormElements";
 import { ChatBubbleIcon} from './icons/ChatBubbleIcon'
+import { useMobileNavigationStore } from '@/components/MobileNavigation'
+
 
 
 function useInitialValue(value, condition = true) {
@@ -80,13 +82,18 @@ function TopLevelNavItem({ href, children }) {
   )
 }
 
-function NavLink({ href, tag, isAnchorLink = false, setActiveLink, children, setSelectedFormField, link, }) {
+function NavLink({ href, tag, isAnchorLink = false, setActiveLink, children, setSelectedFormField, link, closeNav, isMobile }) {
   const handleClick = (e) => {
+    
     e.preventDefault();
     setActiveLink(href);
     setSelectedFormField(link);
     console.log('Selected Form', link);
+   
+    closeNav();
+    
   };
+
 
   return (
     <a
@@ -145,7 +152,7 @@ function ActivePageMarker({ group, pathname }) {
   )
 }
 
-function NavigationGroup({ group, className, setActiveLink, activeLink, setSelectedFormField }) {
+function NavigationGroup({ group, className, setActiveLink, activeLink, setSelectedFormField, closeNav }) {
   // If this is the mobile navigation then we always render the initial
   // state, so that the state does not change during the close animation.
   // The state will still update when we re-open (re-render) the navigation.
@@ -180,7 +187,7 @@ function NavigationGroup({ group, className, setActiveLink, activeLink, setSelec
         <ul role="list" className="border-l border-transparent">
           {group.links.map((link) => (
             <motion.li key={link.href} layout="position" className="relative">
-              <NavLink
+              <NavLink  closeNav={closeNav} isMobile={isInsideMobileNavigation}
                 href={link.href}
                 setActiveLink={setActiveLink}
                 setSelectedFormField={setSelectedFormField}
@@ -249,6 +256,7 @@ export function Navigation(props) {
   const { currentActiveField, setCurrentActiveField, questionnaireElements, setQuestionnaireElements, setSelectedFormField, selectedFormField } = mainStore();
   const [filteredData, setFilteredData] = useState([]);
   const [originalData, setOriginalData] = useState([]);
+  let { isOpen, toggle, close } = useMobileNavigationStore();
 
 
 
@@ -304,7 +312,7 @@ export function Navigation(props) {
         <SearchInput original={originalData} data={filteredData} onDataFilter={setFilteredData} />
         <ul role="list">
           {originalData.length != 0 ? filteredData.map((group, groupIndex) => (
-            <NavigationGroup setActiveLink={setCurrentActiveField} activeLink={currentActiveField}
+            <NavigationGroup setActiveLink={setCurrentActiveField} activeLink={currentActiveField} closeNav={close}
               setSelectedFormField={setSelectedFormField}
               key={group.title}
               group={group}

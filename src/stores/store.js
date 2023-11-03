@@ -4,6 +4,8 @@ const mainStore = create((set) => ({
   currentActiveField: null,
   questionnaireElements: null,
   selectedFormField: null,
+  isOpen: false,
+
 
   setCurrentActiveField: (value) => set((state) => ({
     currentActiveField: value
@@ -14,6 +16,9 @@ const mainStore = create((set) => ({
   setQuestionnaireElements: (value) => set((state) => ({
     questionnaireElements: value
   })),
+  open: () => set({ isOpen: true }),
+  close: () => set({ isOpen: false }),
+  toggle: () => set((state) => ({ isOpen: !state.isOpen })),
 }));
 
 const stores = {

@@ -9,16 +9,48 @@ import store from "../stores/store";
 import { ChatWindow } from "@/components/chatWindow";
 import { ChooseKnowledgeBase } from '@/components/chooseKnowledgeBase';
 import { Logo2 } from '@/components/logo2';
+import { useMobileNavigationStore } from '@/components/MobileNavigation';
+import { useIsInsideMobileNavigation } from '@/components/MobileNavigation';
+
 
 const IndexPage = () => {
   const { mainStore } = store;
   const { setSelectedFormField, selectedFormField } = mainStore();
   const [chatQuestion, setChatQuestion] = useState('');
+  const [askYourOwnQuestion, setAskYourOwnQuestion] = useState(0);
+
   const [currentKnowledgeBase, setCurrentKnowledgeBase] = useState('CASE');
   const [semContext, setSemContext] = useState('');
   const [synContext, setSynContext] = useState('');
 
+  const [isScreenSmall, setIsScreenSmall] = useState(null); 
 
+  
+
+
+  let { isOpen, toggle, close } = useMobileNavigationStore();
+  let isInsideMobileNavigation = useIsInsideMobileNavigation()
+
+
+
+
+  useEffect(() => {
+    function handleResize() {
+      // Check if screen size is less than a specific size
+      setIsScreenSmall(window.innerWidth < 640);
+    }
+
+    // Add event listener on component mount
+    window.addEventListener('resize', handleResize);
+
+    // Set the initial value
+    handleResize();
+
+    // Clean up event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
 
 
@@ -96,7 +128,7 @@ function chunkArrayInSix(array) {
 
   const userChat = (chatQuestion,currentKnowledgeBase) => (
     <div className="my-16 xl:max-w-none">
-      <div style={{ display: 'inline-flex', alignItems: 'center' }}>
+      <div style={{ display: 'inline-flex', alignItems: 'center' }}> 
         <Heading level={2} id="resources">Ask your Own Question</Heading>
       </div>
 
@@ -106,9 +138,12 @@ function chunkArrayInSix(array) {
         <div className='mb-10 text-gray-500' style={{ fontSize: '16px' }}>
 
         Hello. I am <a href="#">IntelSurv</a>, your AI assistant, How can I assist you today? We are accessing our knowledge base to answer your questions. It also leverages LLMs to complement this knowledge. We currently have two contexts in which IntelSurv functions. A &ldquo;General&rdquo; context which you can use to ask any question, a &ldquo;Case Definition&rdquo; context to ask questions about case definitions for disease as defined by WHO/Countries. To select a context click on the one you would like to use.
-        </div>
 
-        <ChatWindow chatQuestion={chatQuestion} currentKnowledgeBase={currentKnowledgeBase}  synContext={synContext} semContext={semContext}     />
+         
+        </div>
+ 
+
+        <ChatWindow askYourOwnQuestion={askYourOwnQuestion}  chatQuestion={chatQuestion} currentKnowledgeBase={currentKnowledgeBase}  synContext={synContext} semContext={semContext}     />
       </div>
     </div>
   );
@@ -122,12 +157,34 @@ function chunkArrayInSix(array) {
   
     return (
       <div>
+
+
+        
         <button
           type="button"
-          style={{ backgroundColor: "transparent",   marginTop:'10px' , marginRight: '10px', paddingLeft: '8px',paddingRight:'8px', border: '1px solid #efefef', fontSize:'15px'}}
+          style={{ backgroundColor: "#5283A3", color:'white',  marginTop:'10px' , marginRight: '10px', paddingLeft: '8px',paddingRight:'8px', border: '1px solid #5283A3', fontSize:'15px'}}
           onClick={toggleInstructions}
         >
-          {showInstructions? "Hide Questionnaire Info" : "More Questionnaire Info"}
+          {showInstructions? "Hide Info" : "More Info"}
+        </button>
+        { isScreenSmall ?<button
+          type="button"
+          style={{ backgroundColor: "#5283A3", color:'white',    marginTop:'10px' , marginRight: '10px', paddingLeft: '8px',paddingRight:'8px', border: '1px solid #5283A3', fontSize:'15px'}}
+          onClick={() => toggle()}
+
+
+        >
+         Open Fields
+        </button>: null}
+
+        <button
+          type="button"
+          style={{  backgroundColor: "#5283A3", color:'white',    marginTop:'10px' , marginRight: '10px', paddingLeft: '8px',paddingRight:'8px', border: '1px solid #5283A3 ', fontSize:'15px'}}
+          onClick={() => setAskYourOwnQuestion(prevState => prevState + 1)}
+
+
+        >
+        Ask a Question 
         </button>
   
         {showInstructions && (
@@ -170,11 +227,26 @@ function chunkArrayInSix(array) {
     <Logo2/>
 
     <h1>Getting Started</h1>
-    <p style={{ fontSize: '20px', lineHeight: '30px', color: '#3C3B40' }}>
+   {isScreenSmall? <p style={{ fontSize: '15px', lineHeight: '30px', color: '#3C3B40' }}>
+      Hello, I am <a href="#">IntelSurv</a>, your AI assistant for disease surveillance data collection. I&rsquo;m currently trained for the Malawi Integrated Disease Surveillance system, but I&rsquo;m continuously learning to support data collection in other countries as well.
+
+      <br /><br />To get started, click the "Open Questionnaire Fields" button below to display available fields, to filter and search for your preferred field, simply input your search query. The fields are numbered in the order they appear on the form.
+    </p>:<p style={{ fontSize: '17px', lineHeight: '30px', color: '#3C3B40' }}>
       Hello, I am <a href="#">IntelSurv</a>, your AI assistant for disease surveillance data collection. I&rsquo;m currently trained for the Malawi Integrated Disease Surveillance system, but I&rsquo;m continuously learning to support data collection in other countries as well.
 
       <br /><br />To get started, select a form field from the list to your left. To filter and search for your preferred field, simply input your search query. The fields are numbered in the order they appear on the form.
-    </p>
+    </p>}
+
+    
+   { isScreenSmall ?<button
+          type="button"
+          style={{ backgroundColor: "#5283A3", color:'white',  marginTop:'10px' , marginRight: '10px', paddingLeft: '8px',paddingRight:'8px', border: '1px solid #efefef', fontSize:'15px'}}
+          onClick={() => toggle()}
+
+
+        >
+         Open Questionnaire Fields
+        </button>: null}
   </div>
 )
  : (
@@ -207,10 +279,10 @@ function chunkArrayInSix(array) {
         </div></>
       )}
 {selectedFormField !== null && selectedFormField.elemQuestion.length !=0 && <Resources total={selectedFormField.elemQuestion.length} setSynContext={setSynContext} setSemContext={setSemContext}  questions={ chunkArrayInThrees(selectedFormField.elemQuestion)} chatQuestion={chatQuestion} setChatQuestion={setChatQuestion} setCurrentKnowledgeBase={setCurrentKnowledgeBase}/>}
-{selectedFormField !== null && selectedFormField.elemQuestion.length == 0 &&<div>
+{/*selectedFormField !== null && selectedFormField.elemQuestion.length == 0 &&<div>
 <Heading level={2} id="resources" className="mt-20">Frequently Asked Questions</Heading>
 <div className="my-16 xl:max-w-none border-t border-zinc-900/5  mt-5" font-family='Inter' >
- <p style={{fontSize:'16px'}} className='text-gray-500'>There are currently no questions about this field in our database. This could be because this field is straightforward  to fill in.</p></div></div>}
+          <p style={{fontSize:'16px'}} className='text-gray-500'>There are currently no questions about this field in our database. This could be because this field is straightforward  to fill in.</p></div></div>*/}
       {selectedFormField !== null && userChat(chatQuestion,currentKnowledgeBase)}
 
       {selectedFormField !== null && <ChooseKnowledgeBase currentKnowledgeBase={currentKnowledgeBase} setCurrentKnowledgeBase={setCurrentKnowledgeBase} setSynContext={setSynContext} setSemContext={setSemContext} />}

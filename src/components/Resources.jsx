@@ -127,12 +127,12 @@ function Resource({ resource,index,chatQuestion,setChatQuestion ,setCurrentKnowl
     <div
       key={resource.href}
       onMouseMove={onMouseMove}
-      className="group h-auto relative flex rounded-2xl bg-zinc-50 transition-shadow hover:shadow-md hover:shadow-zinc-900/5 dark:bg-white/2.5 dark:hover:shadow-black/5"
+      className="group h-auto relative flex rounded-2xl bg-white transition-shadow hover:shadow-md hover:shadow-zinc-900/5 dark:bg-white/2.5 dark:hover:shadow-black/5"
     >
-      <ResourcePattern {...resource.pattern} mouseX={mouseX} mouseY={mouseY} />
+      {/*<ResourcePattern {...resource.pattern} mouseX={mouseX} mouseY={mouseY} />*/}
       <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-zinc-900/7.5 group-hover:ring-zinc-900/10 dark:ring-white/10 dark:group-hover:ring-white/20" />
-      <div className="relative rounded-2xl px-4 pt-16 pb-4">
-        <ResourceIcon icon={resource.icon} />
+      <div className="relative rounded-2xl px-4 pt-0 pb-4">
+  {/* <ResourceIcon icon={resource.icon} />*/}
         <h3 className="mt-4 text-sm font-semibold leading-7 text-zinc-900 dark:text-white">
           <button 
             className="focus:outline-none" 
@@ -146,14 +146,14 @@ function Resource({ resource,index,chatQuestion,setChatQuestion ,setCurrentKnowl
             }}
           >
             <span className="absolute inset-0 rounded-2xl" />
-            Question {resource.index}
+              
           </button>
         </h3>
         <p  className="mt-1 text-base font-normal leading-normal text-zinc-500 leading-tight dark:text-zinc-400" font-family='Inter'>
-          {truncateDescription(resource.description)}
+        {resource.index}. {truncateDescription(resource.description)}
         </p>
       </div>
-    </div>
+   </div>
 );
 
 }
@@ -178,9 +178,9 @@ export function Resources({questions,chatQuestion,setChatQuestion,total,setCurre
     <>
         <Heading level={2} id="resources" className='mt-20'> Frequently Asked Questions</Heading>
     <div className="my-16 xl:max-w-none border-t border-zinc-900/5  mt-5" font-family='Inter' >
-          <p style={{fontSize:'16px'}} className='text-gray-500' >There are <strong>{total} Frequently Asked Questions </strong> in our database. These questions come from our in-depth discussions with health professionals involved in data collection. You can use any of these by clicking them to see how IntelSurv answers them.</p>
+          <p style={{fontSize:'16px'}} className='text-gray-500' >These questions come from our in-depth discussions with health professionals involved in data collection. You can use any of these by clicking them to see how IntelSurv answers them.</p>
 
-        <div className="not-prose mt-4  gap-8  pt-10 dark:border-white/5 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="not-prose mt-0  gap-8  pt-10 dark:border-white/5 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
             {questions[questionsIndex].map((resource, index) => (
                 <Resource key={resource.href} resource={resource} index={index} chatQuestion={chatQuestion}  setCurrentKnowledgeBase={setCurrentKnowledgeBase} setChatQuestion={setChatQuestion}  setSynContext={setSynContext} setSemContext={setSemContext} />
             ))}
