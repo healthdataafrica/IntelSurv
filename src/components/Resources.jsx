@@ -133,7 +133,7 @@ function Resource({ resource,index,chatQuestion,setChatQuestion ,setCurrentKnowl
       <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-zinc-900/7.5 group-hover:ring-zinc-900/10 dark:ring-white/10 dark:group-hover:ring-white/20" />
       <div className="relative rounded-2xl px-4 pt-0 pb-4">
   {/* <ResourceIcon icon={resource.icon} />*/}
-        <h3 className="mt-4 text-sm font-semibold leading-7 text-zinc-900 dark:text-white">
+        <h3 className="mt-0 text-sm font-semibold leading-0 text-zinc-900 dark:text-white">
           <button 
             className="focus:outline-none" 
             onClick={() => {
@@ -149,7 +149,7 @@ function Resource({ resource,index,chatQuestion,setChatQuestion ,setCurrentKnowl
               
           </button>
         </h3>
-        <p  className="mt-1 text-base font-normal leading-normal text-zinc-500 leading-tight dark:text-zinc-400" font-family='Inter'>
+        <p  style={{fontSize:'14px'}}  className="mt-0 text-base font-normal  leading-normal text-zinc-500 leading-tight dark:text-zinc-400" font-family='Inter'>
         {resource.index}. {truncateDescription(resource.description)}
         </p>
       </div>
