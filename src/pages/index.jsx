@@ -126,7 +126,7 @@ function chunkArrayInSix(array) {
 }
 
 
-  const userChat = (chatQuestion,currentKnowledgeBase) => (
+  const userChat = (chatQuestion,currentKnowledgeBase,setCurrentKnowledgeBase) => (
     <div className="my-16 xl:max-w-none">
       <div style={{ display: 'inline-flex', alignItems: 'center' }}> 
         <Heading level={2} id="resources">Ask your Own Question</Heading>
@@ -141,6 +141,9 @@ function chunkArrayInSix(array) {
 
          
         </div>
+
+        {selectedFormField !== null && <ChooseKnowledgeBase currentKnowledgeBase={currentKnowledgeBase} setCurrentKnowledgeBase={setCurrentKnowledgeBase} setSynContext={setSynContext} setSemContext={setSemContext} />}
+
  
 
         <ChatWindow askYourOwnQuestion={askYourOwnQuestion}  chatQuestion={chatQuestion} currentKnowledgeBase={currentKnowledgeBase}  synContext={synContext} semContext={semContext}     />
@@ -283,9 +286,9 @@ function chunkArrayInSix(array) {
 <Heading level={2} id="resources" className="mt-20">Frequently Asked Questions</Heading>
 <div className="my-16 xl:max-w-none border-t border-zinc-900/5  mt-5" font-family='Inter' >
           <p style={{fontSize:'16px'}} className='text-gray-500'>There are currently no questions about this field in our database. This could be because this field is straightforward  to fill in.</p></div></div>*/}
-      {selectedFormField !== null && userChat(chatQuestion,currentKnowledgeBase)}
 
-      {selectedFormField !== null && <ChooseKnowledgeBase currentKnowledgeBase={currentKnowledgeBase} setCurrentKnowledgeBase={setCurrentKnowledgeBase} setSynContext={setSynContext} setSemContext={setSemContext} />}
+      {selectedFormField !== null && userChat(chatQuestion,currentKnowledgeBase,setCurrentKnowledgeBase)}
+
 
     </div>
   
