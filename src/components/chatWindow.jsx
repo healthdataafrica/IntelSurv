@@ -131,7 +131,7 @@ export const ChatWindow = ({chatQuestion,currentKnowledgeBase,synContext,semCont
 
 
 
-
+/*
 useEffect(() => {
   if (!messages?.length) {
     return;
@@ -162,6 +162,8 @@ useEffect(() => {
 
   return () => clearInterval(intervalId);
 }, [messages]); 
+
+*/
 
   useEffect(() => {
  
@@ -291,19 +293,23 @@ useEffect(() => {
         }}>
 
 {message?.type === "user" && message.text}
-{index === messages.length - 1 && message?.type === "bot" && 
+{/*{index === messages.length - 1 && message?.type === "bot" && 
     <>
         <span dangerouslySetInnerHTML={{ __html: displayResponse }}></span>
         {!completedTyping && <Cursor />}
     </>
+}*/
+<>
+ <span dangerouslySetInnerHTML={{ __html: message.text }}></span>
+</>
 }
 
-{index !== messages.length - 1 && message?.type === "bot" && 
+{/*index !== messages.length - 1 && message?.type === "bot" && 
     <>
         <span dangerouslySetInnerHTML={{ __html: message.text }}></span>
-        {/*!completedTyping && <Cursor />*/}
+        {/*!completedTyping && <Cursor />
     </>
-}
+*/}
 
 
 

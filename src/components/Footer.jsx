@@ -204,12 +204,12 @@ function SmallPrint() {
         <SocialLink href="#" icon={TwitterIcon}>
           Follow us on Twitter
         </SocialLink>
-        <SocialLink href="#" icon={GitHubIcon}>
+        <SocialLink href="https://github.com/healthdataafrica/IntelSurv/wiki" icon={GitHubIcon}>
           Follow us on GitHub
         </SocialLink>
-        <SocialLink href="#" icon={DiscordIcon}>
+       {/* <SocialLink href="#" icon={DiscordIcon}>
           Join our Discord server
-        </SocialLink>
+  </SocialLink>*/}
       </div>
     </div>
   )

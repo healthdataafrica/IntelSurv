@@ -137,7 +137,7 @@ function chunkArrayInSix(array) {
 
         <div className='mb-10 text-gray-500' style={{ fontSize: '16px' }}>
 
-        Hello. I am <a href="#">IntelSurv</a>, your AI assistant, How can I assist you today? We are accessing our knowledge base to answer your questions. It also leverages LLMs to complement this knowledge. We currently have two contexts in which IntelSurv functions. A &ldquo;General&rdquo; context which you can use to ask any question, a &ldquo;Case Definition&rdquo; context to ask questions about case definitions for disease as defined by WHO/Countries. To select a context click on the one you would like to use.
+        Hello. I am <a href="#">IntelSurv</a>, your AI assistant, How can I assist you today? There are 3 types of questions: about to case definitions of diseases, about form fields and general. Select the type (context) you want when asking a question.
 
          
         </div>
@@ -248,7 +248,7 @@ function chunkArrayInSix(array) {
 
 
         >
-         Open Questionnaire Fields
+         View and Select Fields
         </button>: null}
   </div>
 )

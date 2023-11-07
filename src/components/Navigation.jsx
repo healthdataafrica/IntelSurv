@@ -60,7 +60,7 @@ function SearchInput({ original, onDataFilter }) {
       <SearchIcon className="pointer-events-none absolute left-3 top-0 h-full w-5 stroke-zinc-500" />
       <input
         className='flex-auto appearance-none bg-transparent pl-10 text-zinc-900 outline-none placeholder:text-zinc-500 dark:text-white sm:text-sm border border-zinc-100'
-        placeholder='Filter Field Names'
+        placeholder='Start typing to search'
         value={search}
         onChange={e => setSearch(e.target.value)}
       />

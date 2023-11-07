@@ -130,7 +130,7 @@ function Resource({ resource,index,chatQuestion,setChatQuestion ,setCurrentKnowl
       className="group h-auto relative flex rounded-2xl bg-white transition-shadow hover:shadow-md hover:shadow-zinc-900/5 dark:bg-white/2.5 dark:hover:shadow-black/5"
     >
       {/*<ResourcePattern {...resource.pattern} mouseX={mouseX} mouseY={mouseY} />*/}
-      <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-zinc-900/7.5 group-hover:ring-zinc-900/10 dark:ring-white/10 dark:group-hover:ring-white/20" />
+      <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-grey/7.5 group-hover:ring-zinc-900/10 dark:ring-white/10 dark:group-hover:ring-white/20" />
       <div className="relative rounded-2xl px-4 pt-0 pb-4">
   {/* <ResourceIcon icon={resource.icon} />*/}
         <h3 className="mt-0 text-sm font-semibold leading-0 text-zinc-900 dark:text-white">
