@@ -257,6 +257,8 @@ export function Navigation(props) {
   const [filteredData, setFilteredData] = useState([]);
   const [originalData, setOriginalData] = useState([]);
   let { isOpen, toggle, close } = useMobileNavigationStore();
+  const [isScreenSmall, setIsScreenSmall] = useState(null); 
+
 
 
 
@@ -306,8 +308,31 @@ export function Navigation(props) {
     // console.log('selected Form Field:', selectedFormField); 
   }, [selectedFormField]);
 
+  useEffect(() => {
+    function handleResize() {
+      // Check if screen size is less than a specific size
+      setIsScreenSmall(window.innerWidth < 640);
+    }
+
+    // Add event listener on component mount
+    window.addEventListener('resize', handleResize);
+
+    // Set the initial value
+    handleResize();
+
+    // Clean up event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return (
     <>
+
+
+        <a href="#" onClick={() => close()}  style={{marginBottom:'15px', color: '#5283A3'}}>Close Window </a>
+       
+
       <nav {...props}>
         <SearchInput original={originalData} data={filteredData} onDataFilter={setFilteredData} />
         <ul role="list">

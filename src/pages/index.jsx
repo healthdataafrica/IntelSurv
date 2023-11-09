@@ -255,10 +255,30 @@ function chunkArrayInSix(array) {
  : (
         <>
 
-        <div style={{ fontSize: '18px', lineHeight: '35px' }}>
-          {selectedFormField.href && selectedFormField.title && (
-            <h1>{selectedFormField.href}. {selectedFormField.title}</h1>
-          )}
+{ isScreenSmall ?
+        <a href="/" style={{marginBottom:'20px'}}>Go to Homepage </a>
+       : null}
+
+       <h5  style={{ fontSize: '16px', lineHeight: '35px' }}>I am <strong>Intelsurv</strong>, your disease surveillance assistant. You can ask me 3 types of questions: 
+        
+        <ul>
+       <li><strong>Case definitions of diseases</strong></li>
+         <li><strong>Form fields</strong></li> 
+        <li><strong>General surveillance</strong></li>
+           
+          </ul>
+
+          By default I am listenimg to case definitions. But you can select the type (context) you want when asking a question.
+
+
+</h5><br/>
+
+<span style={{fontSize: '16px'}}>Currenty you selected the form field:  {selectedFormField.href && selectedFormField.title && (
+           <span><strong>{selectedFormField.title} (Field No {selectedFormField.href})</strong></span>
+          )}</span>
+
+        <div style={{ fontSize: '16px', lineHeight: '35px' }}>
+         
           {selectedFormField.idsrQListing.title && (
             <><strong>Form: </strong>{selectedFormField.idsrQListing.title}<br /></>
           )}
