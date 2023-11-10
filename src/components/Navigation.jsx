@@ -330,7 +330,7 @@ export function Navigation(props) {
     <>
 
 
-        <a href="#" onClick={() => close()}  style={{marginBottom:'15px', color: '#5283A3'}}>Close Window </a>
+{ isScreenSmall ? <a href="#" onClick={() => close()}  style={{marginBottom:'15px', color: '#5283A3'}}>Close Window </a>:null}
        
 
       <nav {...props}>
