@@ -316,7 +316,7 @@ function chunkArrayInSix(array) {
 
       {selectedFormField !== null && userChat(chatQuestion,currentKnowledgeBase,setCurrentKnowledgeBase)}
 
-      {selectedFormField !== null && currentSession != 'NONE' ? <ChatHistory historyData={filterBySession(chatLogs, currentSession)} /> : null}
+      {selectedFormField !== null && currentSession != 'NONE' && chatLogs.length > 0 ? <ChatHistory historyData={filterBySession(chatLogs, currentSession)} /> : null}
 
 
     </div>
