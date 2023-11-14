@@ -11,6 +11,8 @@ import store from "../stores/store";
 import { fetchFormElements } from "../helpers/fetchFormElements";
 import { ChatBubbleIcon} from './icons/ChatBubbleIcon'
 import { useMobileNavigationStore } from '@/components/MobileNavigation'
+import { v4 as uuidv4 } from 'uuid';
+
 
 
 
@@ -253,7 +255,7 @@ function transformData(data) {
 
 export function Navigation(props) {
   const { mainStore } = store;
-  const { currentActiveField, setCurrentActiveField, questionnaireElements, setQuestionnaireElements, setSelectedFormField, selectedFormField } = mainStore();
+  const { currentActiveField, setCurrentActiveField, questionnaireElements, setQuestionnaireElements, setSelectedFormField, selectedFormField, currentSession, setCurrentSession, chatLogs, setChatLogs} = mainStore();
   const [filteredData, setFilteredData] = useState([]);
   const [originalData, setOriginalData] = useState([]);
   let { isOpen, toggle, close } = useMobileNavigationStore();
@@ -324,6 +326,41 @@ export function Navigation(props) {
     return () => {
       window.removeEventListener('resize', handleResize);
     };
+  }, []);
+
+  useEffect(() => {
+    // Function to fetch logs
+    const fetchLogs = async () => {
+      try {
+        const response = await fetch('https://us-central1-questmap-mubas.cloudfunctions.net/getChatLogs', {
+           });
+        const data = await response.json();
+        setChatLogs(data);
+        console.log('Logs:', data);
+      } catch (error) {
+        console.error('Error fetching logs:', error);
+      }
+    };
+
+    // Function to handle session key
+    const handleSessionKey = () => {
+      let sessionKey = localStorage.getItem('sessionKey');
+
+      if (sessionKey) {
+
+        setCurrentSession(sessionKey);
+        // If session key exists, fetch logs
+             } else {
+        // If session key does not exist, generate a new one
+        sessionKey = uuidv4();
+        localStorage.setItem('sessionKey', sessionKey);
+        console.log('New session key generated:', sessionKey);
+      }
+    };
+
+    fetchLogs();
+
+    handleSessionKey();
   }, []);
 
   return (

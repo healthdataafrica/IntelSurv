@@ -5,7 +5,15 @@ const mainStore = create((set) => ({
   questionnaireElements: null,
   selectedFormField: null,
   isOpen: false,
+  currentSession: 'NONE', 
+  chatLogs:null,
 
+  setChatLogs: (value) => set((state) => ({
+   chatLogs: value
+  })),
+  setCurrentSession: (value) => set((state) => ({
+    currentSession: value
+  })),
 
   setCurrentActiveField: (value) => set((state) => ({
     currentActiveField: value

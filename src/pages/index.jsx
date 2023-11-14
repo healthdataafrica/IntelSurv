@@ -11,17 +11,19 @@ import { ChooseKnowledgeBase } from '@/components/chooseKnowledgeBase';
 import { Logo2 } from '@/components/logo2';
 import { useMobileNavigationStore } from '@/components/MobileNavigation';
 import { useIsInsideMobileNavigation } from '@/components/MobileNavigation';
-
+import {ChatHistory} from  "@/components/chatHistory";
 
 const IndexPage = () => {
   const { mainStore } = store;
-  const { setSelectedFormField, selectedFormField } = mainStore();
+  const { setSelectedFormField, selectedFormField, currentSession, setCurrentSession , chatLogs,setChatLogs} = mainStore();
   const [chatQuestion, setChatQuestion] = useState('');
   const [askYourOwnQuestion, setAskYourOwnQuestion] = useState(0);
 
   const [currentKnowledgeBase, setCurrentKnowledgeBase] = useState('CASE');
   const [semContext, setSemContext] = useState('');
   const [synContext, setSynContext] = useState('');
+  const [historyData, setHistoryData] = useState([]);
+
 
   const [isScreenSmall, setIsScreenSmall] = useState(null); 
 
@@ -150,6 +152,11 @@ function chunkArrayInSix(array) {
       </div>
     </div>
   );
+
+  const filterBySession = (array, sessionId) => {
+    return array.filter(item => item.session === sessionId);
+  };
+  
 
   function CollapsibleDiv({selectedFormField}) {
     const [showInstructions, setShowInstructions] = useState(false);
@@ -308,6 +315,8 @@ function chunkArrayInSix(array) {
           <p style={{fontSize:'16px'}} className='text-gray-500'>There are currently no questions about this field in our database. This could be because this field is straightforward  to fill in.</p></div></div>*/}
 
       {selectedFormField !== null && userChat(chatQuestion,currentKnowledgeBase,setCurrentKnowledgeBase)}
+
+      {selectedFormField !== null && currentSession != 'NONE' ? <ChatHistory historyData={filterBySession(chatLogs, currentSession)} /> : null}
 
 
     </div>

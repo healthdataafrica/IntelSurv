@@ -1,10 +1,13 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { getChatCompletions } from "@/helpers/getChatCompletions";
+import { addChatLog } from "@/helpers/addChatLog.js";
 import { animateScroll } from "react-scroll";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Image from 'next/image';
 import Cursor from '../components/icons/cursor.jsx'
+import store from "../stores/store";
+ 
 
 
 
@@ -109,12 +112,24 @@ export const ChatWindow = ({chatQuestion,currentKnowledgeBase,synContext,semCont
   const [messages, setMessages] = useState([{ type: 'bot', text: 'Hello! How can I assist you today?' }]);
   const [displayResponse, setDisplayResponse] = useState("");
   const [completedTyping, setCompletedTyping] = useState(false);
+  const { mainStore } = store;
+  const {currentSession, setCurrentSession, setChatLogs } = mainStore();
 
 
   const messagesEndRef = useRef(null);
   const messagesEndRef2 = useRef(null);
 
- 
+  const fetchLogs = async () => {
+    try {
+      const response = await fetch('https://us-central1-questmap-mubas.cloudfunctions.net/getChatLogs', {
+         });
+      const data = await response.json();
+      setChatLogs(data);
+      console.log('Logs:', data);
+    } catch (error) {
+      console.error('Error fetching logs:', error);
+    }
+  };
  
   
   const scrollToBottom = () => {
@@ -229,6 +244,22 @@ useEffect(() => {
     setMessages((prevMessages) => [...prevMessages, newMessage]);
 
     setChatLoading(false);
+
+    /* id: id,
+    timestamp: timestamp,
+    session: session,
+    context: context,
+    question: question,
+    answer: answer,
+    predefined:0, */
+
+    const unixTimestamp = (Math.floor(Date.now() / 1000)).toString();
+
+    const log  =  await addChatLog(
+     unixTimestamp, currentSession, currentKnowledgeBase,userInput, response
+    );
+
+   await fetchLogs();
 
     
   }
