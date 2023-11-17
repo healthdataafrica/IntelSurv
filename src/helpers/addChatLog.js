@@ -1,18 +1,20 @@
 import axios from 'axios';
 
-async function addChatLog(timestamp,session,context,question,answer, maxRetries=5) {
+async function addChatLog( elemID,field,timestamp,session,context,question,answer, maxRetries=5) {
   // Define the API endpoint and request data
   const apiUrl = `https://us-central1-questmap-mubas.cloudfunctions.net/addChatLog`;
 
   // The data to send with the POST request
   const postData = {
-    
+    fieldName: field,   
     timestamp: timestamp,
     session: session,
     context: context,
     question: question,
     answer: answer,
-    predefined:0,       
+    predefined:0,
+    elemID: parseInt(elemID),
+      prevQuestion:0   
   };
 
   // Retry function

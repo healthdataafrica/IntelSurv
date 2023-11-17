@@ -239,8 +239,7 @@ function transformData(data) {
     idsrQPID: item.idsrQPID,
     idsrQListing: item.idsrQListing,
     qOptions: item.qOptions,
-    elemQuestion: item.elemQuestion.length !=0? convertQuestions(item.elemQuestion):[],
-   
+    elemQuestion: item.elemQuestion.length !=0? convertQuestions(item.elemQuestion):[],  
 
   }));
 
@@ -354,6 +353,8 @@ export function Navigation(props) {
         // If session key does not exist, generate a new one
         sessionKey = uuidv4();
         localStorage.setItem('sessionKey', sessionKey);
+        setCurrentSession(sessionKey);
+
         console.log('New session key generated:', sessionKey);
       }
     };

@@ -148,7 +148,7 @@ function chunkArrayInSix(array) {
 
  
 
-        <ChatWindow askYourOwnQuestion={askYourOwnQuestion}  chatQuestion={chatQuestion} currentKnowledgeBase={currentKnowledgeBase}  synContext={synContext} semContext={semContext}     />
+        <ChatWindow element={selectedFormField.href} field={selectedFormField.title}  askYourOwnQuestion={askYourOwnQuestion}  chatQuestion={chatQuestion} currentKnowledgeBase={currentKnowledgeBase}  synContext={synContext} semContext={semContext}     />
       </div>
     </div>
   );
@@ -168,8 +168,19 @@ function chunkArrayInSix(array) {
     return (
       <div>
 
+{selectedFormField.idsrQListing && selectedFormField.idsrQListing.linkToForm && (
+            <a target="_blank" rel="noopener noreferrer" href={selectedFormField.idsrQListing.linkToForm}>
+<button
+          type="button"
+          style={{fontWeight:'400',  backgroundColor: "#5283A3", color:'white',    marginTop:'10px' , marginRight: '10px', paddingLeft: '8px',paddingRight:'8px', border: '1px solid #5283A3 ', fontSize:'15px'}}
+         
 
-        
+
+        >
+       Link to Form
+        </button>
+        </a> )}
+      
         <button
           type="button"
           style={{ backgroundColor: "#5283A3", color:'white',  marginTop:'10px' , marginRight: '10px', paddingLeft: '8px',paddingRight:'8px', border: '1px solid #5283A3', fontSize:'15px'}}
@@ -184,7 +195,7 @@ function chunkArrayInSix(array) {
 
 
         >
-         Open Fields
+         View & Select Fields
         </button>: null}
 
         <button
@@ -280,7 +291,7 @@ function chunkArrayInSix(array) {
 
 </h5><br/>
 
-<span style={{fontSize: '16px'}}>Currenty you selected the form field:  {selectedFormField.href && selectedFormField.title && (
+<span style={{fontSize: '16px'}}><strong>Selected field:</strong>  {selectedFormField.href && selectedFormField.title && (
            <span><strong>{selectedFormField.title} (Field No {selectedFormField.href})</strong></span>
           )}</span>
 
@@ -296,18 +307,16 @@ function chunkArrayInSix(array) {
             <><strong>Description:</strong> {selectedFormField.elemDescr}<br /></>
           )}
 
-          {selectedFormField.idsrQListing && selectedFormField.idsrQListing.linkToForm && (
-            <a target="_blank" rel="noopener noreferrer" href={selectedFormField.idsrQListing.linkToForm}>
-              <strong>Link to Form</strong>
-            </a>
-          )}
-          {selectedFormField.title && <CollapsibleDiv selectedFormField={selectedFormField} />}
+         
+        
 
 
      <div >
           {selectedFormField.qOptions.length!=0 && <QuestionnaireOptions qOptions={chunkArrayInSix(selectedFormField.qOptions)} total={selectedFormField.qOptions.length} />} </div>
         </div></>
       )}
+<br/>
+{selectedFormField  !== null && <CollapsibleDiv selectedFormField={selectedFormField} />}
 {selectedFormField !== null && selectedFormField.elemQuestion.length !=0 && <Resources total={selectedFormField.elemQuestion.length} setSynContext={setSynContext} setSemContext={setSemContext}  questions={ chunkArrayInThrees(selectedFormField.elemQuestion)} chatQuestion={chatQuestion} setChatQuestion={setChatQuestion} setCurrentKnowledgeBase={setCurrentKnowledgeBase}/>}
 {/*selectedFormField !== null && selectedFormField.elemQuestion.length == 0 &&<div>
 <Heading level={2} id="resources" className="mt-20">Frequently Asked Questions</Heading>
@@ -316,7 +325,7 @@ function chunkArrayInSix(array) {
 
       {selectedFormField !== null && userChat(chatQuestion,currentKnowledgeBase,setCurrentKnowledgeBase)}
 
-      {selectedFormField !== null && currentSession != 'NONE' && chatLogs.length > 0 ? <ChatHistory historyData={filterBySession(chatLogs, currentSession)} /> : null}
+      {selectedFormField !== null && currentSession != 'NONE' && filterBySession(chatLogs, currentSession).length > 0 ? <ChatHistory context={currentKnowledgeBase} field={selectedFormField.title} historyData={filterBySession(chatLogs, currentSession)} /> : null}
 
 
     </div>

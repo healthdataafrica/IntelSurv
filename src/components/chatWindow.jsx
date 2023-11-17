@@ -106,7 +106,7 @@ const Loader = () => {
 
 
 
-export const ChatWindow = ({chatQuestion,currentKnowledgeBase,synContext,semContext, askYourOwnQuestion}) => {
+export const ChatWindow = ({ element,field,chatQuestion,currentKnowledgeBase,synContext,semContext, askYourOwnQuestion}) => {
   const [chatLoading, setChatLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState([{ type: 'bot', text: 'Hello! How can I assist you today?' }]);
@@ -255,7 +255,7 @@ useEffect(() => {
 
     const unixTimestamp = (Math.floor(Date.now() / 1000)).toString();
 
-    const log  =  await addChatLog(
+    const log  =  await addChatLog(element, field,
      unixTimestamp, currentSession, currentKnowledgeBase,userInput, response
     );
 
@@ -331,7 +331,7 @@ useEffect(() => {
     </>
 }*/
 <>
- <span dangerouslySetInnerHTML={{ __html: message.text }}></span>
+{message?.type === "bot" &&<span dangerouslySetInnerHTML={{ __html: message.text }}></span>}
 </>
 }
 
