@@ -268,7 +268,18 @@ function chunkArrayInSix(array) {
     
 
       To get started, click the "Open Questionnaire Fields" button below to display available fields, to filter and search for your preferred field, simply input your search query. The fields are numbered in the order they appear on the form.
-    </p> </div>:<div style={{ fontSize: '17px', lineHeight: '30px', color: '#3C3B40' }}><p >
+    </p> 
+    <button
+          type="button"
+          style={{ backgroundColor: "#5283A3", color:'white',  marginTop:'10px' , marginRight: '10px', paddingLeft: '8px',paddingRight:'8px', border: '1px solid #efefef', fontSize:'15px'}}
+          onClick={() => toggle()}
+
+
+        >
+         Go to Help Page
+        </button>
+    
+    </div>:<div style={{ fontSize: '17px', lineHeight: '30px', color: '#3C3B40' }}><p >
       Hello, I am <a href="#">IntelSurv</a>, your AI assistant for disease surveillance data collection. I&rsquo;m currently trained for the Malawi Integrated Disease Surveillance system, but I&rsquo;m continuously learning to support data collection in other countries as well.</p>
 
 
@@ -288,7 +299,22 @@ function chunkArrayInSix(array) {
 
 
       To get started, select a form field from the list to your left. To filter and search for your preferred field, simply input your search query. The fields are numbered in the order they appear on the form. 
-    </p> </div>}
+    </p> 
+    <button
+          type="button"
+          style={{ backgroundColor: "#5283A3", color:'white',  marginTop:'10px' , marginRight: '10px', paddingLeft: '8px',paddingRight:'8px', border: '1px solid #efefef', fontSize:'15px'}}
+          onClick={() => toggle()}
+
+
+        >
+         Go to Help Page
+        </button>
+    
+    </div>
+    
+     
+    
+    }
 
     
    { isScreenSmall ?<button
