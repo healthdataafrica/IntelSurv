@@ -331,15 +331,52 @@ export function Navigation(props) {
     // Function to fetch logs
     const fetchLogs = async () => {
       try {
-        const response = await fetch('https://us-central1-questmap-mubas.cloudfunctions.net/getChatLogs', {
-           });
+        const response = await fetch('https://us-central1-questmap-mubas.cloudfunctions.net/getChatLogs');
         const data = await response.json();
+    
+        // Filter the logs by a specific session
+      //  const filteredData = data.filter(log => log.session === '2498bf5c-481d-4eb8-b20b-b1eee4aab8ee');
+    
         setChatLogs(data);
-        console.log('Logs:', data);
+       // console.log('Filtered Logs:', filteredData);
+    
+        // Convert filtered JSON to CSV
+       // const csvString = jsonToCSV(filteredData);
+      /*  if (csvString) {
+          // Create a Blob from the CSV String
+          const blob = new Blob([csvString], { type: 'text/csv' });
+    
+          // Create a link element, use it to download the CSV file and remove it
+          const link = document.createElement('a');
+          link.href = URL.createObjectURL(blob);
+          link.download = 'chat-logs.csv';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }*/
+    
       } catch (error) {
         console.error('Error fetching logs:', error);
       }
     };
+    
+    
+    // Function to convert JSON to CSV
+    const jsonToCSV = (json) => {
+      if (json.length === 0) {
+        return null;
+      }
+    
+      const columns = Object.keys(json[0]);
+      const header = columns.join(',');
+      const rows = json.map(obj =>
+        columns.map(col => JSON.stringify(obj[col], (_, value) => 
+          typeof value === 'string' ? value.replace(/"/g, '""') : value)).join(',')
+      );
+    
+      return [header, ...rows].join('\r\n');
+    };
+    
 
     // Function to handle session key
     const handleSessionKey = () => {

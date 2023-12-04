@@ -29,7 +29,7 @@ const styles = {
   chatInput: {
     display: "flex",
     padding: "10px",
-    borderTop: "1px solid #ccc",
+    borderBottom: "1px solid #ccc",
     height: "60px",
   },
   inputField: {
@@ -109,7 +109,7 @@ const Loader = () => {
 export const ChatWindow = ({ element,field,chatQuestion,currentKnowledgeBase,synContext,semContext, askYourOwnQuestion}) => {
   const [chatLoading, setChatLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
-  const [messages, setMessages] = useState([{ type: 'bot', text: 'Hello! How can I assist you today?' }]);
+  const [messages, setMessages] = useState([]);
   const [displayResponse, setDisplayResponse] = useState("");
   const [completedTyping, setCompletedTyping] = useState(false);
   const { mainStore } = store;
@@ -190,7 +190,7 @@ useEffect(() => {
 
 
 
-    setMessages([{ type: 'bot', text: 'Hello! How can I assist you today?' }]);
+    setMessages([]);
     
 
   }, [currentKnowledgeBase]);
@@ -306,7 +306,48 @@ useEffect(() => {
       className=" w-full sm:w-[600px] lg:w-[600px] xl:w-[800px] "
     >
                
-
+               <div style={styles.chatInput}>
+        <input
+          value={inputValue}
+          type="text"
+          placeholder="Type your message..."
+          style={styles.inputField}
+          onChange={handleInputChange}
+        />
+         <div
+          style={{
+            width: "60px",
+            height: "40px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <a style={{cursor:'pointer'}} onClick={handleCopyToClipboard} > <img
+        src="/copy.png"
+        alt=""
+        style={{ width:"25px" , height: "25px" }}
+      /></a>
+        
+        </div>
+        <div
+          style={{
+            width: "60px",
+            height: "40px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {chatLoading ? (
+            <Loader />
+          ) : (
+            <button onClick={sendMessage} style={inputValue == ''? styles.sendButtonDisabled:styles.sendButton }  disabled={inputValue == '' }>
+              Send
+            </button>
+          )}
+        </div>
+      </div>
    
       <div style={styles.chatMessages} id="chatMessagesContainerId">
          
@@ -351,48 +392,7 @@ useEffect(() => {
 
 
       </div>
-      <div style={styles.chatInput}>
-        <input
-          value={inputValue}
-          type="text"
-          placeholder="Type your message..."
-          style={styles.inputField}
-          onChange={handleInputChange}
-        />
-         <div
-          style={{
-            width: "60px",
-            height: "40px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <a style={{cursor:'pointer'}} onClick={handleCopyToClipboard} > <img
-        src="/copy.png"
-        alt=""
-        style={{ width:"25px" , height: "25px" }}
-      /></a>
-        
-        </div>
-        <div
-          style={{
-            width: "60px",
-            height: "40px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          {chatLoading ? (
-            <Loader />
-          ) : (
-            <button onClick={sendMessage} style={inputValue == ''? styles.sendButtonDisabled:styles.sendButton }  disabled={inputValue == '' }>
-              Send
-            </button>
-          )}
-        </div>
-      </div>
+      
     </div>
     </>
   );

@@ -135,11 +135,11 @@ function chunkArrayInSix(array) {
       </div>
 
       <div>
-        <div className="not-prose mt-4 grid grid-cols-1 gap-8 border-t border-zinc-900/5 pt-10 dark:border-white/5 sm:grid-cols-2 xl:grid-cols-3"></div>
+        <div className="not-prose mt-2 grid grid-cols-1 gap-8 border-t border-zinc-900/5 pt-2 dark:border-white/5 sm:grid-cols-2 xl:grid-cols-3"></div>
 
-        <div className='mb-10 text-gray-500' style={{ fontSize: '16px' }}>
+        <div className='mb-0 text-gray-500' style={{ fontSize: '16px' }}>
 
-        Hello. I am <a href="#">IntelSurv</a>, your AI assistant, How can I assist you today? There are 3 types of questions: about to case definitions of diseases, about form fields and general. Select the type (context) you want when asking a question.
+      {/*  Hello. I am <a href="#">IntelSurv</a>, your AI assistant, How can I assist you today? There are 3 types of questions: about to case definitions of diseases, about form fields and general. Select the type (context) you want when asking a question. */}
 
          
         </div>
@@ -248,15 +248,47 @@ function chunkArrayInSix(array) {
     <Logo2/>
 
     <h1>Getting Started</h1>
-   {isScreenSmall? <p style={{ fontSize: '15px', lineHeight: '30px', color: '#3C3B40' }}>
-      Hello, I am <a href="#">IntelSurv</a>, your AI assistant for disease surveillance data collection. I&rsquo;m currently trained for the Malawi Integrated Disease Surveillance system, but I&rsquo;m continuously learning to support data collection in other countries as well.
+   {isScreenSmall?
+   <div> <p style={{ fontSize: '15px', lineHeight: '30px', color: '#3C3B40' }}>
+      Hello, I am <a href="#">IntelSurv</a>, your AI assistant for disease surveillance data collection. I&rsquo;m currently trained for the Malawi Integrated Disease Surveillance system, but I&rsquo;m continuously learning to support data collection in other countries as. </p>
+      
+      <p>You can ask me 3 kinds of questions</p>
+        <ul>
+       <li><strong>Case definitions of diseases</strong></li>
+         <li><strong>Form fields</strong></li> 
+        <li><strong>General surveillance</strong></li>
+           
+          </ul>
 
-      <br /><br />To get started, click the "Open Questionnaire Fields" button below to display available fields, to filter and search for your preferred field, simply input your search query. The fields are numbered in the order they appear on the form.
-    </p>:<p style={{ fontSize: '17px', lineHeight: '30px', color: '#3C3B40' }}>
-      Hello, I am <a href="#">IntelSurv</a>, your AI assistant for disease surveillance data collection. I&rsquo;m currently trained for the Malawi Integrated Disease Surveillance system, but I&rsquo;m continuously learning to support data collection in other countries as well.
+          
 
-      <br /><br />To get started, select a form field from the list to your left. To filter and search for your preferred field, simply input your search query. The fields are numbered in the order they appear on the form.
-    </p>}
+       <p> By default I am listenimg to case definitions. But you can select the database you want when asking a question.
+
+
+    
+
+      To get started, click the "Open Questionnaire Fields" button below to display available fields, to filter and search for your preferred field, simply input your search query. The fields are numbered in the order they appear on the form.
+    </p> </div>:<div style={{ fontSize: '17px', lineHeight: '30px', color: '#3C3B40' }}><p >
+      Hello, I am <a href="#">IntelSurv</a>, your AI assistant for disease surveillance data collection. I&rsquo;m currently trained for the Malawi Integrated Disease Surveillance system, but I&rsquo;m continuously learning to support data collection in other countries as well.</p>
+
+
+ 
+  <p >You can ask me 3 kinds of questions</p>
+        <ul>
+       <li><strong>Case definitions of diseases</strong></li>
+         <li><strong>Form fields</strong></li> 
+        <li><strong>General surveillance</strong></li>
+           
+          </ul>
+
+          
+
+         <p>By default I am listenimg to case definitions. But you can select the database you want when asking a question.
+
+
+
+      To get started, select a form field from the list to your left. To filter and search for your preferred field, simply input your search query. The fields are numbered in the order they appear on the form. 
+    </p> </div>}
 
     
    { isScreenSmall ?<button
@@ -277,19 +309,7 @@ function chunkArrayInSix(array) {
         <a href="/" style={{marginBottom:'20px'}}>Go to Homepage </a>
        : null}
 
-       <h5  style={{ fontSize: '16px', lineHeight: '35px' }}>I am <strong>Intelsurv</strong>, your disease surveillance assistant. You can ask me 3 types of questions: 
-        
-        <ul>
-       <li><strong>Case definitions of diseases</strong></li>
-         <li><strong>Form fields</strong></li> 
-        <li><strong>General surveillance</strong></li>
-           
-          </ul>
-
-          By default I am listenimg to case definitions. But you can select the type (context) you want when asking a question.
-
-
-</h5><br/>
+     
 
 <span style={{fontSize: '16px'}}><strong>Selected field:</strong>  {selectedFormField.href && selectedFormField.title && (
            <span><strong>{selectedFormField.title} (Field No {selectedFormField.href})</strong></span>

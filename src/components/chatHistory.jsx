@@ -4,6 +4,8 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
   
  export const ChatHistory = ({ historyData }) => {
     const [expandedItems, setExpandedItems] = useState({});
+    const [expandAll, setExpandAll] = useState(false);
+
     const [isHistoryExpanded, setHistoryExpanded] = useState(false);
 
     function removeHtmlTags(str) {
@@ -40,6 +42,10 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
         >
         Click to Show
         </button>
+
+        
+
+        
       );
       
       
@@ -64,10 +70,14 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
 
 
 
-          {isExpanded && <><p style={{paddingLeft:'35px',fontSize:'17px'}}><span style={{fontSize:'14px'}}><strong>SESSION ID : </strong>{session}<br/> <strong>TIME & DATE: </strong>{TimestampConverter({ time })}<br/><strong>FIELD NAME : </strong> {field} <strong><br/>CONTEXT : </strong>{context}</span><br/><br/><span style={{fontWeight:'600' }}>Answer : </span>{removeHtmlTags(answer)}</p>
-         
-
+          {isExpanded || expandAll? <><p style={{paddingLeft:'35px',fontSize:'17px'}}><span style={{fontSize:'14px'}}><strong>SESSION ID : </strong>{session}<br/> <strong>TIME & DATE: </strong>{TimestampConverter({ time })}<br/><strong>FIELD NAME : </strong> {field} <strong><br/>CONTEXT : </strong>{context}</span><br/><br/><span style={{fontWeight:'600' }}>Answer : </span>{removeHtmlTags(answer)}</p>
+            
+     
           </>
+          
+          
+          
+          :<></>
           
           }
         </div>
@@ -84,6 +94,24 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
         <div>
             <h2>Your Chat History</h2>
       <HistoryHeader isHistoryExpanded={isHistoryExpanded} />
+      
+      { expandAll ?<button
+          type="button"
+          style={{  backgroundColor: "#5283A3", color:'white',    marginTop:'10px' , marginRight: '10px', paddingLeft: '8px',paddingRight:'8px', border: '1px solid #5283A3 ', fontSize:'15px'}}
+          onClick={() => setExpandAll(!expandAll)}
+
+        >
+        Unexpand All
+        </button> :  <button
+          type="button"
+          style={{  backgroundColor: "#5283A3", color:'white',    marginTop:'10px' , marginRight: '10px', paddingLeft: '8px',paddingRight:'8px', border: '1px solid #5283A3 ', fontSize:'15px'}}
+          onClick={() => setExpandAll(!expandAll)}
+
+        >
+        Expand All
+        </button> }
+      
+
       <br/>  <br/>
       
       {isHistoryExpanded && historyData.map(({ fieldName,logID, question, answer,context,session,timestamp }, index) => (
