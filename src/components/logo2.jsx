@@ -4,9 +4,10 @@ import store from "../stores/store";
 export function Logo2(props) {
 
   const { mainStore } = store;
-  const {setSelectedFormField, selectedFormField ,currentActiveField, setCurrentActiveField,} = mainStore();
+  const {setShowHelpPage,setSelectedFormField, selectedFormField ,currentActiveField, setCurrentActiveField,} = mainStore();
 
   const handleLogoClick = () => {
+    setShowHelpPage(null);
     setCurrentActiveField(null);
    setSelectedFormField(null);
   };

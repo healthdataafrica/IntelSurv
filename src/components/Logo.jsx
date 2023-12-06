@@ -5,7 +5,7 @@ import { useRef,useState,useEffect } from 'react'
 export function Logo(props) {
 
   const { mainStore } = store;
-  const {setSelectedFormField, selectedFormField ,currentActiveField, setCurrentActiveField,} = mainStore();
+  const {setShowHelpPage,setSelectedFormField, selectedFormField ,currentActiveField, setCurrentActiveField,} = mainStore();
   const [isScreenSmall, setIsScreenSmall] = useState(null); 
   
   useEffect(() => {
@@ -28,6 +28,7 @@ export function Logo(props) {
 
 
   const handleLogoClick = () => {
+    setShowHelpPage(null);
     setCurrentActiveField(null);
    setSelectedFormField(null);
   };

@@ -12,13 +12,14 @@ import { Logo2 } from '@/components/logo2';
 import { useMobileNavigationStore } from '@/components/MobileNavigation';
 import { useIsInsideMobileNavigation } from '@/components/MobileNavigation';
 import {ChatHistory} from  "@/components/chatHistory";
+import HelpSection from '@/components/HelpPage';
 
 const IndexPage = () => {
   const { mainStore } = store;
-  const { setSelectedFormField, selectedFormField, currentSession, setCurrentSession , chatLogs,setChatLogs} = mainStore();
+  const {  setShowHelpPage, showHelpPage ,setSelectedFormField, selectedFormField, currentSession, setCurrentSession , chatLogs,setChatLogs} = mainStore();
   const [chatQuestion, setChatQuestion] = useState('');
   const [askYourOwnQuestion, setAskYourOwnQuestion] = useState(0);
-
+  const [predefinedAutoId, setPredefinedAutoId] =  useState(0);
   const [currentKnowledgeBase, setCurrentKnowledgeBase] = useState('CASE');
   const [semContext, setSemContext] = useState('');
   const [synContext, setSynContext] = useState('');
@@ -128,7 +129,7 @@ function chunkArrayInSix(array) {
 }
 
 
-  const userChat = (chatQuestion,currentKnowledgeBase,setCurrentKnowledgeBase) => (
+  const userChat = (  autoId,chatQuestion,currentKnowledgeBase,setCurrentKnowledgeBase) => (
     <div className="my-16 xl:max-w-none">
       <div style={{ display: 'inline-flex', alignItems: 'center' }}> 
         <Heading level={2} id="resources">Ask your Own Question</Heading>
@@ -148,7 +149,7 @@ function chunkArrayInSix(array) {
 
  
 
-        <ChatWindow element={selectedFormField.href} field={selectedFormField.title}  askYourOwnQuestion={askYourOwnQuestion}  chatQuestion={chatQuestion} currentKnowledgeBase={currentKnowledgeBase}  synContext={synContext} semContext={semContext}     />
+        <ChatWindow  autoId={autoId} element={selectedFormField.href} field={selectedFormField.title}  askYourOwnQuestion={askYourOwnQuestion}  chatQuestion={chatQuestion} currentKnowledgeBase={currentKnowledgeBase}  synContext={synContext} semContext={semContext}     />
       </div>
     </div>
   );
@@ -244,6 +245,12 @@ function chunkArrayInSix(array) {
     <div>
       <HeroPattern />
       {selectedFormField === null ? (
+
+
+
+showHelpPage === null ? (
+
+
   <div>
     <Logo2/>
 
@@ -272,7 +279,7 @@ function chunkArrayInSix(array) {
     <button
           type="button"
           style={{ backgroundColor: "#5283A3", color:'white',  marginTop:'10px' , marginRight: '10px', paddingLeft: '8px',paddingRight:'8px', border: '1px solid #efefef', fontSize:'15px'}}
-          onClick={() => toggle()}
+          onClick={() => setShowHelpPage(true)}
 
 
         >
@@ -303,7 +310,7 @@ function chunkArrayInSix(array) {
     <button
           type="button"
           style={{ backgroundColor: "#5283A3", color:'white',  marginTop:'10px' , marginRight: '10px', paddingLeft: '8px',paddingRight:'8px', border: '1px solid #efefef', fontSize:'15px'}}
-          onClick={() => toggle()}
+          onClick={() =>  setShowHelpPage(true)}
 
 
         >
@@ -326,55 +333,78 @@ function chunkArrayInSix(array) {
         >
          View and Select Fields
         </button>: null}
-  </div>
+  </div>):(
+
+<HelpSection/>
+
+  )
 )
  : (
-        <>
 
-{ isScreenSmall ?
-        <a href="/" style={{marginBottom:'20px'}}>Go to Homepage </a>
-       : null}
+  <>
+  {isScreenSmall && (
+    <a href="/" style={{ marginBottom: '30px', color: '#007bff', textDecoration: 'none', fontSize: '18px', display: 'block', textAlign: 'center', fontWeight: 'bold' }}>
+      ← Go to Homepage
+    </a>
+  )}
 
-     
+  <div style={{ fontSize: '18px', color: '#333', marginBottom: '20px', borderBottom: '2px solid #eee', paddingBottom: '15px' }}>
+    <strong>Selected field:</strong>
+    {selectedFormField.href && selectedFormField.title && (
+      <span style={{ fontWeight: 'bold', marginLeft: '5px', color: '#5283A3' }}>
+        {selectedFormField.title} (Field No {selectedFormField.href})
+      </span>
+    )}
+  </div>
 
-<span style={{fontSize: '16px'}}><strong>Selected field:</strong>  {selectedFormField.href && selectedFormField.title && (
-           <span><strong>{selectedFormField.title} (Field No {selectedFormField.href})</strong></span>
-          )}</span>
+  <div style={{ fontSize: '16px', lineHeight: '1.6', marginBottom: '25px' }}>
+    {selectedFormField.idsrQListing.title && (
+      <p style={{ marginBottom: '10px' }}><strong>Form: </strong>{selectedFormField.idsrQListing.title}</p>
+    )}
 
-        <div style={{ fontSize: '16px', lineHeight: '35px' }}>
-         
-          {selectedFormField.idsrQListing.title && (
-            <><strong>Form: </strong>{selectedFormField.idsrQListing.title}<br /></>
-          )}
+    {selectedFormField.elemDescr && (
+      <p style={{ marginBottom: '10px' }}><strong>Description:</strong> {selectedFormField.elemDescr}</p>
+    )}
 
+    {selectedFormField.rationale !== 0 && (
+      <p style={{ marginBottom: '10px' }}><strong>Rationale:</strong> {selectedFormField.rationale}</p>
+    )}
+  </div>
 
-
-          {selectedFormField.elemDescr && (
-            <><strong>Description:</strong> {selectedFormField.elemDescr}<br /></>
-          )}
-
-         
-        
-
-
-     <div >
-          {selectedFormField.qOptions.length!=0 && <QuestionnaireOptions qOptions={chunkArrayInSix(selectedFormField.qOptions)} total={selectedFormField.qOptions.length} />} </div>
-        </div></>
-      )}
-<br/>
-{selectedFormField  !== null && <CollapsibleDiv selectedFormField={selectedFormField} />}
-{selectedFormField !== null && selectedFormField.elemQuestion.length !=0 && <Resources total={selectedFormField.elemQuestion.length} setSynContext={setSynContext} setSemContext={setSemContext}  questions={ chunkArrayInThrees(selectedFormField.elemQuestion)} chatQuestion={chatQuestion} setChatQuestion={setChatQuestion} setCurrentKnowledgeBase={setCurrentKnowledgeBase}/>}
-{/*selectedFormField !== null && selectedFormField.elemQuestion.length == 0 &&<div>
-<Heading level={2} id="resources" className="mt-20">Frequently Asked Questions</Heading>
-<div className="my-16 xl:max-w-none border-t border-zinc-900/5  mt-5" font-family='Inter' >
-          <p style={{fontSize:'16px'}} className='text-gray-500'>There are currently no questions about this field in our database. This could be because this field is straightforward  to fill in.</p></div></div>*/}
-
-      {selectedFormField !== null && userChat(chatQuestion,currentKnowledgeBase,setCurrentKnowledgeBase)}
-
-      {selectedFormField !== null && currentSession != 'NONE' && filterBySession(chatLogs, currentSession).length > 0 ? <ChatHistory context={currentKnowledgeBase} field={selectedFormField.title} historyData={filterBySession(chatLogs, currentSession)} /> : null}
-
-
+  {selectedFormField.qOptions.length !== 0 && (
+    <div style={{ marginBottom: '30px', borderTop: '1px dashed #ccc', paddingTop: '20px' }}>
+      <QuestionnaireOptions qOptions={chunkArrayInSix(selectedFormField.qOptions)} total={selectedFormField.qOptions.length} />
     </div>
+  )}
+
+  {selectedFormField !== null && <CollapsibleDiv selectedFormField={selectedFormField} />}
+
+  {selectedFormField !== null && selectedFormField.elemQuestion.length !== 0 && (
+    <Resources
+      autoId={predefinedAutoId}
+      setAutoId={setPredefinedAutoId}
+      total={selectedFormField.elemQuestion.length}
+      setSynContext={setSynContext}
+      setSemContext={setSemContext}
+      questions={chunkArrayInThrees(selectedFormField.elemQuestion)}
+      chatQuestion={chatQuestion}
+      setChatQuestion={setChatQuestion}
+      setCurrentKnowledgeBase={setCurrentKnowledgeBase}
+    />
+  )}
+
+  {selectedFormField !== null && userChat(predefinedAutoId, chatQuestion, currentKnowledgeBase, setCurrentKnowledgeBase)}
+
+  {selectedFormField !== null && currentSession !== 'NONE' && filterBySession(chatLogs, currentSession).length > 0 && (
+    <div style={{ marginTop: '30px', borderTop: '1px solid #ccc', paddingTop: '20px' }}>
+      <ChatHistory context={currentKnowledgeBase} field={selectedFormField.title} historyData={filterBySession(chatLogs, currentSession)} />
+    </div>
+  )}
+</>
+
+
+      )}
+   </div>
   
   );
 };

@@ -7,6 +7,11 @@ const mainStore = create((set) => ({
   isOpen: false,
   currentSession: 'NONE', 
   chatLogs:null,
+  showHelpPage: null,
+
+  setShowHelpPage: (value) => set((state) => ({
+    showHelpPage: value
+  })),
 
   setChatLogs: (value) => set((state) => ({
    chatLogs: value

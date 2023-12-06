@@ -227,7 +227,8 @@ function transformData(data) {
         semContext: input.semContext,
         synContext: input.synContext,
         category: input.category,
-        extraContentAnswer: input.extraContentAnswer
+        extraContentAnswer: input.extraContentAnswer,
+        predefinedId: input.autoID
     }));
 }
 
@@ -240,7 +241,7 @@ function transformData(data) {
     idsrQListing: item.idsrQListing,
     qOptions: item.qOptions,
     elemQuestion: item.elemQuestion.length !=0? convertQuestions(item.elemQuestion):[],  
-
+    rationale: item.rationale !== undefined ? item.rationale : 0
   }));
 
   return [
@@ -335,14 +336,14 @@ export function Navigation(props) {
         const data = await response.json();
     
         // Filter the logs by a specific session
-      //  const filteredData = data.filter(log => log.session === '2498bf5c-481d-4eb8-b20b-b1eee4aab8ee');
+        const filteredData = data.filter(log => log.session === 'ecfd620e-f25c-42ca-ad23-707fd8c6bf9e');
     
         setChatLogs(data);
-       // console.log('Filtered Logs:', filteredData);
+        console.log('Filtered Logs:', filteredData);
     
-        // Convert filtered JSON to CSV
-       // const csvString = jsonToCSV(filteredData);
-      /*  if (csvString) {
+        //Convert filtered JSON to CSV
+     /*  const csvString = jsonToCSV(filteredData);
+       if (csvString) {
           // Create a Blob from the CSV String
           const blob = new Blob([csvString], { type: 'text/csv' });
     
@@ -360,22 +361,50 @@ export function Navigation(props) {
       }
     };
     
+
+    function formatData(str) {
+      if (!str || typeof str !== 'string') return str;
+      // Remove HTML tags
+      let formattedStr = str.replace(/<\/?[^>]+(>|$)/g, "");
+      // Remove newline characters
+      formattedStr = formattedStr.replace(/\n/g, "");
+      // Escape double quotes
+      formattedStr = formattedStr.replace(/"/g, '""');
+      return formattedStr;
+    }
     
-    // Function to convert JSON to CSV
+    
     const jsonToCSV = (json) => {
       if (json.length === 0) {
         return null;
       }
     
-      const columns = Object.keys(json[0]);
-      const header = columns.join(',');
+      let columns = Object.keys(json[0]);
+    
+      // Move 'answer' to the end if it exists
+      const answerIndex = columns.indexOf('answer');
+      if (answerIndex > -1) {
+        columns.splice(answerIndex, 1);
+        columns.push('answer');
+      }
+    
+      // Create the CSV header
+      const header = columns.map(col => `"${col}"`).join(',');
+    
+      // Map each object to a CSV row
       const rows = json.map(obj =>
-        columns.map(col => JSON.stringify(obj[col], (_, value) => 
-          typeof value === 'string' ? value.replace(/"/g, '""') : value)).join(',')
+        columns.map(col => {
+          // Apply consistent data formatting
+          const value = formatData(obj[col]);
+          return `"${value}"`; // Enclose each field in quotes
+        }).join(',')
       );
     
       return [header, ...rows].join('\r\n');
     };
+    
+    
+    
     
 
     // Function to handle session key

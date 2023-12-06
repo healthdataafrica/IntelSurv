@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Image from 'next/image';
 import Cursor from '../components/icons/cursor.jsx'
 import store from "../stores/store";
+import { pre } from "./mdx.jsx";
  
 
 
@@ -106,7 +107,7 @@ const Loader = () => {
 
 
 
-export const ChatWindow = ({ element,field,chatQuestion,currentKnowledgeBase,synContext,semContext, askYourOwnQuestion}) => {
+export const ChatWindow = ({ autoId,element,field,chatQuestion,currentKnowledgeBase,synContext,semContext, askYourOwnQuestion}) => {
   const [chatLoading, setChatLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState([]);
@@ -118,6 +119,35 @@ export const ChatWindow = ({ element,field,chatQuestion,currentKnowledgeBase,syn
 
   const messagesEndRef = useRef(null);
   const messagesEndRef2 = useRef(null);
+
+  function debugStringComparison(str1, str2) {
+    // Function to replace typographic quotes with standard quotes
+    function standardizeQuotes(str) {
+        return str.replace(/[\u201C\u201D\u201E\u201F\u2033\u2036]/g, '"')
+                  .replace(/[\u2018\u2019\u201A\u201B\u2032\u2035]/g, "'");
+    }
+
+    // Standardize quotes and trim whitespace
+    let standardizedStr1 = standardizeQuotes(str1.trim());
+    let standardizedStr2 = standardizeQuotes(str2.trim());
+
+    // Check if lengths are different
+    if (standardizedStr1.length !== standardizedStr2.length) {
+        console.log("Strings differ in length");
+        return false;
+    }
+
+    // Compare character by character
+    for (let i = 0; i < standardizedStr1.length; i++) {
+        if (standardizedStr1[i] !== standardizedStr2[i]) {
+            console.log(`Difference at position ${i}: '${standardizedStr1[i]}' (${standardizedStr1.charCodeAt(i)}) vs '${standardizedStr2[i]}' (${standardizedStr2.charCodeAt(i)})`);
+            return false;
+        }
+    }
+
+    console.log("Strings are identical");
+    return true;
+}
 
   const fetchLogs = async () => {
     try {
@@ -254,8 +284,22 @@ useEffect(() => {
     predefined:0, */
 
     const unixTimestamp = (Math.floor(Date.now() / 1000)).toString();
+    var predefined = 0;
+  
 
-    const log  =  await addChatLog(element, field,
+    console.log('Q1', chatQuestion);
+    console.log('Q2',inputValue);
+    console.log('Q3',autoId);
+
+
+
+    
+   if( debugStringComparison(chatQuestion, inputValue) == true){
+     predefined = autoId;
+    }
+
+
+    const log  =  await addChatLog( predefined, element, field,
      unixTimestamp, currentSession, currentKnowledgeBase,userInput, response
     );
 
