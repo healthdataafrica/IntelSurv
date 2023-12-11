@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import { motion, useMotionTemplate, useMotionValue } from 'framer-motion'
 import { useRef,useState,useEffect } from 'react'
-import { GridPattern } from '@/components/GridPattern'
-import { Heading } from '@/components/Heading'
+import  GridPattern from '@/components/GridPattern'
+import  {Heading}  from '@/components/Heading'
 import { ChatBubbleIcon } from '@/components/icons/ChatBubbleIcon'
 import { EnvelopeIcon } from '@/components/icons/EnvelopeIcon'
 import { UserIcon } from '@/components/icons/UserIcon'
@@ -169,7 +169,7 @@ function handlePrevious(questionsIndex,setQuestionsIndex) {
  setQuestionsIndex(nextValue);
 }
 
-export function Resources({autoId, setAutoId,questions,chatQuestion,setChatQuestion,total,setCurrentKnowledgeBase,setSynContext, setSemContext }) {
+ function Resources({autoId, setAutoId,questions,chatQuestion,setChatQuestion,total,setCurrentKnowledgeBase,setSynContext, setSemContext }) {
   const [selectedId, setSelectedId] = useState(null)
   const [questionsIndex, setQuestionsIndex] = useState(0)
 
@@ -210,3 +210,5 @@ export function Resources({autoId, setAutoId,questions,chatQuestion,setChatQuest
 
   
 }
+
+export default Resources;

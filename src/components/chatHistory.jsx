@@ -1,135 +1,54 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import { HistoryHeader } from "./HistoryHeader";
+import { QuestionItem } from "./QuestionItem";
+import { useRef,useState,useEffect } from 'react'
 
 
-  
- export const ChatHistory = ({ historyData }) => {
-    const [expandedItems, setExpandedItems] = useState({});
-    const [expandAll, setExpandAll] = useState(false);
+function ChatHistory({ historyData }) {
 
-    const [isHistoryExpanded, setHistoryExpanded] = useState(false);
+  const [expandedItems, setExpandedItems] = useState({});
+  const [expandAll, setExpandAll] = useState(false);
+  const [isHistoryExpanded, setHistoryExpanded] = useState(false);
 
-    function removeHtmlTags(str) {
-        return str.replace(/<[^>]*>/g, '');
-      } 
-      function TimestampConverter({ time }) {
-        // Convert the string Unix timestamp to a number
-        const timestamp = parseInt(time);
-    
-        // Convert it back to a readable date
-        const date = new Date(timestamp * 1000);
-        const readableDate = date.toString(); // or any other format you prefer
-    
-        return <>{readableDate}</>;
-    }
-    
-    
-    const HistoryHeader = ({ onClick, isHistoryExpanded }) => (
-        isHistoryExpanded 
-          ?  <button
-          type="button"
-          style={{  backgroundColor: "#5283A3", color:'white',    marginTop:'10px' , marginRight: '10px', paddingLeft: '8px',paddingRight:'8px', border: '1px solid #5283A3 ', fontSize:'15px'}}
-          onClick={() => setHistoryExpanded(!isHistoryExpanded)}
-
-
-        >
-      Click to Hide
-        </button>
-          :   <button
-          type="button"
-          style={{  backgroundColor: "#5283A3", color:'white',    marginTop:'10px' , marginRight: '10px', paddingLeft: '8px',paddingRight:'8px', border: '1px solid #5283A3 ', fontSize:'15px'}}
-          onClick={() => setHistoryExpanded(!isHistoryExpanded)}
-
-        >
-        Click to Show
-        </button>
-
-        
-
-        
-      );
-      
-      
-   
-
-      const QuestionItem = ({field, context,logID, question, answer, toggleAnswer, isExpanded,index,session,time }) => (
-        <div>
-        <span style={{display: 'inline-flex', alignItems: 'center', justifyContent: 'center'}}>
-    <p style={{ cursor: 'pointer', fontSize: '17px', margin: '0', display: 'flex', alignItems: 'center' }} onClick={() => toggleAnswer(logID)}>
-        <span style={{fontWeight: '600'}}>Question {index}</span> 
-    </p> : <span  style={{ cursor: 'pointer',paddingLeft:'5px',}} onClick={() => toggleAnswer(logID)}>  {question}</span>
-    {isExpanded ? <img 
-        style={{marginLeft: '10px', width: "18px", height: "18px"}} 
-        src="/arrow-up.png" 
-        alt="" 
-    />: <img 
-    style={{marginLeft: '10px', width: "24px", height: "24px"}} 
-    src="/downward-arrow.png" 
-    alt="" 
-/>}
-</span> 
-
-
-
-          {isExpanded || expandAll? <><p style={{paddingLeft:'35px',fontSize:'17px'}}><span style={{fontSize:'14px'}}><strong>SESSION ID : </strong>{session}<br/> <strong>TIME & DATE: </strong>{TimestampConverter({ time })}<br/><strong>FIELD NAME : </strong> {field} <strong><br/>CONTEXT : </strong>{context}</span><br/><br/><span style={{fontWeight:'600' }}>Answer : </span>{removeHtmlTags(answer)}</p>
-            
-     
-          </>
-          
-          
-          
-          :<></>
-          
-          }
-        </div>
-        
-      );
-      
-      
-    
   const toggleAnswer = (logID) => {
-    setExpandedItems(prev => ({ ...prev, [logID]: !prev[logID] }));
+      setExpandedItems(prev => ({ ...prev, [logID]: !prev[logID] }));
   };
-    
-      return (
-        <div>
-            <h2>Your Chat History</h2>
-      <HistoryHeader isHistoryExpanded={isHistoryExpanded} />
+  const toggleExpandAll = () => {
+    setExpandAll(prevState => !prevState);
+};
+
+
+ 
+
+  return (
+    <div style={{ padding: '20px' }}>
+    <h2 style={{ color: '#333' }}>Your Chat History</h2>
+    <div style={{ marginBottom: '20px' }}>
+        <HistoryHeader 
+            isHistoryExpanded={isHistoryExpanded} toggleExpandAll={toggleExpandAll} expandAll={expandAll}
+            toggleHistory={() => setHistoryExpanded(!isHistoryExpanded)}
+        />
       
-      { expandAll ?<button
-          type="button"
-          style={{  backgroundColor: "#5283A3", color:'white',    marginTop:'10px' , marginRight: '10px', paddingLeft: '8px',paddingRight:'8px', border: '1px solid #5283A3 ', fontSize:'15px'}}
-          onClick={() => setExpandAll(!expandAll)}
+    </div><br/><br/>
+          {isHistoryExpanded && historyData.map((data, index) => (
 
-        >
-        Unexpand All
-        </button> :  <button
-          type="button"
-          style={{  backgroundColor: "#5283A3", color:'white',    marginTop:'10px' , marginRight: '10px', paddingLeft: '8px',paddingRight:'8px', border: '1px solid #5283A3 ', fontSize:'15px'}}
-          onClick={() => setExpandAll(!expandAll)}
+              <QuestionItem
+                  key={data.logID}
+                  data={data}
+                  field={data.fieldName}
+                  logID={data.logID}
 
-        >
-        Expand All
-        </button> }
-      
+context={data.context}
+session={data.session}
+time={data.timestamp}
+                  index={index}
+                  isExpanded={expandAll || !!expandedItems[data.logID]}
 
-      <br/>  <br/>
-      
-      {isHistoryExpanded && historyData.map(({ fieldName,logID, question, answer,context,session,timestamp }, index) => (
-            <QuestionItem
-
-            field={fieldName}
-            index ={index + 1}
-            context={context}
-            session={session}
-            time={timestamp}
-              key={logID}
-              logID={logID}
-              question={question}
-              answer={answer}
-              isExpanded={!!expandedItems[logID]}
-              toggleAnswer={toggleAnswer}
-            />
+                  toggleAnswer={toggleAnswer}
+              />
           ))}
-        </div>
-      );
-    };
+      </div>
+  );
+}
+
+
+export {ChatHistory};

@@ -55,7 +55,7 @@ function Anchor({ id, inView, children }) {
   )
 }
 
-export function Heading({
+function Heading({
   level = 2,
   children,
   id,
@@ -94,3 +94,4 @@ export function Heading({
     </>
   )
 }
+export { Heading };

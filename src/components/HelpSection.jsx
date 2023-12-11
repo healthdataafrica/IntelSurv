@@ -3,7 +3,7 @@ import React from 'react';
 import { useRef,useState,useEffect } from 'react'
 
 
-const HelpSection = () => {
+function HelpSection () {
 
     const [isScreenSmall, setIsScreenSmall] = useState(null); 
 

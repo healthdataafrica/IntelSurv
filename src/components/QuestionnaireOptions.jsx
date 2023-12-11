@@ -33,7 +33,7 @@ function handleNext(optionsIndex,setOptionsIndex) {
  }
 
 
-function QuestionnaireOptions({ qOptions,total }) {
+function QuestionnaireOptions({ qOptions,total }){
     const [optionsIndex, setOptionsIndex] = useState(0);
 
    
@@ -78,7 +78,6 @@ function QuestionnaireOptions({ qOptions,total }) {
 }
 
 export default QuestionnaireOptions;
-
 
 // import React, { useState } from "react";
 // import { Button } from "./Button";

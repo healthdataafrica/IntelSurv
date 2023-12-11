@@ -3,7 +3,7 @@ import { getChatCompletions } from "@/helpers/getChatCompletions";
 import { animateScroll } from "react-scroll";
 
 
-export const ChooseKnowledgeBase = ({currentKnowledgeBase, setCurrentKnowledgeBase, setSemContext, setSynContext}) => {
+function ChooseKnowledgeBase ({currentKnowledgeBase, setCurrentKnowledgeBase, setSemContext, setSynContext}) {
 
     console.log(currentKnowledgeBase);
 
@@ -102,3 +102,6 @@ export const ChooseKnowledgeBase = ({currentKnowledgeBase, setCurrentKnowledgeBa
   </>
   );
 };
+
+
+export {ChooseKnowledgeBase };

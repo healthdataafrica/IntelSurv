@@ -5,8 +5,8 @@ import { animateScroll } from "react-scroll";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Image from 'next/image';
-import Cursor from '../components/icons/cursor.jsx'
-import store from "../stores/store";
+import Cursor from './icons/cursor.jsx'
+import store from "../stores/store.js";
 import { pre } from "./mdx.jsx";
  
 
@@ -107,7 +107,7 @@ const Loader = () => {
 
 
 
-export const ChatWindow = ({ autoId,element,field,chatQuestion,currentKnowledgeBase,synContext,semContext, askYourOwnQuestion}) => {
+function ChatWindow ({ autoId,element,field,chatQuestion,currentKnowledgeBase,synContext,semContext, askYourOwnQuestion})  {
   const [chatLoading, setChatLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState([]);
@@ -441,3 +441,5 @@ useEffect(() => {
     </>
   );
 };
+
+export { ChatWindow };
