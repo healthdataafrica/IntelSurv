@@ -33,12 +33,18 @@ export default withMDX({
         (plugin) => plugin instanceof GenerateSW
       );
 
-      // If not added already, add GenerateSW
+      // If not added already, add GenerateSW with configuration
       if (!hasGenerateSW) {
         config.plugins.push(
           new GenerateSW({
             // Configure your service worker here
             // You can specify cache strategies, routes to cache, etc.
+            // Example:
+            clientsClaim: true,
+            skipWaiting: true,
+            swDest: 'public/sw.js', // Specify the output path
+ 
+            // Add more configuration options as needed
           })
         );
       }
