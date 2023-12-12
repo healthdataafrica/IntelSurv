@@ -30,20 +30,6 @@ function IndexPage () {
   let isInsideMobileNavigation = useIsInsideMobileNavigation()
 
 
-  useEffect(() => {
-    // Check if service workers are supported by the browser
-    if ('serviceWorker' in navigator) {
-      // Register the service worker
-      navigator.serviceWorker
-        .register('/sw.mjs') // Replace with the correct path to your service worker file
-        .then((registration) => {
-          console.log('Service Worker registered with scope:', registration.scope);
-        })
-        .catch((error) => {
-          console.error('Service Worker registration failed:', error);
-        });
-    }
-  }, []);
 
   useEffect(() => {
     function handleResize() {
