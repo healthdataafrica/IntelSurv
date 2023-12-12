@@ -36,6 +36,8 @@ export default function App({ Component, pageProps }) {
           <title>IntelSurv - An Intelligent Disease Survellance Feedback System</title>
         )}
         <meta name="description" content={pageProps.description} />
+        <script type="module" src="/sw.mjs"></script>
+
       </Head>
       <MDXProvider components={mdxComponents}>
         <Layout {...pageProps}>
