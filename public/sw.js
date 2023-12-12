@@ -1,26 +1,26 @@
 // sw.js
 
-import { precacheAndRoute } from 'workbox-precaching';
-import { registerRoute, setCatchHandler } from 'workbox-routing';
-import { CacheFirst, NetworkFirst } from 'workbox-strategies';
-
 // Log a message when the service worker file is executed
 console.log('Service Worker is executing...');
 
-precacheAndRoute(self.__WB_MANIFEST);
+// Include Workbox directly using script tags
+importScripts('https://storage.googleapis.com/workbox-cdn/releases/7.1.1/workbox-sw.js');
+
+// Precache and route assets
+workbox.precaching.precacheAndRoute(self.__WB_MANIFEST);
 
 // Cache assets using CacheFirst strategy
-registerRoute(
+workbox.routing.registerRoute(
   /\.(js|css|html|png|jpg|jpeg|gif|svg|ico)$/,
-  new CacheFirst({
+  new workbox.strategies.CacheFirst({
     cacheName: 'app-assets',
   })
 );
 
-// Register a route for your dynamic API request using NetworkFirst strategy
-registerRoute(
+// Register a route for dynamic API requests using NetworkFirst strategy
+workbox.routing.registerRoute(
   ({ url }) => url.origin === 'https://us-central1-questmap-mubas.cloudfunctions.net' && url.pathname.startsWith('/getIdsrElements'),
-  new NetworkFirst({
+  new workbox.strategies.NetworkFirst({
     cacheName: 'api-data', // Name of the cache
     networkTimeoutSeconds: 5, // Timeout for network requests
     plugins: [
@@ -41,7 +41,7 @@ registerRoute(
 );
 
 // Fallback for offline pages
-setCatchHandler(({ event }) => {
+workbox.routing.setCatchHandler(({ event }) => {
   if (event.request.mode === 'navigate') {
     console.log('Fallback for offline navigation:', event.request.url);
     return caches.match('/offline.html');
