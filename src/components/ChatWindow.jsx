@@ -114,6 +114,8 @@ function ChatWindow ({ autoId,element,field,chatQuestion,currentKnowledgeBase,sy
   const [completedTyping, setCompletedTyping] = useState(false);
   const { mainStore } = store;
   const {currentSession, setCurrentSession, setChatLogs } = mainStore();
+  const [isOnline, setIsOnline] = useState(false);
+
 
 
   const messagesEndRef = useRef(null);
@@ -249,8 +251,9 @@ useEffect(() => {
 
 
   async function sendMessage() {
+    window.addEventListener('online',setIsOnline);
 
-    if(isOnline){window.addEventListener('online', handleOnline);
+    if(isOnline){
 
     setChatLoading(true);
 
@@ -314,6 +317,9 @@ useEffect(() => {
       toast.error(`This question requires an internet connection`); // Display the error message
 
     }
+    //window.removeEventListener('online', handleOnline);
+
+    
 
     
   }

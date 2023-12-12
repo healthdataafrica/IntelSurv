@@ -41,7 +41,6 @@ export default function App({ Component, pageProps }) {
       <MDXProvider components={mdxComponents}>
         <Layout {...pageProps}>
           <Component {...pageProps} />
-          <ToastContainer />
           </Layout>
           <ToastContainer position="top-center" autoClose={5000} />
 
