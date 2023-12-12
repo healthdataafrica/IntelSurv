@@ -60,7 +60,7 @@ function GettingStarted ({ isScreenSmall, toggle, setShowHelpPage, showHelpPage 
             <h1 style={styles.header}>Getting Started</h1>
             <div style={styles.paragraph}>
                 <p className='dark:text-white'>
-                    Hello, I am <a href="#" style={styles.link}>IntelSurv</a>, your AI assistant for disease surveillance data collection...
+                Hello, I am <a href="#" style={styles.link}>IntelSurv</a>, your AI assistant for disease surveillance data collection. I’m currently trained for the Malawi Integrated Disease Surveillance system, but I’m continuously learning to support data collection in other countries as well.
                 </p>
 
                 <p className='dark:text-white'>You can ask me 3 kinds of questions:</p>

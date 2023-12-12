@@ -1,18 +1,32 @@
 {
+    "theme_color": "#5283a3",
+    "background_color": "#fffff",
+    "display": "standalone",
+    "scope": "/",
+    "start_url": "/",
     "name": "IntelSurv",
     "short_name": "IntelSurv",
-    "start_url": "/",
-    "display": "standalone",
-    "theme_color": "#ffffff",
-    "background_color": "#FFFFFF",
-    "description": "I am IntelSurv, your AI assistant for disease surveillance data collection. I’m currently trained for the Malawi Integrated Disease Surveillance system, but I’m continuously learning to support data collection in other countries as well.",
+    "description": " I am IntelSurv, your AI assistant for disease surveillance data collection. I\u2019m currently trained for the Malawi Integrated Disease Surveillance system, but I\u2019m continuously learning to support data collection in other countries as well.",
     "icons": [
-      {
-        "src": "/launcher.jpg",
-        "sizes": "225x225",
-        "type": "image/jpg"
-      }
-     
+        {
+            "src": "/icon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/icon-256x256.png",
+            "sizes": "256x256",
+            "type": "image/png"
+        },
+        {
+            "src": "/icon-384x384.png",
+            "sizes": "384x384",
+            "type": "image/png"
+        },
+        {
+            "src": "/icon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
     ]
-  }
-  
+}
