@@ -1,19 +1,15 @@
-// next.config.mjs
-
 import nextMDX from '@next/mdx';
 import { remarkPlugins } from './mdx/remark.mjs';
 import { rehypePlugins } from './mdx/rehype.mjs';
 import { recmaPlugins } from './mdx/recma.mjs';
-import { GenerateSW } from 'workbox-webpack-plugin'; // Import GenerateSW
-
-const mdxOptions = {
-  remarkPlugins,
-  rehypePlugins,
-  recmaPlugins,
-};
+import withPWA from 'next-pwa';
 
 const withMDX = nextMDX({
-  options: mdxOptions,
+  options: {
+    remarkPlugins,
+    rehypePlugins,
+    recmaPlugins,
+  },
 });
 
 const nextConfig = {
@@ -24,30 +20,11 @@ const nextConfig = {
   },
 };
 
-export default withMDX({
-  ...nextConfig,
-  webpack(config, { isServer }) {
-    if (!isServer) {
-      // Check if GenerateSW has already been added
-      const hasGenerateSW = config.plugins.some(
-        (plugin) => plugin instanceof GenerateSW
-      );
+const pwaConfig = {
+  dest: 'public',
+  register: true,
+  skipWaiting: true,
+  // Use default runtimeCaching provided by next-pwa
+};
 
-      // If not added already, add GenerateSW with configuration
-      if (!hasGenerateSW) {
-        config.plugins.push(
-          new GenerateSW({
-            // Configure your service worker here
-            // You can specify cache strategies, routes to cache, etc.
-            // Example:
-            clientsClaim: true,
-            skipWaiting: true,
- 
-            // Add more configuration options as needed
-          })
-        );
-      }
-    }
-    return config;
-  },
-});
+export default withPWA(pwaConfig)(withMDX(nextConfig));
