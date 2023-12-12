@@ -35,7 +35,7 @@ function IndexPage () {
     if ('serviceWorker' in navigator) {
       // Register the service worker
       navigator.serviceWorker
-        .register('/sw.js') // Replace with the correct path to your service worker file
+        .register('/sw.mjs') // Replace with the correct path to your service worker file
         .then((registration) => {
           console.log('Service Worker registered with scope:', registration.scope);
         })
