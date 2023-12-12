@@ -3,6 +3,7 @@ import { getChatCompletions } from "@/helpers/getChatCompletions";
 import { addChatLog } from "@/helpers/addChatLog.js";
 import { animateScroll } from "react-scroll";
 import { ToastContainer, toast } from 'react-toastify';
+import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import Image from 'next/image';
 import Cursor from '../components/icons/cursor.jsx'
@@ -119,6 +120,27 @@ function ChatWindow ({ autoId,element,field,chatQuestion,currentKnowledgeBase,sy
 
   const messagesEndRef = useRef(null);
   const messagesEndRef2 = useRef(null);
+
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+
+  useEffect(() => {
+    function handleOnline() {
+      setIsOnline(true);
+    }
+
+    function handleOffline() {
+      setIsOnline(false);
+    }
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
 
   function debugStringComparison(str1, str2) {
     // Function to replace typographic quotes with standard quotes
@@ -262,6 +284,8 @@ useEffect(() => {
    console.log('currentKnowledgeBase:',currentKnowledgeBase);
     console.log('semContext:',  semContext);
     console.log('synContext', synContext);
+
+    if(isOnline){
     
     const response = await getChatCompletions(
       userInput,
@@ -304,6 +328,11 @@ useEffect(() => {
     );
 
    await fetchLogs();
+    }else{
+
+      toast.error(`This question requires an internet connection`); // Display the error message
+
+    }
 
     
   }

@@ -12,6 +12,8 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 import styles from '../styles/style.css';
+import { ToastContainer, toast } from "react-toastify";
+
 
 
 
@@ -43,6 +45,8 @@ export default function App({ Component, pageProps }) {
           <Component {...pageProps} />
           <ToastContainer />
           </Layout>
+          <ToastContainer position="top-center" autoClose={5000} />
+
       </MDXProvider>
     </>
   )
