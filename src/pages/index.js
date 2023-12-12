@@ -10,6 +10,7 @@ import ChatWindow  from "@/components/ChatWindow";
 import ChooseKnowledgeBase  from '@/components/ChooseKnowledgeBase';
 import { useMobileNavigationStore } from '@/components/MobileNavigation';
 import { useIsInsideMobileNavigation } from '@/components/MobileNavigation';
+import ChatHistory from  "@/components/ChatHistory";
 import HelpSection from '@/components/HelpSection';
 import GettingStarted from '@/components/GettingStarted';
 import FormFieldDetails from '@/components/FormFieldDetails';
