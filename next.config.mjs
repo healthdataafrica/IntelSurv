@@ -42,7 +42,6 @@ export default withMDX({
             // Example:
             clientsClaim: true,
             skipWaiting: true,
-            swDest: 'public/sw.js', // Specify the output path
  
             // Add more configuration options as needed
           })
