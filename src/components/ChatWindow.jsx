@@ -119,26 +119,6 @@ function ChatWindow ({ autoId,element,field,chatQuestion,currentKnowledgeBase,sy
   const messagesEndRef = useRef(null);
   const messagesEndRef2 = useRef(null);
 
-  const [isOnline, setIsOnline] = useState(navigator.onLine);
-
-  useEffect(() => {
-    function handleOnline() {
-      setIsOnline(true);
-    }
-
-    function handleOffline() {
-      setIsOnline(false);
-    }
-
-    window.addEventListener('online', handleOnline);
-    window.addEventListener('offline', handleOffline);
-
-    // Cleanup
-    return () => {
-      window.removeEventListener('online', handleOnline);
-      window.removeEventListener('offline', handleOffline);
-    };
-  }, []);
 
   function debugStringComparison(str1, str2) {
     // Function to replace typographic quotes with standard quotes
@@ -269,6 +249,9 @@ useEffect(() => {
 
 
   async function sendMessage() {
+
+    if(isOnline){window.addEventListener('online', handleOnline);
+
     setChatLoading(true);
 
     const userInput = inputValue;
@@ -283,7 +266,7 @@ useEffect(() => {
     console.log('semContext:',  semContext);
     console.log('synContext', synContext);
 
-    if(isOnline){
+    
     
     const response = await getChatCompletions(
       userInput,
