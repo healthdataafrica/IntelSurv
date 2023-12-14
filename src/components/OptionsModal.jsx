@@ -52,4 +52,4 @@ function OptionsModal({ option, isOpen, closeModal }) {
     );
 }
 
-export default OptionsModal;
+export {OptionsModal};

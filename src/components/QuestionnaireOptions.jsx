@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from "./Button";
-import OptionsModal from './OptionsModal';
+import {OptionsModal} from './OptionsModal';
 
 function QuestionnaireOptions({ options, qOptions, total }) {
     const [optionsIndex, setOptionsIndex] = useState(0);
