@@ -1,44 +1,44 @@
-// import React from "react";
-// import { Button } from "./Button";
-
-// function QuestionnaireOptions({ idsrQListing }) {
-//     const qOptions = idsrQListing?.selectedFormField?.qOptions || [];
-
-//     return (
-//         <div>
-//             <div className="prose mb-16 mt-6 flex gap-3">
-//                 {qOptions.map((option) => (
-//                     <Button key={option.oID} href="/sdks" variant="outline">
-//                         {option.OText}
-//                     </Button>
-//                 ))}
-//             </div>
-//         </div>
-//     );
-// }
-
-// export default QuestionnaireOptions;
-
-
-import { useRef,useState,useEffect } from 'react'
+import React, { useState } from 'react';
 import { Button } from "./Button";
+import OptionsModal from './OptionsModal';
 
-function handleNext(optionsIndex,setOptionsIndex) {
-    const nextValue = optionsIndex +  1; 
-   setOptionsIndex(nextValue);
- }
- function handlePrevious(optionsIndex,setOptionsIndex) {
-   const nextValue = optionsIndex -  1; 
-  setOptionsIndex(nextValue);
- }
-
-
-function QuestionnaireOptions({ qOptions,total }){
+function QuestionnaireOptions({ options, qOptions, total }) {
     const [optionsIndex, setOptionsIndex] = useState(0);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [foundOption, setFoundOption] = useState({});
 
-   
 
+    function findOptionByOText(options, oText) {
+        // Trim and convert both the search text and the oText value to lower case (or upper case)
+        const normalizedSearchText = oText.trim().toLowerCase();
+    
+        return options.find(option => option.oText.trim().toLowerCase() === normalizedSearchText);
+    }
 
+    const handleNext = () => {
+        setOptionsIndex(prev => prev + 1);
+    };
+
+    const handlePrevious = () => {
+        setOptionsIndex(prev => prev - 1);
+    };
+
+    const openModal = (text) => {
+        if(options !=0 ){
+      
+       
+        const foundOption = findOptionByOText(options, text);
+        setFoundOption(foundOption);
+        setIsModalOpen(true);
+         
+        }
+    };
+
+    const closeModal = () => {      
+     
+        setIsModalOpen(false);     
+        
+    };
 
     return (
         <>
@@ -47,7 +47,8 @@ function QuestionnaireOptions({ qOptions,total }){
 
             <div style={{marginTop:'15px',color:'#5283A3'}} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-3">
                 {qOptions[optionsIndex].map((option) => (
-                    <Button
+                    <Button  onClick={() => openModal(option.OText)}
+ 
                         key={option.oID}
                       
                         variant="outline"
@@ -73,6 +74,7 @@ function QuestionnaireOptions({ qOptions,total }){
     NEXT OPTIONS
 </button>}
 </div>
+<OptionsModal option={foundOption}  isOpen={isModalOpen} closeModal={closeModal} />
         </>
     );
 }

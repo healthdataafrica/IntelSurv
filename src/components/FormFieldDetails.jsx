@@ -130,7 +130,7 @@ function FormFieldDetails({
             paddingTop: "20px",
           }}
         >
-          <QuestionnaireOptions
+          <QuestionnaireOptions options={selectedFormField.options}
             qOptions={chunkArrayInSix(selectedFormField.qOptions)}
             total={selectedFormField.qOptions.length}
           />

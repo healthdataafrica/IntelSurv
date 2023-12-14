@@ -241,7 +241,8 @@ function transformData(data) {
     idsrQListing: item.idsrQListing,
     qOptions: item.qOptions,
     elemQuestion: item.elemQuestion.length !=0? convertQuestions(item.elemQuestion):[],  
-    rationale: item.rationale !== undefined ? item.rationale : 0
+    rationale: item.rationale !== undefined ? item.rationale : 0,
+    options: item.options.length !=0? item.options:0
   }));
 
   return [
