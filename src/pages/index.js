@@ -14,7 +14,6 @@ import ChatHistory from  "@/components/ChatHistory";
 import HelpSection from '@/components/HelpSection';
 import GettingStarted from '@/components/GettingStarted';
 import FormFieldDetails from '@/components/FormFieldDetails';
-import OptionsModal from '@/components/optionsModal';
 
 function IndexPage () {
   const { mainStore } = store;
