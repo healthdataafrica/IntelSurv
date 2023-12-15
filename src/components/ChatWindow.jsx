@@ -114,12 +114,24 @@ function ChatWindow ({ autoId,element, chatAnswer,setChatAnswer, field,chatQuest
   const [completedTyping, setCompletedTyping] = useState(false);
   const { mainStore } = store;
   const {currentSession, setCurrentSession, setChatLogs } = mainStore();
-  const [isOnline, setIsOnline] = useState(false);
 
 
 
   const messagesEndRef = useRef(null);
   const messagesEndRef2 = useRef(null);
+  
+
+  async function isOnline() {
+    try {
+        const response = await fetch('https://www.google.com/favicon.ico', {
+            method: 'HEAD',
+            cache: 'no-cache'
+        });
+        return response.ok;
+    } catch (error) {
+        return false;
+    }
+}
 
 
   function debugStringComparison(str1, str2) {
@@ -252,9 +264,24 @@ useEffect(() => {
 
   async function sendMessage() {
 
-      if( debugStringComparison(chatQuestion, inputValue) == false){
-  
     setChatLoading(true);
+
+    const online = await isOnline();
+
+    
+
+      if( debugStringComparison(chatQuestion, inputValue) == false){
+
+        if (!online) {
+          toast.error("Sorry you require an internet connection to ask your own question", {
+            position: toast.POSITION.TOP_CENTER
+          });
+          setChatLoading(false);
+
+
+
+        }else{
+  
 
     const userInput = inputValue;
     setInputValue('');
@@ -304,8 +331,8 @@ useEffect(() => {
 
    await fetchLogs();
   
-    //window.removeEventListener('online', handleOnline);
-
+    
+    }
     
     }else{
       const userInput = inputValue;
@@ -317,6 +344,7 @@ useEffect(() => {
       const newMessage = { type: "bot", text: chatAnswer};
       setMessages((prevMessages) => [...prevMessages, newMessage]);
       setInputValue('');
+      setChatLoading(false);
 
 
 
