@@ -228,7 +228,8 @@ function transformData(data) {
         synContext: input.synContext,
         category: input.category,
         extraContentAnswer: input.extraContentAnswer,
-        predefinedId: input.autoID
+        predefinedId: input.autoID,
+        answer: input.predAnswers
     }));
 }
 

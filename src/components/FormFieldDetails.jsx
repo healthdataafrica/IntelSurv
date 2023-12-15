@@ -19,6 +19,8 @@ function FormFieldDetails({
   setSemContext,
   chatQuestion,
   setChatQuestion,
+  chatAnswer,
+  setChatAnswer,
   currentKnowledgeBase,
   setCurrentKnowledgeBase,
   askYourOwnQuestion,
@@ -147,6 +149,8 @@ function FormFieldDetails({
       {selectedFormField !== null &&
         selectedFormField.elemQuestion.length !== 0 && (
           <Resources
+             chatAnswer={chatAnswer}
+             setChatAnswer={setChatAnswer}
             autoId={predefinedAutoId}
             setAutoId={setPredefinedAutoId}
             total={selectedFormField.elemQuestion.length}
@@ -182,11 +186,13 @@ function FormFieldDetails({
             />
           )}
 
-          <ChatWindow
+          <ChatWindow chatAnswer={chatAnswer}
+             setChatAnswer={setChatAnswer}
             autoId={predefinedAutoId}
             askYourOwnQuestion={askYourOwnQuestion}
             chatQuestion={chatQuestion}
             currentKnowledgeBase={currentKnowledgeBase}
+            predAnswers={selectedFormField.predAnswers != null? selectedFormField.predAnswers:''}
             synContext={synContext}
             semContext={semContext}
           />

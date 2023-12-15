@@ -113,7 +113,7 @@ function truncateDescription(description, maxLength = 200) {
 }
 
 
-function Resource({ setAutoId, resource,index,chatQuestion,setChatQuestion ,setCurrentKnowledgeBase,setSynContext, setSemContext}) {
+function Resource({ setAutoId, resource,index,chatQuestion,setChatQuestion ,  chatAnswer, setChatAnswer ,setCurrentKnowledgeBase,setSynContext, setSemContext}) {
   let mouseX = useMotionValue(0)
   let mouseY = useMotionValue(0)
 
@@ -142,6 +142,7 @@ function Resource({ setAutoId, resource,index,chatQuestion,setChatQuestion ,setC
 
                setCurrentKnowledgeBase('GENERAL');
               setChatQuestion(resource.description);
+              setChatAnswer(resource.answer)
               resource.semContext ? setSemContext(resource.semContext): null;
               resource.synContext ? setSynContext(resource.synContext): null;
             }}
@@ -169,7 +170,7 @@ function handlePrevious(questionsIndex,setQuestionsIndex) {
  setQuestionsIndex(nextValue);
 }
 
- function Resources({autoId, setAutoId,questions,chatQuestion,setChatQuestion,total,setCurrentKnowledgeBase,setSynContext, setSemContext }) {
+ function Resources({autoId, setAutoId,questions,chatQuestion,setChatQuestion,chatAnswer,setChatAnswer,total,setCurrentKnowledgeBase,setSynContext, setSemContext }) {
   const [selectedId, setSelectedId] = useState(null)
   const [questionsIndex, setQuestionsIndex] = useState(0)
 
@@ -183,7 +184,7 @@ function handlePrevious(questionsIndex,setQuestionsIndex) {
 
         <div className="not-prose mt-0  gap-8  pt-10 dark:border-white/5 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
             {questions[questionsIndex].map((resource, index) => (
-                <Resource  setAutoId={setAutoId}    key={resource.href} resource={resource} index={index} chatQuestion={chatQuestion}  setCurrentKnowledgeBase={setCurrentKnowledgeBase} setChatQuestion={setChatQuestion}  setSynContext={setSynContext} setSemContext={setSemContext} />
+                <Resource  setAutoId={setAutoId}  chatAnswer={chatAnswer} setChatAnswer={setChatAnswer}  key={resource.href} resource={resource} index={index} chatQuestion={chatQuestion}  setCurrentKnowledgeBase={setCurrentKnowledgeBase} setChatQuestion={setChatQuestion}  setSynContext={setSynContext} setSemContext={setSemContext} />
             ))}
       
 

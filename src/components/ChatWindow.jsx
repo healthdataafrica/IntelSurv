@@ -106,7 +106,7 @@ const Loader = () => {
 
 
 
-function ChatWindow ({ autoId,element,field,chatQuestion,currentKnowledgeBase,synContext,semContext, askYourOwnQuestion})  {
+function ChatWindow ({ autoId,element, chatAnswer,setChatAnswer, field,chatQuestion,currentKnowledgeBase,synContext,semContext, askYourOwnQuestion})  {
   const [chatLoading, setChatLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState([]);
@@ -251,10 +251,9 @@ useEffect(() => {
 
 
   async function sendMessage() {
-    window.addEventListener('online',setIsOnline);
 
-    if(isOnline){
-
+      if( debugStringComparison(chatQuestion, inputValue) == false){
+  
     setChatLoading(true);
 
     const userInput = inputValue;
@@ -299,28 +298,29 @@ useEffect(() => {
     console.log('Q2',inputValue);
     console.log('Q3',autoId);
 
-
-
-    
-   if( debugStringComparison(chatQuestion, inputValue) == true){
-     predefined = autoId;
-    }
-
-
     const log  =  await addChatLog( predefined, element, field,
      unixTimestamp, currentSession, currentKnowledgeBase,userInput, response
     );
 
    await fetchLogs();
-    }else{
-
-      toast.error(`This question requires an internet connection`); // Display the error message
-
-    }
+  
     //window.removeEventListener('online', handleOnline);
 
     
+    }else{
+      const userInput = inputValue;
 
+      const userMessage = { type: "user", text: userInput };
+
+      setMessages((prevMessages) => [...prevMessages, userMessage]);
+
+      const newMessage = { type: "bot", text: chatAnswer};
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
+      setInputValue('');
+
+
+
+    }
     
   }
 

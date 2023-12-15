@@ -19,6 +19,7 @@ function IndexPage () {
   const { mainStore } = store;
   const {setShowHelpPage, showHelpPage ,setSelectedFormField, selectedFormField, currentSession, setCurrentSession , chatLogs,setChatLogs} = mainStore();
   const [chatQuestion, setChatQuestion] = useState('');
+  const [chatAnswer, setChatAnswer] = useState('');
   const [askYourOwnQuestion, setAskYourOwnQuestion] = useState(0);
   const [predefinedAutoId, setPredefinedAutoId] =  useState(0);
   const [currentKnowledgeBase, setCurrentKnowledgeBase] = useState('CASE');
@@ -131,6 +132,8 @@ function IndexPage () {
   setSynContext={setSynContext}
   setSemContext={setSemContext}
   chatQuestion={chatQuestion}
+  chatAnswer={chatAnswer}
+  setChatAnswer={setChatAnswer}
   setChatQuestion={setChatQuestion}
   currentKnowledgeBase={currentKnowledgeBase}
   setCurrentKnowledgeBase={setCurrentKnowledgeBase}
