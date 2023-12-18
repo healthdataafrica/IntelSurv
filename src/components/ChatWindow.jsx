@@ -355,7 +355,7 @@ useEffect(() => {
     }else{
 
         const log  =  await addChatLog( predefined, element, field,
-          unixTimestamp, currentSession, currentKnowledgeBase,userInput, response
+          unixTimestamp, currentSession, currentKnowledgeBase,userInput, chatAnswer
          );
      
         await fetchLogs();
