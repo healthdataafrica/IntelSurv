@@ -45,7 +45,7 @@ export function Logo(props) {
         <text className="dark:fill-white" x="25" y="20" font-family='Suez One' font-size="25" fill="#3C3B40">IntelSurv</text>
       </svg>:null}
       <svg width="250" height="28" xmlns="http://www.w3.org/2000/svg" >
-        <text className="dark:fill-white" x= {isScreenSmall? '5' : "145"} y="20" font-family='Inter' font-size="13" fill="#3C3B40">Version 1.0.0.0 Alpha</text>
+        <text className="dark:fill-white" x= {isScreenSmall? '5' : "145"} y="20" font-family='Inter' font-size="13" fill="#3C3B40">Version 1.0.0.5 </text>
       </svg>
 
 
