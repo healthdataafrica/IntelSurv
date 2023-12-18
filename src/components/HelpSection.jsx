@@ -96,7 +96,15 @@ On a mobile phone, open the link <b>https://intelsurv.vercel.app</b> in a browse
       </section>
       <section style={sectionStyle}>
         <h2 style={headingStyle}>Getting Started</h2>
-        <p>VIDEO</p>
+        <iframe
+        width="560"
+        height="315"
+        src="https://youtu.be/NQxyN7ZGMLw" // Replace [VIDEO_ID] with the actual YouTube video ID
+        title="YouTube video player"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+      ></iframe>
       </section>
       <section style={sectionStyle}>
         <h2 style={headingStyle}>Troubleshooting</h2>
