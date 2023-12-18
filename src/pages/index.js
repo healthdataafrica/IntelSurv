@@ -17,7 +17,7 @@ import FormFieldDetails from '@/components/FormFieldDetails';
 
 function IndexPage () {
   const { mainStore } = store;
-  const {setShowHelpPage, showHelpPage ,setSelectedFormField, selectedFormField, currentSession, setCurrentSession , chatLogs,setChatLogs} = mainStore();
+  const {setShowHelpPage, showHelpPage ,setSelectedFormField, selectedFormField, currentSession, setCurrentSession , chatLogs,setChatLogs,appendChatLogs} = mainStore();
   const [chatQuestion, setChatQuestion] = useState('');
   const [chatAnswer, setChatAnswer] = useState('');
   const [askYourOwnQuestion, setAskYourOwnQuestion] = useState(0);
@@ -122,7 +122,7 @@ function IndexPage () {
   )
 )
  : (
-  <FormFieldDetails
+  <FormFieldDetails appendChatLogs={appendChatLogs}
   setAskYourOwnQuestion={setAskYourOwnQuestion}
   askYourOwnQuestion={askYourOwnQuestion}
   toggle={toggle}

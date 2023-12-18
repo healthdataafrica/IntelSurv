@@ -16,6 +16,11 @@ const mainStore = create((set) => ({
   setChatLogs: (value) => set((state) => ({
    chatLogs: value
   })),
+
+  appendChatLogs: (newLogEntry) => set((state) => ({
+    chatLogs: [...state.chatLogs, newLogEntry]
+  })),
+
   setCurrentSession: (value) => set((state) => ({
     currentSession: value
   })),

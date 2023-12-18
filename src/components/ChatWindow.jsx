@@ -106,7 +106,7 @@ const Loader = () => {
 
 
 
-function ChatWindow ({ autoId,element, chatAnswer,setChatAnswer, field,chatQuestion,currentKnowledgeBase,synContext,semContext, askYourOwnQuestion})  {
+function ChatWindow ({ appendChatLogs,autoId,element, chatAnswer,setChatAnswer, field,chatQuestion,currentKnowledgeBase,synContext,semContext, askYourOwnQuestion})  {
   const [chatLoading, setChatLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState([]);
@@ -125,14 +125,14 @@ function ChatWindow ({ autoId,element, chatAnswer,setChatAnswer, field,chatQuest
     try {
         const response = await fetch('https://www.google.com/favicon.ico', {
             method: 'HEAD',
-            cache: 'no-cache'
+            cache: 'no-cache',
+            mode: 'no-cors'  // Set mode to 'no-cors'
         });
-        return response.ok;
+        return response.type === 'opaque' ? true : false;
     } catch (error) {
         return false;
     }
 }
-
 
   function debugStringComparison(str1, str2) {
     // Function to replace typographic quotes with standard quotes
@@ -343,8 +343,30 @@ useEffect(() => {
 
       const newMessage = { type: "bot", text: chatAnswer};
       setMessages((prevMessages) => [...prevMessages, newMessage]);
+      const unixTimestamp = (Math.floor(Date.now() / 1000)).toString();
+
+      console.log('here is the information: ',field,element);
+
+      if(!online){
+
+      const offlineLogs = {logID:0, prevQuestion:0,answer: chatAnswer, context: currentKnowledgeBase, predefined: predefined, fieldName: field, elemID: element,timestamp: unixTimestamp, session:currentSession,question:userInput}
+      appendChatLogs(offlineLogs);
+  
+    }else{
+
+        const log  =  await addChatLog( predefined, element, field,
+          unixTimestamp, currentSession, currentKnowledgeBase,userInput, response
+         );
+     
+        await fetchLogs();
+
+
+      }
+      
       setInputValue('');
       setChatLoading(false);
+
+      
 
 
 

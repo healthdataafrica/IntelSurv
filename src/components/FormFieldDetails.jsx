@@ -9,7 +9,7 @@ import { Heading } from "./Heading"; // Import the Heading component
 import { ChooseKnowledgeBase } from "./ChooseKnowledgeBase"; // Import the ChooseKnowledgeBase component
 import { ChatWindow } from "./ChatWindow"; // Import the ChatWindow component;
 
-function FormFieldDetails({
+function FormFieldDetails({ appendChatLogs,
   setAskYourOwnQuestion,
   toggle,
   isScreenSmall,
@@ -186,7 +186,8 @@ function FormFieldDetails({
             />
           )}
 
-          <ChatWindow chatAnswer={chatAnswer}
+          <ChatWindow field={selectedFormField.title} appendChatLogs={appendChatLogs}
+          chatAnswer={chatAnswer}
              setChatAnswer={setChatAnswer}
             autoId={predefinedAutoId}
             askYourOwnQuestion={askYourOwnQuestion}
