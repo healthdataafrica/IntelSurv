@@ -39,7 +39,7 @@ export const Header = forwardRef(function Header({ className }, ref) {
         <a style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center' }} onClick={onClick}>
           
           {children}
-          <img src="./question.png" width={15} height={18} style={{ display: 'inline-block',marginLeft: '10px' }} />
+          <img src="./question.png" width={18} height={18} style={{ display: 'inline-block',marginLeft: '10px' }} />
         </a>
       </div>
     );
@@ -84,7 +84,7 @@ export const Header = forwardRef(function Header({ className }, ref) {
 
             <TopLevelNavItem href="#">Documentation</TopLevelNavItem>*/}
             
-            <TopLevelNavItem  onClick={setShowHelpPage}>Contact Us</TopLevelNavItem>
+            <TopLevelNavItem  onClick={setShowHelpPage}>Go to Help Page</TopLevelNavItem>
           
           </ul>
         </nav>
