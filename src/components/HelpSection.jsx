@@ -99,7 +99,7 @@ On a mobile phone, open the link <b>https://intelsurv.vercel.app</b> in a browse
         <iframe
         width="560"
         height="315"
-        src="https://youtu.be/NQxyN7ZGMLw" // Replace [VIDEO_ID] with the actual YouTube video ID
+        src="https://www.youtube.com/embed/NQxyN7ZGMLw" // Replace [VIDEO_ID] with the actual YouTube video ID
         title="YouTube video player"
         frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
