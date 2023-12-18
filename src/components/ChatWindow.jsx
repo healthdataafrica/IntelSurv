@@ -406,6 +406,21 @@ useEffect(() => {
   };
 
 
+  async function  handleClear(){
+
+   
+
+     setMessages([]);
+      toast.success("Chat successfully cleared!", {
+        position: toast.POSITION.TOP_CENTER
+      });
+    
+
+   
+  };
+  
+
+
 
   return (
     <>
@@ -424,6 +439,23 @@ useEffect(() => {
           style={styles.inputField}
           onChange={handleInputChange}
         />
+
+<div
+          style={{
+            width: "45px",
+            height: "40px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <a style={{cursor:'pointer'}} onClick={handleClear} > <img
+        src="/clear.png"
+        alt=""
+        style={{ width:"25px" , height: "25px" }}
+      /></a>
+        
+        </div>
          <div
           style={{
             width: "60px",
