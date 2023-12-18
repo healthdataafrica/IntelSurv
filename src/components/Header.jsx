@@ -13,26 +13,14 @@ import { useMobileNavigationStore } from '@/components/MobileNavigation'
 import { ModeToggle } from '@/components/ModeToggle'
 import { MobileSearch, Search } from '@/components/Search'
 import store from "../stores/store";
+import Cursor from './icons/cursor'
 
-
-function TopLevelNavItem({ href, children }) {
-  return (
-    <li>
-      <Link
-        href={href}
-        className="text-sm leading-5 text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-      >
-        {children}
-      </Link>
-    </li>
-  )
-}
 
 export const Header = forwardRef(function Header({ className }, ref) {
   let { isOpen: mobileNavIsOpen } = useMobileNavigationStore()
   let isInsideMobileNavigation = useIsInsideMobileNavigation()
   const { mainStore } = store;
-  const {setSelectedFormField, selectedFormField } = mainStore();
+  const {setShowHelpPage, showHelpPage} = mainStore();
 
   let { scrollY } = useScroll()
   let bgOpacityLight = useTransform(scrollY, [0, 72], [0.5, 0.9])
@@ -44,6 +32,19 @@ export const Header = forwardRef(function Header({ className }, ref) {
   
 
   };
+
+  function TopLevelNavItem({ children, onClick }) {
+    return (
+      <div style={{ display: 'inline-block' }}> {/* Changed to inline-block */}
+        <a style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center' }} onClick={onClick}>
+          
+          {children}
+          <img src="./question.png" width={15} height={18} style={{ display: 'inline-block',marginLeft: '10px' }} />
+        </a>
+      </div>
+    );
+  }
+  
 
   return (
     <motion.div
@@ -72,7 +73,7 @@ export const Header = forwardRef(function Header({ className }, ref) {
       <Search />
       <div className="flex items-center gap-5 lg:hidden">
         <MobileNavigation />
-        <Link href="/mobb" aria-label="Home">
+        <Link href="/" aria-label="Home">
           <Logo className="h-6" onClick={handleLogoClick}  />
         </Link>
       </div>
@@ -82,7 +83,8 @@ export const Header = forwardRef(function Header({ className }, ref) {
           {/*<TopLevelNavItem href="#">Contact</TopLevelNavItem>
 
             <TopLevelNavItem href="#">Documentation</TopLevelNavItem>*/}
-            <TopLevelNavItem href="#">Contact Us</TopLevelNavItem>
+            
+            <TopLevelNavItem  onClick={setShowHelpPage}>Contact Us</TopLevelNavItem>
           
           </ul>
         </nav>

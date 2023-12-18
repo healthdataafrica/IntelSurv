@@ -11,8 +11,19 @@ function CollapsibleDiv ({ selectedFormField, isScreenSmall, toggle, setAskYourO
   
     return (
       <div>
-        {selectedFormField.idsrQListing && selectedFormField.idsrQListing.linkToForm && (
-          <a target="_blank" rel="noopener noreferrer" href={selectedFormField.idsrQListing.linkToForm}>
+        {selectedFormField.idsrQListing && selectedFormField.idsrQListing.linkToForm && window.matchMedia('(display-mode: standalone)').matches && (
+          <a  rel="noopener noreferrer" href={selectedFormField.idsrQListing.linkToForm}>
+            <button
+              type="button"
+              style={{ fontWeight: '400', backgroundColor: "#5283A3", color: 'white', marginTop: '10px', marginRight: '10px', paddingLeft: '8px', paddingRight: '8px', border: '1px solid #5283A3 ', fontSize: '15px' }}
+            >
+              Link to Form
+            </button>
+          </a>
+        )}
+
+{selectedFormField.idsrQListing && selectedFormField.idsrQListing.linkToForm && !window.matchMedia('(display-mode: standalone)').matches && (
+          <a   target="_blank"  rel="noopener noreferrer" href={selectedFormField.idsrQListing.linkToForm}>
             <button
               type="button"
               style={{ fontWeight: '400', backgroundColor: "#5283A3", color: 'white', marginTop: '10px', marginRight: '10px', paddingLeft: '8px', paddingRight: '8px', border: '1px solid #5283A3 ', fontSize: '15px' }}
