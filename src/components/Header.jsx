@@ -20,7 +20,7 @@ export const Header = forwardRef(function Header({ className }, ref) {
   let { isOpen: mobileNavIsOpen } = useMobileNavigationStore()
   let isInsideMobileNavigation = useIsInsideMobileNavigation()
   const { mainStore } = store;
-  const {setShowHelpPage, showHelpPage} = mainStore();
+  const {setShowHelpPage, showHelpPage,setSelectedFormField} = mainStore();
 
   let { scrollY } = useScroll()
   let bgOpacityLight = useTransform(scrollY, [0, 72], [0.5, 0.9])
@@ -30,6 +30,13 @@ export const Header = forwardRef(function Header({ className }, ref) {
     console.log("Logo clicked!");
 
   
+
+  };
+
+  const handleGotoHelpPage = () => {
+
+    setSelectedFormField(null);
+    setShowHelpPage(true);  
 
   };
 
@@ -84,7 +91,7 @@ export const Header = forwardRef(function Header({ className }, ref) {
 
             <TopLevelNavItem href="#">Documentation</TopLevelNavItem>*/}
             
-            <TopLevelNavItem  onClick={setShowHelpPage}>Go to Help Page</TopLevelNavItem>
+            <TopLevelNavItem  onClick={handleGotoHelpPage}>Go to Help Page</TopLevelNavItem>
           
           </ul>
         </nav>
