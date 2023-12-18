@@ -51,6 +51,50 @@ export const Header = forwardRef(function Header({ className }, ref) {
       </div>
     );
   }
+  const PwaInstallPrompt = ({ onInstall, onCancel }) => {
+    const styles = {
+        promptOverlay: {
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
+        },
+        promptContent: {
+            padding: '20px',
+            backgroundColor: '#5283A3', // The specified background color
+            borderRadius: '10px',
+            textAlign: 'center',
+            color: 'white',
+        },
+        button: {
+            margin: '10px',
+            padding: '10px 20px',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer',
+            backgroundColor: '#fff',
+            color: '#5283A3',
+        }
+    };
+
+    return (
+        <div style={styles.promptOverlay}>
+            <div style={styles.promptContent}>
+                <h2>Install App</h2>
+                <p>Do you want to install our Progressive Web App?</p>
+                <div>
+                    <button style={styles.button} onClick={onInstall}>Install</button>
+                    <button style={styles.button} onClick={onCancel}>Cancel</button>
+                </div>
+            </div>
+        </div>
+    );
+};
   
 
   return (
@@ -78,6 +122,7 @@ export const Header = forwardRef(function Header({ className }, ref) {
         )}
       />
       <Search />
+
       <div className="flex items-center gap-5 lg:hidden">
         <MobileNavigation />
         <Link href="/" aria-label="Home">
@@ -91,7 +136,9 @@ export const Header = forwardRef(function Header({ className }, ref) {
 
             <TopLevelNavItem href="#">Documentation</TopLevelNavItem>*/}
             
-            <TopLevelNavItem  onClick={handleGotoHelpPage}>Go to Help Page</TopLevelNavItem>
+            {showHelpPage == null &&  <TopLevelNavItem  onClick={handleGotoHelpPage}>Go to Help Page</TopLevelNavItem>}
+            {showHelpPage != null && <a href="/" style={{ marginBottom: '0px', color: '#007bff', textDecoration: 'none', fontSize: '15px', display: 'block', textAlign: 'center', fontWeight: 'bold' }}>
+      ← Return to Homepage</a>}
           
           </ul>
         </nav>

@@ -96,6 +96,7 @@ On a mobile phone, open the link <b>https://intelsurv.vercel.app</b> in a browse
       </section>
       <section style={sectionStyle}>
         <h2 style={headingStyle}>Getting Started</h2>
+        To learn how to get started, please watch the video below.<br/><br/>
         <iframe
         width="560"
         height="315"
