@@ -35,7 +35,7 @@ function IndexPage () {
   useEffect(() => {
     function handleResize() {
       // Check if screen size is less than a specific size
-      setIsScreenSmall(window.innerWidth < 640);
+      setIsScreenSmall(window.innerWidth < 700);
     }
 
     // Add event listener on component mount
