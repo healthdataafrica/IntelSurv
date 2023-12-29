@@ -7,14 +7,16 @@ import Image from 'next/image';
 import Cursor from '../components/icons/cursor.jsx'
 import store from "../stores/store";
 import { pre } from "./mdx.jsx";
- 
+import { TokenModal } from "./TokenModal.jsx";
+import { tokenQueryDecrement } from "@/helpers/tokenQueryDecrement.js";
+
 
 
 
 const styles = {
   chatWindow: {
-    marginTop:'100px',
-    
+    marginTop: '100px',
+
     height: "500px",
     border: "1px solid #ccc",
     display: "flex",
@@ -67,20 +69,20 @@ const styles = {
   userMessage: {
     display: 'inline-block',   // Add this
     alignSelf: "flex-end",
-    backgroundColor:  "rgba(237, 236, 245, 0.4)",
+    backgroundColor: "rgba(237, 236, 245, 0.4)",
     padding: '15px',
     maxWidth: '80%',    // Adjust this value if needed
-},
+  },
 
-botMessage: {
-  display: 'inline-block',
-  alignSelf: "flex-start",
-  backgroundColor: "rgba(82, 131, 163,0.1)", // 0.7 means 70% opacity
-  padding: '15px',
-  textAlign: 'left',
-  maxWidth: '80%',
-} 
-  
+  botMessage: {
+    display: 'inline-block',
+    alignSelf: "flex-start",
+    backgroundColor: "rgba(82, 131, 163,0.1)", // 0.7 means 70% opacity
+    padding: '15px',
+    textAlign: 'left',
+    maxWidth: '80%',
+  }
+
 };
 
 const Loader = () => {
@@ -106,39 +108,51 @@ const Loader = () => {
 
 
 
-function ChatWindow ({ appendChatLogs,autoId,element, chatAnswer,setChatAnswer, field,chatQuestion,currentKnowledgeBase,synContext,semContext, askYourOwnQuestion})  {
+function ChatWindow({appendChatLogs, autoId, element, chatAnswer, setChatAnswer, field, chatQuestion, currentKnowledgeBase, synContext, semContext, askYourOwnQuestion }) {
   const [chatLoading, setChatLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState([]);
   const [displayResponse, setDisplayResponse] = useState("");
   const [completedTyping, setCompletedTyping] = useState(false);
   const { mainStore } = store;
-  const {currentSession, setCurrentSession, setChatLogs } = mainStore();
+  const { tokenMessage,setTokenMessage,setOpenTokenModal,openTokenModal,currentSession, setCurrentSession, setChatLogs, userToken, tokenMessageCount,decrementTokenMessageCount } = mainStore();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [sendChatMessage, setSendChatMessage] = useState(false);
+
+
 
 
 
   const messagesEndRef = useRef(null);
   const messagesEndRef2 = useRef(null);
-  
+
 
   async function isOnline() {
     try {
-        const response = await fetch('https://www.google.com/favicon.ico', {
-            method: 'HEAD',
-            cache: 'no-cache',
-            mode: 'no-cors'  // Set mode to 'no-cors'
-        });
-        return response.type === 'opaque' ? true : false;
+      const response = await fetch('https://www.google.com/favicon.ico', {
+        method: 'HEAD',
+        cache: 'no-cache',
+        mode: 'no-cors'  // Set mode to 'no-cors'
+      });
+      return response.type === 'opaque' ? true : false;
     } catch (error) {
-        return false;
+      return false;
     }
-}
+  }
+
+
+  const closeModal = () => {
+
+   setIsModalOpen(false);
+  
+
+  };
 
   function debugStringComparison(str1, str2) {
     // Function to replace typographic quotes with standard quotes
     function standardizeQuotes(str) {
-        return str.replace(/[\u201C\u201D\u201E\u201F\u2033\u2036]/g, '"')
-                  .replace(/[\u2018\u2019\u201A\u201B\u2032\u2035]/g, "'");
+      return str.replace(/[\u201C\u201D\u201E\u201F\u2033\u2036]/g, '"')
+        .replace(/[\u2018\u2019\u201A\u201B\u2032\u2035]/g, "'");
     }
 
     // Standardize quotes and trim whitespace
@@ -147,26 +161,26 @@ function ChatWindow ({ appendChatLogs,autoId,element, chatAnswer,setChatAnswer, 
 
     // Check if lengths are different
     if (standardizedStr1.length !== standardizedStr2.length) {
-        console.log("Strings differ in length");
-        return false;
+      console.log("Strings differ in length");
+      return false;
     }
 
     // Compare character by character
     for (let i = 0; i < standardizedStr1.length; i++) {
-        if (standardizedStr1[i] !== standardizedStr2[i]) {
-            console.log(`Difference at position ${i}: '${standardizedStr1[i]}' (${standardizedStr1.charCodeAt(i)}) vs '${standardizedStr2[i]}' (${standardizedStr2.charCodeAt(i)})`);
-            return false;
-        }
+      if (standardizedStr1[i] !== standardizedStr2[i]) {
+        console.log(`Difference at position ${i}: '${standardizedStr1[i]}' (${standardizedStr1.charCodeAt(i)}) vs '${standardizedStr2[i]}' (${standardizedStr2.charCodeAt(i)})`);
+        return false;
+      }
     }
 
     console.log("Strings are identical");
     return true;
-}
+  }
 
   const fetchLogs = async () => {
     try {
       const response = await fetch('https://us-central1-questmap-mubas.cloudfunctions.net/getChatLogs', {
-         });
+      });
       const data = await response.json();
       setChatLogs(data);
       console.log('Logs:', data);
@@ -174,58 +188,58 @@ function ChatWindow ({ appendChatLogs,autoId,element, chatAnswer,setChatAnswer, 
       console.error('Error fetching logs:', error);
     }
   };
- 
-  
+
+
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
-        const chatMessagesContainer = messagesEndRef.current.parentElement;
-        const scrollHeight = chatMessagesContainer.scrollHeight;
+      const chatMessagesContainer = messagesEndRef.current.parentElement;
+      const scrollHeight = chatMessagesContainer.scrollHeight;
 
-        animateScroll.scrollToBottom({
-            containerId: "chatMessagesContainerId",  // You need to set this id to your chat messages div
-            duration: 0 // Scroll duration in milliseconds
-        });
+      animateScroll.scrollToBottom({
+        containerId: "chatMessagesContainerId",  // You need to set this id to your chat messages div
+        duration: 0 // Scroll duration in milliseconds
+      });
     }
-};
+  };
 
 
 
-/*
-useEffect(() => {
-  if (!messages?.length) {
-    return;
-  }
-
-  setCompletedTyping(false);
-
-  let i = 0;
-  let t =0
-  const stringResponse = messages[messages.length - 1].text;
-
-  const intervalId = setInterval(() => {
-    setDisplayResponse(stringResponse.slice(0, i));
-     // Scroll down as the message is being typed
-    i++;
-    t++;
-   
-    if(t > 40 || t==0  || i == stringResponse.length){
-      scrollToBottom();
-      t = 0;     
+  /*
+  useEffect(() => {
+    if (!messages?.length) {
+      return;
     }
-
-    if (i > stringResponse.length) {
-      clearInterval(intervalId);
-      setCompletedTyping(true);
-    }
-  }, 20);
-
-  return () => clearInterval(intervalId);
-}, [messages]); 
-
-*/
+  
+    setCompletedTyping(false);
+  
+    let i = 0;
+    let t =0
+    const stringResponse = messages[messages.length - 1].text;
+  
+    const intervalId = setInterval(() => {
+      setDisplayResponse(stringResponse.slice(0, i));
+       // Scroll down as the message is being typed
+      i++;
+      t++;
+     
+      if(t > 40 || t==0  || i == stringResponse.length){
+        scrollToBottom();
+        t = 0;     
+      }
+  
+      if (i > stringResponse.length) {
+        clearInterval(intervalId);
+        setCompletedTyping(true);
+      }
+    }, 20);
+  
+    return () => clearInterval(intervalId);
+  }, [messages]); 
+  
+  */
 
   useEffect(() => {
- 
+
     scrollToBottom();
   }, [messages]);
 
@@ -235,28 +249,28 @@ useEffect(() => {
 
 
     setMessages([]);
-    
+
 
   }, [currentKnowledgeBase]);
 
 
   useEffect(() => {
 
-    if(chatQuestion !=''){
-    if (messagesEndRef2.current) {
+    if (chatQuestion != '') {
+      if (messagesEndRef2.current) {
         messagesEndRef2.current.scrollIntoView({ behavior: "smooth" });
+      }
     }
-}
 
 
     setInputValue(chatQuestion);
-    
+
   }, [chatQuestion]);
 
   useEffect(() => {
 
-    if(askYourOwnQuestion!=0){  
-        messagesEndRef2.current.scrollIntoView({ behavior: "smooth" });
+    if (askYourOwnQuestion != 0) {
+      messagesEndRef2.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [askYourOwnQuestion]);
 
@@ -264,77 +278,10 @@ useEffect(() => {
 
   async function sendMessage() {
 
-    setChatLoading(true);
+    if (debugStringComparison(chatQuestion, inputValue) == true) {
+      setChatLoading(true);
+      const online = await isOnline();
 
-    const online = await isOnline();
-
-    
-
-      if( debugStringComparison(chatQuestion, inputValue) == false){
-
-        if (!online) {
-          toast.error("Sorry you require an internet connection to ask your own question", {
-            position: toast.POSITION.TOP_CENTER
-          });
-          setChatLoading(false);
-
-
-
-        }else{
-  
-
-    const userInput = inputValue;
-    setInputValue('');
-    const userMessage = { type: "user", text: userInput };
-
-    setMessages((prevMessages) => [...prevMessages, userMessage]);
-   
-    console.log('Here are prompt details');
-   console.log('User input', userInput);
-   console.log('currentKnowledgeBase:',currentKnowledgeBase);
-    console.log('semContext:',  semContext);
-    console.log('synContext', synContext);
-
-    
-    
-    const response = await getChatCompletions(
-      userInput,
-      currentKnowledgeBase, semContext, synContext
-          );
-
-    console.log(response);
-    
-    const newMessage = { type: "bot", text: response};
-    setMessages((prevMessages) => [...prevMessages, newMessage]);
-
-    setChatLoading(false);
-
-    /* id: id,
-    timestamp: timestamp,
-    session: session,
-    context: context,
-    question: question,
-    answer: answer,
-    predefined:0, */
-
-    const unixTimestamp = (Math.floor(Date.now() / 1000)).toString();
-    var predefined = 0;
-  
-
-    console.log('Q1', chatQuestion);
-    console.log('Q2',inputValue);
-    console.log('Q3',autoId);
-
-    const log  =  await addChatLog( predefined, element, field,
-     unixTimestamp, currentSession, currentKnowledgeBase,userInput, response
-    );
-
-   await fetchLogs();
-  
-    
-    }
-    
-    }else{
       const userInput = inputValue;
 
       const userMessage = { type: "user", text: userInput };
@@ -366,13 +313,102 @@ useEffect(() => {
       setInputValue('');
       setChatLoading(false);
 
+
+
+    }else{
+
+      const online = await isOnline();
+
+
+      if (!online) {
+        toast.error("Sorry you require an internet connection to ask your own question", {
+          position: toast.POSITION.TOP_CENTER
+        });
+
+        setChatLoading(false);
+
+      }else{
       
 
 
 
-    }
+    if(openTokenModal == true){
+
+      setIsModalOpen(true);
+    }else{
+
+      if(tokenMessageCount < 1){
+
+        setIsModalOpen(true);
+        setTokenMessage('TOKENS-FINISHED');
+      }else{
     
+
+      setChatLoading(true);
+
+
+          const userInput = inputValue;
+          setInputValue('');
+          const userMessage = { type: "user", text: userInput };
+
+          setMessages((prevMessages) => [...prevMessages, userMessage]);
+
+          console.log('Here are prompt details');
+          console.log('User input', userInput);
+          console.log('currentKnowledgeBase:', currentKnowledgeBase);
+          console.log('semContext:', semContext);
+          console.log('synContext', synContext);
+
+
+
+          const response = await getChatCompletions(
+            userInput,
+            currentKnowledgeBase, semContext, synContext
+          );
+
+          console.log(response);
+
+          const newMessage = { type: "bot", text: response };
+          setMessages((prevMessages) => [...prevMessages, newMessage]);
+
+          setChatLoading(false);
+
+          /* id: id,
+          timestamp: timestamp,
+          session: session,
+          context: context,
+          question: question,
+          answer: answer,
+          predefined:0, */
+
+          const unixTimestamp = (Math.floor(Date.now() / 1000)).toString();
+          var predefined = 0;
+
+
+          console.log('Q1', chatQuestion);
+          console.log('Q2', inputValue);
+          console.log('Q3', autoId);
+
+          const log = await addChatLog(predefined, element, field,
+            unixTimestamp, currentSession, currentKnowledgeBase, userInput, response
+          );
+
+          await fetchLogs();
+          await tokenQueryDecrement(userToken);
+          decrementTokenMessageCount();
+
+
+        }
+
+      } 
+
+    }
+    }
+
   }
+
+   
+  
 
   function extractChatHistory(messages) {
     return messages.map(message => {
@@ -386,139 +422,140 @@ useEffect(() => {
     console.log(inputValue);
   };
 
-  async function  handleCopyToClipboard(){
+  async function handleCopyToClipboard() {
 
     try {
 
-      const chatHistory =  extractChatHistory(messages);
+      const chatHistory = extractChatHistory(messages);
       await navigator.clipboard.writeText(chatHistory);
       toast.success("Chat successfully copied!", {
         position: toast.POSITION.TOP_CENTER
       });
       console.log('Text copied to clipboard');
-  } catch (err) {
+    } catch (err) {
       console.error('Failed to copy text: ', err);
-  }
-  
+    }
 
 
-   
+
+
   };
 
 
-  async function  handleClear(){
+  async function handleClear() {
 
-   
 
-     setMessages([]);
-      toast.success("Chat successfully cleared!", {
-        position: toast.POSITION.TOP_CENTER
-      });
-    
 
-   
+    setMessages([]);
+    toast.success("Chat successfully cleared!", {
+      position: toast.POSITION.TOP_CENTER
+    });
+
+
+
   };
-  
 
 
 
   return (
     <>
-     <div ref={messagesEndRef2}></div>
+      {<TokenModal  tokenMessage={tokenMessage} isModalOpen={isModalOpen} closeModal={closeModal} />}
 
-    <div id="chat"
-      style={styles.chatWindow}
-      className=" w-full sm:w-[600px] lg:w-[600px] xl:w-[800px] "
-    >
-               
-               <div style={styles.chatInput}>
-        <input
-          value={inputValue}
-          type="text"
-          placeholder="Type your message..."
-          style={styles.inputField}
-          onChange={handleInputChange}
-        />
+      <div ref={messagesEndRef2}></div>
 
-<div
-          style={{
-            width: "45px",
-            height: "40px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <a style={{cursor:'pointer'}} onClick={handleClear} > <img
-        src="/clear.png"
-        alt=""
-        style={{ width:"25px" , height: "25px" }}
-      /></a>
-        
+      <div id="chat"
+        style={styles.chatWindow}
+        className=" w-full sm:w-[600px] lg:w-[600px] xl:w-[800px] "
+      >
+
+        <div style={styles.chatInput}>
+          <input
+            value={inputValue}
+            type="text"
+            placeholder="Type your message..."
+            style={styles.inputField}
+            onChange={handleInputChange}
+          />
+
+          <div
+            style={{
+              width: "45px",
+              height: "40px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <a style={{ cursor: 'pointer' }} onClick={handleClear} > <img
+              src="/clear.png"
+              alt=""
+              style={{ width: "25px", height: "25px" }}
+            /></a>
+
+          </div>
+          <div
+            style={{
+              width: "60px",
+              height: "40px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <a style={{ cursor: 'pointer' }} onClick={handleCopyToClipboard} > <img
+              src="/copy.png"
+              alt=""
+              style={{ width: "25px", height: "25px" }}
+            /></a>
+
+          </div>
+          <div
+            style={{
+              width: "60px",
+              height: "40px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            {chatLoading ? (
+              <Loader />
+            ) : (
+              <button onClick={sendMessage} style={inputValue == '' ? styles.sendButtonDisabled : styles.sendButton} disabled={inputValue == ''}>
+                Send
+              </button>
+            )}
+          </div>
         </div>
-         <div
-          style={{
-            width: "60px",
-            height: "40px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <a style={{cursor:'pointer'}} onClick={handleCopyToClipboard} > <img
-        src="/copy.png"
-        alt=""
-        style={{ width:"25px" , height: "25px" }}
-      /></a>
-        
-        </div>
-        <div
-          style={{
-            width: "60px",
-            height: "40px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          {chatLoading ? (
-            <Loader />
-          ) : (
-            <button onClick={sendMessage} style={inputValue == ''? styles.sendButtonDisabled:styles.sendButton }  disabled={inputValue == '' }>
-              Send
-            </button>
-          )}
-        </div>
-      </div>
-   
-      <div style={styles.chatMessages} id="chatMessagesContainerId">
-         
-      
-      {messages.map((message, index) => (
 
-        
-        
+        <div style={styles.chatMessages} id="chatMessagesContainerId">
 
 
-    <div key={index} style={{ display: 'flex', justifyContent: message.type === "user" ? 'flex-end' : 'flex-start' }}>
-        <div style={{
-            ...styles.chatMessage,
-            ...(message.type === "user" ? styles.userMessage : styles.botMessage),
-        }}>
+          {messages.map((message, index) => (
 
-{message?.type === "user" && message.text}
-{/*{index === messages.length - 1 && message?.type === "bot" && 
+
+
+
+
+            <div key={index} style={{ display: 'flex', justifyContent: message.type === "user" ? 'flex-end' : 'flex-start' }}>
+              <div style={{
+                ...styles.chatMessage,
+                ...(message.type === "user" ? styles.userMessage : styles.botMessage),
+              }}>
+
+                {message?.type === "user" && message.text}
+                {/*{index === messages.length - 1 && message?.type === "bot" && 
     <>
         <span dangerouslySetInnerHTML={{ __html: displayResponse }}></span>
         {!completedTyping && <Cursor />}
     </>
 }*/
-<>
-{message?.type === "bot" &&<span dangerouslySetInnerHTML={{ __html: message.text }}></span>}
-</>
-}
+                  <>
+                    {message?.type === "bot" && <span dangerouslySetInnerHTML={{ __html: message.text }}></span>}
+                  </>
+                }
 
-{/*index !== messages.length - 1 && message?.type === "bot" && 
+                {/*index !== messages.length - 1 && message?.type === "bot" && 
     <>
         <span dangerouslySetInnerHTML={{ __html: message.text }}></span>
         {/*!completedTyping && <Cursor />
@@ -527,15 +564,15 @@ useEffect(() => {
 
 
 
-        </div>
-    </div>
-))}
-        <div ref={messagesEndRef}></div>
+              </div>
+            </div>
+          ))}
+          <div ref={messagesEndRef}></div>
 
+
+        </div>
 
       </div>
-      
-    </div>
     </>
   );
 };

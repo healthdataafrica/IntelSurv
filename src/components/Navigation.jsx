@@ -12,6 +12,9 @@ import { fetchFormElements } from "../helpers/fetchFormElements";
 import { ChatBubbleIcon} from './icons/ChatBubbleIcon'
 import { useMobileNavigationStore } from '@/components/MobileNavigation'
 import { v4 as uuidv4 } from 'uuid';
+import { Loader } from '@/helpers/loader';
+import useWindowSize from '@/helpers/handleResize'
+import { SearchInput } from './SearchInput'
 
 
 
@@ -21,54 +24,9 @@ function useInitialValue(value, condition = true) {
   return condition ? initialValue : value
 }
 
-function SearchIcon(props) {
-  return (
-    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" {...props}>
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M12.01 12a4.25 4.25 0 1 0-6.02-6 4.25 4.25 0 0 0 6.02 6Zm0 0 3.24 3.25"
-      />
-    </svg>
-  )
-}
 
-function SearchInput({ original, onDataFilter }) {
-  const [search, setSearch] = useState('');
 
-  useEffect(() => {
-    if (search === '') {
-      onDataFilter(original);
-    } else {
-      // Search the original dataset rather than the most recent filtered data
-      let result = original.map(entry => {
-        let filteredLinks = entry.links.filter(link =>
-          link.title.toLowerCase().includes(search.toLowerCase())
-        );
 
-        return {
-          title: entry.title,
-          links: filteredLinks
-        };
-      })
-        .filter(entry => entry.links.length > 0);
-
-      onDataFilter(result);
-    }
-  }, [search]);
-
-  return (
-    <div className="group relative flex h-10" style={{ marginBottom: '20px', marginTop: '40px', width: '250px' }}>
-      <SearchIcon className="pointer-events-none absolute left-3 top-0 h-full w-5 stroke-zinc-500" />
-      <input
-        className='flex-auto appearance-none bg-transparent pl-10 text-zinc-900 outline-none placeholder:text-zinc-500 dark:text-white sm:text-sm border border-zinc-100'
-        placeholder='Start typing to search'
-        value={search}
-        onChange={e => setSearch(e.target.value)}
-      />
-    </div>
-  );
-}
 
 
 function TopLevelNavItem({ href, children }) {
@@ -206,231 +164,13 @@ function NavigationGroup({ group, className, setActiveLink, activeLink, setSelec
   )
 }
 
-
-
-
-function transformData(data) {
-
-  function convertQuestions(inputs) {
-    return inputs.map(input => ({
-        href: '#',
-        name: 'Derived Question',
-        description: input.derivedQuestion,
-        icon: ChatBubbleIcon,  // Assuming ChatBubbleIcon is already defined elsewhere in your code
-        pattern: {
-            y: -6,
-            squares: [
-                [-1, 2],
-                [1, 3],
-            ],
-        },
-        semContext: input.semContext,
-        synContext: input.synContext,
-        category: input.category,
-        extraContentAnswer: input.extraContentAnswer,
-        predefinedId: input.autoID,
-        answer: input.predAnswers
-    }));
-}
-
-  const transformedLinks = data.map(item => ({
-    title: item.elemName,
-    href: item.elemID.toString(),
-    elemDescr: item.elemDescr,
-    elemOrder: item.elemOrder,
-    idsrQPID: item.idsrQPID,
-    idsrQListing: item.idsrQListing,
-    qOptions: item.qOptions,
-    elemQuestion: item.elemQuestion.length !=0? convertQuestions(item.elemQuestion):[],  
-    rationale: item.rationale !== undefined ? item.rationale : 0,
-    options: item.options.length !=0? item.options:0
-  }));
-
-  return [
-    {
-      title: 'Form Fields',
-      links: transformedLinks
-    }]
-}
-
-
-
 export function Navigation(props) {
   const { mainStore } = store;
-  const { currentActiveField, setCurrentActiveField, questionnaireElements, setQuestionnaireElements, setSelectedFormField, selectedFormField, currentSession, setCurrentSession, chatLogs, setChatLogs} = mainStore();
-  const [filteredData, setFilteredData] = useState([]);
-  const [originalData, setOriginalData] = useState([]);
-  let { isOpen, toggle, close } = useMobileNavigationStore();
-  const [isScreenSmall, setIsScreenSmall] = useState(null); 
+  const { originalData, filteredData,setOriginalData, setFilteredData,currentActiveField, setCurrentActiveField, questionnaireElements, setQuestionnaireElements, setSelectedFormField, selectedFormField, currentSession, setCurrentSession, chatLogs, setChatLogs} = mainStore();
+    let { isOpen, toggle, close } = useMobileNavigationStore();
+    const isScreenSmall = useWindowSize();
+ 
 
-
-
-
-  const Loader = () => {
-    const containerStyle = {
-      height: '10px',
-      width: '80px',
-      margin: 'auto'
-    };
-
-    return (
-      <div style={containerStyle}>
-        <img src="/loader.gif" height="5px" alt="Loading" />
-        <p>Loading...</p>
-      </div>
-    );
-  };
-
-
-  useEffect(() => {
-    const fetchData = async () => {
-
-      if (questionnaireElements == null) {
-        try {
-          // ... Your async operations, like fetching data, etc.
-          let response = await fetchFormElements(1, 5);
-          let data = await response;
-          console.log('data', data);
-          const transformedData = transformData(data);
-          console.log('transformed', transformedData);
-          setOriginalData(transformedData);
-          setFilteredData(transformedData);
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        }
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    // console.log('Current activeLink state:', currentActiveField);
-  }, [currentActiveField]);
-
-  useEffect(() => {
-    // console.log('selected Form Field:', selectedFormField); 
-  }, [selectedFormField]);
-
-  useEffect(() => {
-    function handleResize() {
-      // Check if screen size is less than a specific size
-      setIsScreenSmall(window.innerWidth < 640);
-    }
-
-    // Add event listener on component mount
-    window.addEventListener('resize', handleResize);
-
-    // Set the initial value
-    handleResize();
-
-    // Clean up event listener on component unmount
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
-  useEffect(() => {
-    // Function to fetch logs
-    const fetchLogs = async () => {
-      try {
-        const response = await fetch('https://us-central1-questmap-mubas.cloudfunctions.net/getChatLogs');
-        const data = await response.json();
-    
-        // Filter the logs by a specific session
-        const filteredData = data.filter(log => log.session === 'ecfd620e-f25c-42ca-ad23-707fd8c6bf9e');
-    
-        setChatLogs(data);
-        console.log('Filtered Logs:', filteredData);
-    
-        //Convert filtered JSON to CSV
-     /*  const csvString = jsonToCSV(filteredData);
-       if (csvString) {
-          // Create a Blob from the CSV String
-          const blob = new Blob([csvString], { type: 'text/csv' });
-    
-          // Create a link element, use it to download the CSV file and remove it
-          const link = document.createElement('a');
-          link.href = URL.createObjectURL(blob);
-          link.download = 'chat-logs.csv';
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-        }*/
-    
-      } catch (error) {
-        console.error('Error fetching logs:', error);
-      }
-    };
-    
-
-    function formatData(str) {
-      if (!str || typeof str !== 'string') return str;
-      // Remove HTML tags
-      let formattedStr = str.replace(/<\/?[^>]+(>|$)/g, "");
-      // Remove newline characters
-      formattedStr = formattedStr.replace(/\n/g, "");
-      // Escape double quotes
-      formattedStr = formattedStr.replace(/"/g, '""');
-      return formattedStr;
-    }
-    
-    
-    const jsonToCSV = (json) => {
-      if (json.length === 0) {
-        return null;
-      }
-    
-      let columns = Object.keys(json[0]);
-    
-      // Move 'answer' to the end if it exists
-      const answerIndex = columns.indexOf('answer');
-      if (answerIndex > -1) {
-        columns.splice(answerIndex, 1);
-        columns.push('answer');
-      }
-    
-      // Create the CSV header
-      const header = columns.map(col => `"${col}"`).join(',');
-    
-      // Map each object to a CSV row
-      const rows = json.map(obj =>
-        columns.map(col => {
-          // Apply consistent data formatting
-          const value = formatData(obj[col]);
-          return `"${value}"`; // Enclose each field in quotes
-        }).join(',')
-      );
-    
-      return [header, ...rows].join('\r\n');
-    };
-    
-    
-    
-    
-
-    // Function to handle session key
-    const handleSessionKey = () => {
-      let sessionKey = localStorage.getItem('sessionKey');
-
-      if (sessionKey) {
-
-        setCurrentSession(sessionKey);
-        // If session key exists, fetch logs
-             } else {
-        // If session key does not exist, generate a new one
-        sessionKey = uuidv4();
-        localStorage.setItem('sessionKey', sessionKey);
-        setCurrentSession(sessionKey);
-
-        console.log('New session key generated:', sessionKey);
-      }
-    };
-
-    fetchLogs();
-
-    handleSessionKey();
-  }, []);
 
   return (
     <>
@@ -450,12 +190,7 @@ export function Navigation(props) {
               className={groupIndex === 0 && 'md:mt-0'}
             />
           )) : <Loader />}
-         { /*<li className="sticky bottom-0 z-10 mt-6 min-[416px]:hidden">
-            <Button href="#" variant="filled" className="w-full">
-              Sign in
-            </Button>
-          </li>*/}
-        </ul>
+           </ul>
       </nav>
     </>
   )

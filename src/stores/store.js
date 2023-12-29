@@ -8,6 +8,39 @@ const mainStore = create((set) => ({
   currentSession: 'NONE', 
   chatLogs:null,
   showHelpPage: null,
+  originalData:[],
+  filteredData:[],
+  userToken:null,
+  tokenMessageCount:null,
+  tokenValidTo:null,
+  openTokenModal:false,
+  tokenMessage:null,
+
+setTokenMessage: (value) => set((state) => ({
+  tokenMessage: value
+    })),
+  setOpenTokenModal: (value) => set((state) => ({
+    openTokenModal: value
+    })),
+  setTokenValidTo: (value) => set((state) => ({
+    tokenValidTo: value
+    })),
+  setTokenMessageCount: (value) => set((state) => ({
+    tokenMessageCount: value
+    })),
+    decrementTokenMessageCount: () => set((state) => ({
+      tokenMessageCount: state.tokenMessageCount - 1
+    })),
+  setUserToken: (value) => set((state) => ({
+  userToken: value
+  })),
+
+setOriginalData: (value) => set((state) => ({
+    originalData: value
+  })),
+  setFilteredData: (value) => set((state) => ({
+  filteredData: value
+  })),
 
   setShowHelpPage: (value) => set((state) => ({
     showHelpPage: value
